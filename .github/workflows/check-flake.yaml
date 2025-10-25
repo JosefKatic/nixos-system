@@ -1,5 +1,13 @@
-checks:
-  steps:
-    - uses: actions/checkout@v4
-    - name: Check Nix flake Nixpkgs inputs
-      uses: DeterminateSystems/flake-checker-action@main
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check-flake:
+    name: Check nix flake
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check Nix flake
+        uses: DeterminateSystems/flake-checker-action@main # This action
