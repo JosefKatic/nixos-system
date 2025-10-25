@@ -73,8 +73,8 @@
       stateVersion = lib.mkDefault "24.05";
       sessionPath = ["$HOME/.local/bin"];
       sessionVariables = {
-        FLAKE = "$HOME/.nix-config";
-        NH_FLAKE = "$HOME/.nix-config";
+        FLAKE = "$HOME/.nixos-system";
+        NH_FLAKE = "$HOME/.nixos-system";
       };
       packages = with pkgs; [
         # icon fonts
