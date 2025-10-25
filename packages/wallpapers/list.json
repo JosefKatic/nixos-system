@@ -1,0 +1,38 @@
+[
+  {
+    "url": "https://i.imgur.com/6ybrgdj.png",
+    "name": "astronaut-minimalism",
+    "ext": "png",
+    "hash": "sha256-yv7yyaCEv2RUO7xOJOuOhR+UO7kBRY8QSTZYWv6SuEQ="
+  },
+  {
+    "url": "https://i.imgur.com/u2T7X4I.jpeg",
+    "name": "watercolor-beach",
+    "ext": "jpeg",
+    "hash": "sha256-pFUKax2psSgIvc/Mp16ISRy0v1XVgeqP3iTctDnXbAI="
+  },
+  {
+    "url": "https://i.imgur.com/1ES3hPX.jpeg",
+    "name": "stone-on-beach",
+    "ext": "jpeg",
+    "hash": "sha256-9OEOq1i9TopWEASxAh4amr+zN+SGoY1lq6icw1JudL4="
+  },
+  {
+    "url": "https://i.imgur.com/SpBfUZi.jpeg",
+    "name": "deer",
+    "ext": "jpeg",
+    "hash": "sha256-/o8Kv7qw1acDz62n7uT83sEwSXoVyTPD7N8GlLWsZCE="
+  },
+  {
+    "url": "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/wallpapers/nix-wallpaper-binary-black.png",
+    "name": "binary-black",
+    "ext": "png",
+    "hash": "sha256-mhSh0wz2ntH/kri3PF5ZrFykjjdQLhmlIlDDGFQIYWw="
+  },
+  {
+    "url": "https://raw.githubusercontent.com/NixOS/nixos-artwork/master/wallpapers/nix-wallpaper-binary-black_8k.png",
+    "name": "binary-black-8k",
+    "ext": "png",
+    "hash": "sha256-MxEgvzWmdqMeI5GeI6Hzci6yd5iL44NDXyKQOuw+fLY="
+  }
+]
