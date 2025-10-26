@@ -1,3 +1,6 @@
 {
-  imports = [./discord ./teamspeak];
+  imports = [
+    ./discord
+    ./teamspeak
+  ];
 }

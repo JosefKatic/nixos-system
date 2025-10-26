@@ -1,3 +1,6 @@
 {
-  imports = [./ipa.nix ./sssd.nix];
+  imports = [
+    ./ipa.nix
+    ./sssd.nix
+  ];
 }

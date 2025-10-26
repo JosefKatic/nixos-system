@@ -3,10 +3,12 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.media.music.youtube-music;
   cfgHyprland = config.user.desktop.wayland.hyprland;
-in {
+in
+{
   options.user.desktop.programs.media.music.youtube-music = {
     enable = lib.mkEnableOption "Enable YouTube Music";
   };

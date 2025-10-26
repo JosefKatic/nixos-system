@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.media.mpv;
-in {
+in
+{
   options.user.desktop.programs.media.mpv = {
     enable = pkgs.lib.mkEnableOption "Enable MPV media player";
   };
@@ -13,8 +15,8 @@ in {
   config = lib.mkIf cfg.enable {
     programs.mpv = {
       enable = true;
-      defaultProfiles = ["gpu-hq"];
-      scripts = [pkgs.mpvScripts.mpris];
+      defaultProfiles = [ "gpu-hq" ];
+      scripts = [ pkgs.mpvScripts.mpris ];
     };
   };
 }

@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.editors.vscode;
-in {
+in
+{
   options = {
     user.desktop.programs.editors = {
       vscode = {

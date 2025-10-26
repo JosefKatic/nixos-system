@@ -2,10 +2,12 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.theme.colorscheme) colors;
   cfg = config.user.desktop.programs.emulators.kitty;
-in {
+in
+{
   options.user.desktop.programs.emulators.kitty = {
     enable = lib.mkEnableOption "Enable Kitty";
   };

@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.browsers;
-in {
+in
+{
   options.user.desktop.programs.browsers.chromium.enable =
     lib.mkEnableOption "Enable Chromium browser";
 

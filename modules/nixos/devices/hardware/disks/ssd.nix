@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.hardware;
-in {
+in
+{
   options.device.hardware.disks.ssd = {
     enable = lib.mkEnableOption "Enable ssd modules";
   };

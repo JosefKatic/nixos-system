@@ -3,9 +3,10 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.services;
-  json = pkgs.formats.json {};
+  json = pkgs.formats.json { };
 
   pw_rnnoise_config = {
     "context.modules" = [
@@ -27,7 +28,10 @@
               }
             ];
           };
-          "audio.position" = ["FL" "FR"];
+          "audio.position" = [
+            "FL"
+            "FR"
+          ];
           "capture.props" = {
             "node.name" = "effect_input.rnnoise";
             "node.passive" = true;
@@ -40,7 +44,8 @@
       }
     ];
   };
-in {
+in
+{
   options.user.desktop.services.rnnoise = {
     enable = pkgs.lib.mkEnableOption "Enable RNNoise denoising for audio input";
   };

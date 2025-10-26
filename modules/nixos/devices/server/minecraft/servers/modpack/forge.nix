@@ -1,9 +1,10 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   minecraftVersion = "1.20.1";
   forgeVersion = "47.4.0";
   version = "${minecraftVersion}-${forgeVersion}";
 in
-  pkgs.runCommandNoCC "forge-${version}"
+pkgs.runCommandNoCC "forge-${version}"
   {
     inherit version;
     nativeBuildInputs = with pkgs; [

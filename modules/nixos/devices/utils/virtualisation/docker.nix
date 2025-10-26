@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.utils.virtualisation;
-in {
+in
+{
   options.device.utils.virtualisation.docker = {
     enable = lib.mkEnableOption "Docker virtualisation";
   };

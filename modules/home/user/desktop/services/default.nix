@@ -1,3 +1,8 @@
 {
-  imports = [./kdeconnect ./mako ./polkit-agent ./rnnoise];
+  imports = [
+    ./kdeconnect
+    ./mako
+    ./polkit-agent
+    ./rnnoise
+  ];
 }

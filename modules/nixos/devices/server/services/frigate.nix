@@ -2,10 +2,12 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   inherit (lib) types mkEnableOption mkIf;
   cfg = config.device.server.services;
-in {
+in
+{
   options.device.server.services.frigate = {
     enable = mkEnableOption "Enable frigate server";
   };

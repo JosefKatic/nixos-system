@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options.device.server.databases.mysql.enable = lib.mkEnableOption "Enable postgresql";
   config = lib.mkIf config.device.server.databases.mysql.enable {
     services.mysql = {

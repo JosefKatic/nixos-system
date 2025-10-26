@@ -4,7 +4,8 @@
   options,
   pkgs,
   ...
-}: {
+}:
+{
   documentation.dev.enable = true;
   hardware.graphics.enable = true;
   imports = [

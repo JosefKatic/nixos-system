@@ -1,3 +1,7 @@
 {
-  imports = [./binds.nix ./rules.nix ./settings.nix];
+  imports = [
+    ./binds.nix
+    ./rules.nix
+    ./settings.nix
+  ];
 }

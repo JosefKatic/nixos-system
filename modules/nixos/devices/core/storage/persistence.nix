@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.core.storage;
   wipeScript = ''
     mkdir /tmp -p
@@ -25,23 +26,27 @@
     )
   '';
   phase1Systemd = config.boot.initrd.systemd.enable;
-in {
+in
+{
   options.device.core.storage.enablePersistence =
     lib.mkEnableOption "Whether to enable persistence of root";
 
   config = lib.mkIf cfg.enablePersistence {
     boot.initrd = {
-      supportedFilesystems = ["btrfs" "ntfs"];
+      supportedFilesystems = [
+        "btrfs"
+        "ntfs"
+      ];
       postDeviceCommands = lib.mkIf (!phase1Systemd) (lib.mkBefore wipeScript);
       systemd.services.restore-root = lib.mkIf phase1Systemd {
         description = "Rollback btrfs rootfs";
-        wantedBy = ["initrd.target"];
-        requires = ["dev-disk-by\\x2dlabel-system.device"];
+        wantedBy = [ "initrd.target" ];
+        requires = [ "dev-disk-by\\x2dlabel-system.device" ];
         after = [
           "dev-disk-by\\x2dlabel-system.device"
           "systemd-cryptsetup@system.service"
         ];
-        before = ["sysroot.mount"];
+        before = [ "sysroot.mount" ];
         unitConfig.DefaultDependencies = "no";
         serviceConfig.Type = "oneshot";
         script = wipeScript;
@@ -63,15 +68,17 @@ in {
       };
     };
     programs.fuse.userAllowOther = true;
-    system.activationScripts.persistent-dirs.text = let
-      mkHomePersist = user:
-        lib.optionalString user.createHome ''
-          mkdir -p /persist/${user.home}
-          chown ${user.name}:${user.group} /persist/${user.home}
-          chmod ${user.homeMode} /persist/${user.home}
-        '';
-      users = lib.attrValues config.users.users;
-    in
+    system.activationScripts.persistent-dirs.text =
+      let
+        mkHomePersist =
+          user:
+          lib.optionalString user.createHome ''
+            mkdir -p /persist/${user.home}
+            chown ${user.name}:${user.group} /persist/${user.home}
+            chmod ${user.homeMode} /persist/${user.home}
+          '';
+        users = lib.attrValues config.users.users;
+      in
       lib.concatLines (map mkHomePersist users);
   };
 }

@@ -2,20 +2,37 @@
   config,
   pkgs,
   ...
-}: let
-  browser = ["firefox"];
-  imageViewer = ["org.gnome.Loupe"];
-  videoPlayer = ["io.github.celluloid_player.Celluloid"];
-  audioPlayer = ["io.bassi.Amberol"];
-  xdgAssociations = type: program: list:
-    builtins.listToAttrs (map (e: {
+}:
+let
+  browser = [ "firefox" ];
+  imageViewer = [ "org.gnome.Loupe" ];
+  videoPlayer = [ "io.github.celluloid_player.Celluloid" ];
+  audioPlayer = [ "io.bassi.Amberol" ];
+  xdgAssociations =
+    type: program: list:
+    builtins.listToAttrs (
+      map (e: {
         name = "${type}/${e}";
         value = program;
-      })
-      list);
-  image = xdgAssociations "image" imageViewer ["png" "svg" "jpeg" "gif"];
-  video = xdgAssociations "video" videoPlayer ["mp4" "avi" "mkv"];
-  audio = xdgAssociations "audio" audioPlayer ["mp3" "flac" "wav" "aac"];
+      }) list
+    );
+  image = xdgAssociations "image" imageViewer [
+    "png"
+    "svg"
+    "jpeg"
+    "gif"
+  ];
+  video = xdgAssociations "video" videoPlayer [
+    "mp4"
+    "avi"
+    "mkv"
+  ];
+  audio = xdgAssociations "audio" audioPlayer [
+    "mp3"
+    "flac"
+    "wav"
+    "aac"
+  ];
   browserTypes =
     (xdgAssociations "application" browser [
       "json"
@@ -33,18 +50,21 @@
       "unknown"
     ]);
   # XDG MIME types
-  associations = builtins.mapAttrs (_: v: (map (e: "${e}.desktop") v)) ({
-      "application/pdf" = ["org.pwmt.zathura-pdf-mupdf"];
+  associations = builtins.mapAttrs (_: v: (map (e: "${e}.desktop") v)) (
+    {
+      "application/pdf" = [ "org.pwmt.zathura-pdf-mupdf" ];
       "text/html" = browser;
-      "text/plain" = ["code"];
-      "x-scheme-handler/chrome" = ["chromium-browser"];
-      "inode/directory" = ["yazi"];
+      "text/plain" = [ "code" ];
+      "x-scheme-handler/chrome" = [ "chromium-browser" ];
+      "inode/directory" = [ "yazi" ];
     }
     // image
     // video
     // audio
-    // browserTypes);
-in {
+    // browserTypes
+  );
+in
+{
   xdg = {
     enable = true;
     cacheHome = config.home.homeDirectory + "/.local/cache";

@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) mapAttrs' replaceStrings nameValuePair;
-in {
+in
+{
   config = lib.mkIf config.device.server.minecraft.enable {
     services.minecraft-servers.servers.proxy = {
       extraReload = ''
@@ -19,7 +21,7 @@ in {
         hash = "sha256-KpdBl1SN0Mm79jYuN8GsJudZga73duDHkiHDqSl7JKw=";
       };
       files = {
-        "plugins/librelogin/config.conf".format = pkgs.formats.json {};
+        "plugins/librelogin/config.conf".format = pkgs.formats.json { };
         "plugins/librelogin/config.conf".value = {
           allowed-commands-while-unauthorized = [
             "login"
@@ -40,19 +42,20 @@ in {
           default-crypto-provider = "BCrypt-2A";
           fallback = false;
           kick-on-wrong-password = false;
-          limbo = ["auth"];
-          migration = {};
+          limbo = [ "auth" ];
+          migration = { };
           milliseconds-to-refresh-notification = 10000;
           minimum-password-length = -1;
           new-uuid-creator = "MOJANG";
           # Use the same config as velocity's "try" and "forced-hosts
-          pass-through = let
-            velocityCfg = config.services.minecraft-servers.servers.proxy.files."velocity.toml".value;
-          in
+          pass-through =
+            let
+              velocityCfg = config.services.minecraft-servers.servers.proxy.files."velocity.toml".value;
+            in
             {
               root = velocityCfg.servers.try;
             }
-            // (mapAttrs' (n: nameValuePair (replaceStrings ["."] ["§"] n)) velocityCfg.forced-hosts);
+            // (mapAttrs' (n: nameValuePair (replaceStrings [ "." ] [ "§" ] n)) velocityCfg.forced-hosts);
           ping-servers = true;
           remember-last-server = true;
           revision = 3;

@@ -3,10 +3,12 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) types mkIf mkEnableOption;
   cfg = config.device.server.homelab;
-in {
+in
+{
   options.device.server.homelab = {
     homeassistant = {
       enable = mkEnableOption "Home Assistant";
@@ -39,7 +41,7 @@ in {
     virtualisation.oci-containers = {
       backend = "podman";
       containers.homeassistant = {
-        volumes = ["home-assistant:/config"];
+        volumes = [ "home-assistant:/config" ];
         environment.TZ = "Europe/Berlin";
         image = "ghcr.io/home-assistant/home-assistant:stable";
         extraOptions = [
@@ -48,7 +50,15 @@ in {
         ];
       };
     };
-    networking.firewall.allowedTCPPorts = [8123 21063 21064];
-    networking.firewall.allowedUDPPorts = [5353 21063 21064];
+    networking.firewall.allowedTCPPorts = [
+      8123
+      21063
+      21064
+    ];
+    networking.firewall.allowedUDPPorts = [
+      5353
+      21063
+      21064
+    ];
   };
 }

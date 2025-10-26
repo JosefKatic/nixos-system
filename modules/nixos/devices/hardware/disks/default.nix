@@ -1,1 +1,6 @@
-{imports = [./hdd.nix ./ssd.nix];}
+{
+  imports = [
+    ./hdd.nix
+    ./ssd.nix
+  ];
+}

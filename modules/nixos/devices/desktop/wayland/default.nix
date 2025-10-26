@@ -1,3 +1,7 @@
 {
-  imports = [./desktopManager ./displayManager ./windowManager];
+  imports = [
+    ./desktopManager
+    ./displayManager
+    ./windowManager
+  ];
 }

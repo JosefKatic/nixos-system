@@ -4,7 +4,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options.device.server.cache = {
     enable = lib.mkEnableOption "Enable cache service";
   };

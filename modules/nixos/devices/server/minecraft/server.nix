@@ -3,7 +3,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   options.device.server.minecraft = {
     enable = lib.mkEnableOption "Enable Minecraft Server";
   };
@@ -27,7 +28,7 @@
     };
 
     services.mysql = {
-      ensureDatabases = ["minecraft"];
+      ensureDatabases = [ "minecraft" ];
       ensureUsers = [
         {
           name = "minecraft";
@@ -38,7 +39,7 @@
       ];
     };
     # Set minecrafts' password (the plugins don't play well with socket auth)
-    users.users.mysql.extraGroups = ["minecraft"]; # Get access to the secret
+    users.users.mysql.extraGroups = [ "minecraft" ]; # Get access to the secret
     systemd.services.mysql.postStart = lib.mkAfter ''
       source ${config.sops.secrets.minecraft-secrets.path}
       ${config.services.mysql.package}/bin/mysql <<EOF

@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   options.device.build = lib.mkOption {
     type = lib.types.str;
     default = "0";

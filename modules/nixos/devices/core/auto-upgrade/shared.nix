@@ -1,7 +1,11 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   options.company.autoUpgrade = {
     operation = lib.mkOption {
-      type = lib.types.enum ["switch" "boot"];
+      type = lib.types.enum [
+        "switch"
+        "boot"
+      ];
       default = "switch";
     };
     dates = lib.mkOption {

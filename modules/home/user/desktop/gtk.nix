@@ -3,13 +3,15 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   hash = builtins.hashString "md5" (builtins.toJSON config.theme.colorscheme);
-  rendersvg = pkgs.runCommand "rendersvg" {} ''
+  rendersvg = pkgs.runCommand "rendersvg" { } ''
     mkdir -p $out/bin
     ln -s ${pkgs.resvg}/bin/resvg $out/bin/rendersvg
   '';
-  materiaTheme = colors:
+  materiaTheme =
+    colors:
     pkgs.stdenv.mkDerivation {
       name = "generated-gtk-theme";
       src = pkgs.fetchFromGitHub {
@@ -29,7 +31,10 @@
         gtk4.dev
         optipng
       ];
-      phases = ["unpackPhase" "installPhase"];
+      phases = [
+        "unpackPhase"
+        "installPhase"
+      ];
       installPhase = ''
         HOME=/build
         chmod 777 -R .
@@ -69,7 +74,8 @@
         chmod 555 -R .
       '';
     };
-in {
+in
+{
   options.user.desktop.gtk = {
     enable = lib.mkEnableOption "Enable GTK settings";
   };
@@ -109,8 +115,11 @@ in {
       };
     };
 
-    home.packages = with pkgs; [libdbusmenu-gtk3 sassc];
+    home.packages = with pkgs; [
+      libdbusmenu-gtk3
+      sassc
+    ];
 
-    xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 }

@@ -2,6 +2,11 @@
   self,
   config,
   ...
-}: {
-  imports = [./authentik ./freeipa ./keycloak];
+}:
+{
+  imports = [
+    ./authentik
+    ./freeipa
+    ./keycloak
+  ];
 }

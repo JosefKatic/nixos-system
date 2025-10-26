@@ -1,3 +1,6 @@
 {
-  imports = [./programs ./shell];
+  imports = [
+    ./programs
+    ./shell
+  ];
 }

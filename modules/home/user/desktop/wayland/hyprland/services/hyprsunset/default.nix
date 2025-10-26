@@ -3,10 +3,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.wayland.hyprland.services.hyprsunset;
-in {
-  options.user.desktop.wayland.hyprland.services.hyprsunset.enable = lib.mkEnableOption "Enable Hyprsunset - blue light filter";
+in
+{
+  options.user.desktop.wayland.hyprland.services.hyprsunset.enable =
+    lib.mkEnableOption "Enable Hyprsunset - blue light filter";
   config = lib.mkIf cfg.enable {
     services.hyprsunset = {
       enable = true;

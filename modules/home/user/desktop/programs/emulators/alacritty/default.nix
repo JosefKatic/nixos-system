@@ -3,9 +3,11 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.emulators.alacritty;
-in {
+in
+{
   options.user.desktop.programs.emulators.alacritty = {
     enable = lib.mkEnableOption "Enable Alacritty";
   };

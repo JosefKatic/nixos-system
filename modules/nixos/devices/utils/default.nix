@@ -4,6 +4,10 @@
   lib,
   pkgs,
   ...
-}: {
-  imports = [./kdeconnect.nix ./virtualisation];
+}:
+{
+  imports = [
+    ./kdeconnect.nix
+    ./virtualisation
+  ];
 }

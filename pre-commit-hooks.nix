@@ -6,7 +6,7 @@
     settings.excludes = [ "flake.lock" ];
 
     settings.hooks = {
-      nixfmt.enable = true;
+      nixfmt-rfc-style.enable = true;
       prettier = {
         enable = true;
         excludes = [

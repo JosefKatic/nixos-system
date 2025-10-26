@@ -1,4 +1,9 @@
 {
-  imports = let
-  in [./gamemode.nix ./wayland];
+  imports =
+    let
+    in
+    [
+      ./gamemode.nix
+      ./wayland
+    ];
 }

@@ -3,10 +3,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.wayland.hyprland.services.hyprpaper;
-in {
-  options.user.desktop.wayland.hyprland.services.hyprpaper.enable = lib.mkEnableOption "Enable Hyprpaper";
+in
+{
+  options.user.desktop.wayland.hyprland.services.hyprpaper.enable =
+    lib.mkEnableOption "Enable Hyprpaper";
 
   config = lib.mkIf cfg.enable {
     services.hyprpaper = {

@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.core;
-in {
+in
+{
   # Removes default packages like rsync, strace or perl
   # Taken from https://xeiaso.net/blog/paranoid-nixos-2021-07-18/
   options.device.core.disableDefaults = lib.mkOption {
@@ -14,7 +16,7 @@ in {
   };
 
   config = lib.mkIf cfg.disableDefaults {
-    environment.defaultPackages = lib.mkForce [];
+    environment.defaultPackages = lib.mkForce [ ];
     # TODO: Disable in future
     programs.nano.enable = true;
   };

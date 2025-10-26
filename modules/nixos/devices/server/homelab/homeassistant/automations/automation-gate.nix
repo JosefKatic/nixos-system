@@ -17,12 +17,12 @@
         subtype = "single_left";
       }
     ];
-    condition = [];
+    condition = [ ];
 
     action = [
       {
         service = "script.open_full_gate";
-        data = {};
+        data = { };
       }
     ];
     mode = "single";
@@ -45,12 +45,12 @@
         subtype = "single_right";
       }
     ];
-    condition = [];
+    condition = [ ];
 
     action = [
       {
         service = "script.open_half_gate";
-        data = {};
+        data = { };
       }
     ];
     mode = "single";

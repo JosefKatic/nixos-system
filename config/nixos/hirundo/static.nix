@@ -1,13 +1,19 @@
 {
   device.platform = "x86_64-linux";
-  boot.initrd.availableKernelModules = ["ata_piix" "sr_mod" "uhci_hcd" "virtio_blk" "virtio_pci"];
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "sr_mod"
+    "uhci_hcd"
+    "virtio_blk"
+    "virtio_pci"
+  ];
   device.type = "laptop";
   device.virtualized = false;
   device.boot.quietboot.enable = true;
   device.boot.uefi.enable = true;
   device.boot.uefi.secureboot = true;
   device.core.storage.enablePersistence = true;
-  device.core.storage.otherDrives = [];
+  device.core.storage.otherDrives = [ ];
   device.core.storage.swapFile.enable = true;
   device.core.storage.swapFile.path = "/swap/swapfile";
   device.core.storage.swapFile.size = 8;
@@ -28,6 +34,9 @@
   device.hardware.misc.trezor.enable = true;
   device.hardware.misc.xbox.enable = true;
   device.hardware.misc.yubikey.enable = true;
-  device.home.users = ["joka" "joka-ipa"];
+  device.home.users = [
+    "joka"
+    "joka-ipa"
+  ];
   # device.utils.proton.vpn.enable = true;
 }

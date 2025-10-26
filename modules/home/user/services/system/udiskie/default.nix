@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.user.services.system.udiskie;
-in {
+in
+{
   options.user.services.system.udiskie = {
     enable = lib.mkEnableOption "Enable udiskie";
   };

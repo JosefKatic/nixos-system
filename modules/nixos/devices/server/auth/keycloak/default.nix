@@ -4,7 +4,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options.device.server.auth = {
     keycloak.enable = lib.mkEnableOption "Enable keycloak";
   };

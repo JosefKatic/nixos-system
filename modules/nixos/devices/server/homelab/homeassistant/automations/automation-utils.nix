@@ -9,11 +9,11 @@
       type = "action";
       subtype = "single";
     };
-    condition = [];
+    condition = [ ];
     action = [
       {
         service = "switch.toggle";
-        data = {};
+        data = { };
         target = {
           entity_id = "switch.technicka_vysavac";
         };

@@ -1,1 +1,7 @@
-["hirundo" "alcedo" "falco" "strix" "regulus"]
+[
+  "hirundo"
+  "alcedo"
+  "falco"
+  "strix"
+  "regulus"
+]

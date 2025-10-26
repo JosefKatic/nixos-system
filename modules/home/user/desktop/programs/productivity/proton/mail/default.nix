@@ -3,10 +3,12 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.productivity.proton.mail;
   cfgHyprland = config.user.desktop.wayland.hyprland;
-in {
+in
+{
   options.user.desktop.programs.productivity.proton.mail = {
     enable = lib.mkEnableOption "Enable Proton Pass";
   };

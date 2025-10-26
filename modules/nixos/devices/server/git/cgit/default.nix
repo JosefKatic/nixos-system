@@ -4,16 +4,20 @@
   inputs,
   lib,
   ...
-}: let
+}:
+let
   cgit = "${pkgs.cgit}";
-  compileSass = file:
+  compileSass =
+    file:
     pkgs.runCommand "sass"
-    {
-      buildInputs = [pkgs.sass];
-    } ''
-      sass ${file} > $out
-    '';
-in {
+      {
+        buildInputs = [ pkgs.sass ];
+      }
+      ''
+        sass ${file} > $out
+      '';
+in
+{
   options.device.server.git.cgit = {
     enable = lib.mkEnableOption "Enable cgit";
   };
@@ -44,7 +48,7 @@ in {
         master = "true";
         socket = "/run/uwsgi/cgit.sock";
         procname-master = "uwsgi cgit";
-        plugins = ["cgi"];
+        plugins = [ "cgi" ];
         cgi = "${cgit}/cgit/cgit.cgi";
       };
     };
@@ -52,7 +56,7 @@ in {
     systemd.services.create-cgit-cache = {
       description = "Create cache directory for cgit";
       enable = true;
-      wantedBy = ["uwsgi.service"];
+      wantedBy = [ "uwsgi.service" ];
       serviceConfig = {
         type = "oneshot";
       };
