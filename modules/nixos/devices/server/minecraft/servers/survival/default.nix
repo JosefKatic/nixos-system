@@ -1,10 +1,11 @@
-inputs: {
-  self,
+{
+  inputs,
   config,
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.device.server.minecraft.enable {
     services.minecraft-servers.servers.survival = {
       enable = true;

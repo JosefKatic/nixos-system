@@ -1,15 +1,18 @@
-inputs: {
+{
+  inputs,
   config,
   pkgs,
   lib,
   self,
   ...
-}: let
+}:
+let
   website = inputs.web.packages.${pkgs.system}.default;
   # pgpKey = "${self}home/joka/pgp.asc";
   # sshKey = "${self}/home/joka/ssh.pub";
   days = n: toString (n * 60 * 60 * 24);
-in {
+in
+{
   options.device.server.hosting.website = {
     enable = lib.mkEnableOption "Enable website hosting";
   };

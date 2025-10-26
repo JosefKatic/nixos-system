@@ -2,8 +2,9 @@
   config,
   pkgs,
   ...
-}: {
-  home.packages = [pkgs.gh];
+}:
+{
+  home.packages = [ pkgs.gh ];
 
   programs.delta = {
     enable = true;
@@ -18,6 +19,15 @@
       signer = "${config.programs.gpg.package}/bin/gpg2";
       signByDefault = true;
     };
+    ignores = [
+      "*~"
+      "*.swp"
+      "*result*"
+      ".direnv"
+      ".idea"
+      ".vscode"
+      "node_modules"
+    ];
     settings = {
       alias = {
         a = "add";
@@ -39,8 +49,6 @@
         graph = "log --all --decorate --graph --oneline";
         oops = "checkout --";
       };
-
-      ignores = ["*~" "*.swp" "*result*" ".direnv" ".idea" ".vscode" "node_modules"];
       user = {
         name = "Josef Katič";
         email = "josef@joka00.dev";

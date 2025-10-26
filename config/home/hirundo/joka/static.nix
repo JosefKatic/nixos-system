@@ -2,9 +2,10 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   theme = {
-    wallpaper = inputs.joka00-modules.legacyPackages.${pkgs.system}.wallpapers.binary-black-8k.outPath;
+    wallpaper = inputs.self.legacyPackages.${pkgs.system}.wallpapers.binary-black-8k.outPath;
     colorscheme.type = "monochrome";
   };
   user = {

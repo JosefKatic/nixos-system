@@ -1,12 +1,15 @@
-inputs: {
+{
+  inputs,
   config,
   lib,
   self,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.server.nixConfigurator;
-in {
+in
+{
   options.device.server.nixConfigurator = {
     enable = lib.mkOption {
       default = false;
@@ -18,7 +21,7 @@ in {
   config = lib.mkIf cfg.enable {
     environment.persistence = lib.mkIf (config.device.core.storage.enablePersistence) {
       "/persist" = {
-        directories = ["/var/lib/nix-configurator-api"];
+        directories = [ "/var/lib/nix-configurator-api" ];
       };
     };
     sops.secrets = {

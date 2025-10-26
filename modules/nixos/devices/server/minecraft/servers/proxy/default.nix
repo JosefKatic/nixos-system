@@ -1,12 +1,17 @@
-inputs: {
+{
+  inputs,
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   servers = config.services.minecraft-servers.servers;
-  proxyFlags = memory: "-Xms${memory} -Xmx${memory} -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15";
-in {
+  proxyFlags =
+    memory:
+    "-Xms${memory} -Xmx${memory} -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:+UnlockExperimentalVMOptions -XX:+ParallelRefProcEnabled -XX:+AlwaysPreTouch -XX:MaxInlineLevel=15";
+in
+{
   imports = [
     ./huskchat.nix
     ./fallbackserver.nix
@@ -16,8 +21,14 @@ in {
   ];
   config = lib.mkIf config.device.server.minecraft.enable {
     networking.firewall = {
-      allowedTCPPorts = [25565 24454];
-      allowedUDPPorts = [25565 24454];
+      allowedTCPPorts = [
+        25565
+        24454
+      ];
+      allowedUDPPorts = [
+        25565
+        24454
+      ];
     };
 
     services.minecraft-servers.servers.proxy = {
@@ -43,7 +54,7 @@ in {
             limbo = "localhost:${toString servers.limbo.files."settings.yml".value.bind.port}";
             auth = "localhost:${toString servers.limbo.files."settings.yml".value.bind.port}";
             modpack = "localhost:${toString servers.modpack.serverProperties.server-port}";
-            try = ["limbo"];
+            try = [ "limbo" ];
           };
           forced-hosts = {
             "modpack.joka00.dev" = [

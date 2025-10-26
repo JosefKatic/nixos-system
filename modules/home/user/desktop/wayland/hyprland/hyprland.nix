@@ -1,11 +1,13 @@
-inputs: {
+{
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.wayland.hyprland;
-in {
+in
+{
   options.user.desktop.wayland.hyprland.enable = lib.mkEnableOption "Enable Hyprland";
   # enable hyprland
 
@@ -16,7 +18,7 @@ in {
       portalPackage = pkgs.xdg-desktop-portal-hyprland;
       # make sure to also set the portal package, so that they are in sync
       systemd = {
-        variables = ["--all"];
+        variables = [ "--all" ];
         extraCommands = [
           "systemctl --user stop graphical-session.target"
           "systemctl --user start hyprland-session.target"

@@ -1,17 +1,16 @@
-inputs: {
+{
+  inputs,
   self,
   lib,
   ...
-}: {
-  imports = let
-    theme = import ./theme inputs;
-    desktop = import ./desktop inputs;
-  in [
+}:
+{
+  imports = [
     ./core.nix
     ./services
     ./terminal
-    desktop
-    theme
+    ./desktop
+    ./theme
     inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.matugen.nixosModules.default
     inputs.nix-index-db.homeModules.nix-index

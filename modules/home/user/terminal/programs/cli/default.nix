@@ -1,14 +1,18 @@
 {
   config,
   lib,
-  self,
+  inputs,
   pkgs,
   ...
-}: let
-  nixosConfigs = builtins.attrNames self.outputs.nixosConfigurations;
-  homeConfigs = map (n: lib.last (lib.splitString "@" n)) (builtins.attrNames outputs.homeConfigurations);
+}:
+let
+  nixosConfigs = builtins.attrNames inputs.self.outputs.nixosConfigurations;
+  homeConfigs = map (n: lib.last (lib.splitString "@" n)) (
+    builtins.attrNames inputs.self.outputs.homeConfigurations
+  );
   hostnames = lib.unique (homeConfigs ++ nixosConfigs);
-in {
+in
+{
   home.packages = with pkgs; [
     # archives
     zip
@@ -39,12 +43,15 @@ in {
     '';
     matchBlocks = {
       net = {
-        host = lib.concatStringsSep " " (lib.flatten (map (host: [
-            host
-            "${host}.joka00.dev"
-            "${host}.clients.joka00.dev"
-          ])
-          hostnames));
+        host = lib.concatStringsSep " " (
+          lib.flatten (
+            map (host: [
+              host
+              "${host}.joka00.dev"
+              "${host}.clients.joka00.dev"
+            ]) hostnames
+          )
+        );
         forwardAgent = true;
         remoteForwards = [
           {
@@ -73,7 +80,7 @@ in {
         ExecStart = "${lib.getExe (config.lib.nixGL.wrap pkgs.waypipe)} --socket %h/.waypipe/server.sock --title-prefix '[%H] ' --login-shell --display wayland-waypipe server -- ${lib.getExe' pkgs.coreutils "sleep"} infinity";
         ExecStopPost = "${lib.getExe' pkgs.coreutils "rm"} -f %h/.waypipe/server.sock %t/wayland-waypipe";
       };
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
     # Link /run/user/$UID/gnupg to ~/.gnupg-sockets
     # So that SSH config does not have to know the UID
@@ -87,7 +94,7 @@ in {
         ExecStop = "${pkgs.coreutils}/bin/rm $HOME/.gnupg-sockets";
         RemainAfterExit = true;
       };
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
   };
 }
