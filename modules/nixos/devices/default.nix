@@ -1,14 +1,9 @@
-inputs: {
-  self,
-  config,
-  lib,
-  options,
-  pkgs,
+{
+  inputs,
   ...
-}: {
-  imports = let
-    server = import ./server inputs;
-  in [
+}:
+{
+  imports = [
     inputs.hm.nixosModules.home-manager
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-minecraft.nixosModules.minecraft-servers
@@ -24,6 +19,6 @@ inputs: {
     ./hardware
     ./utils
     ./users
-    server
+    ./server
   ];
 }

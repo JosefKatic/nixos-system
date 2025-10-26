@@ -1,15 +1,17 @@
-inputs: {
+{
+  inputs,
   config,
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.browsers;
-in {
-  options.user.desktop.programs.browsers.zen.enable =
-    lib.mkEnableOption "Enable Zen browser";
+in
+{
+  options.user.desktop.programs.browsers.zen.enable = lib.mkEnableOption "Enable Zen browser";
 
-  config = lib.mkIf cfg.chromium.enable {
+  config = lib.mkIf cfg.zen.enable {
     home.packages = [
       inputs.zen-browser.packages.${pkgs.system}.default
     ];

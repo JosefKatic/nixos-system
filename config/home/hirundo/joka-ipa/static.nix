@@ -2,9 +2,10 @@
   inputs,
   pkgs,
   ...
-}: {
+}:
+{
   theme = {
-    wallpaper = inputs.joka00-modules.legacyPackages.${pkgs.system}.wallpapers.astronaut-minimalism.outPath;
+    wallpaper = inputs.self.legacyPackages.${pkgs.system}.wallpapers.astronaut-minimalism.outPath;
     colorscheme.type = "content";
   };
   user = {

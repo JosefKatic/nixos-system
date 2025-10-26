@@ -1,5 +1,5 @@
-{inputs, ...}: {
+{
   flake.nixosModules = {
-    default = import ./devices inputs;
+    default = import ./devices;
   };
 }

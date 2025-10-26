@@ -1,20 +1,23 @@
-inputs: {
+{
   config,
   lib,
   options,
   pkgs,
+  self,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.user.desktop.programs.browsers;
   stigConfig = import ./stig.nix;
-  jsonFormat = pkgs.formats.json {};
-in {
+  jsonFormat = pkgs.formats.json { };
+in
+{
   options.user.desktop.programs.browsers.firefox = {
     enable = lib.mkEnableOption "Enable Firefox Browser";
     extraPolicies = lib.mkOption {
       type = options.programs.firefox.policies.type;
-      default = {};
+      default = { };
     };
     extensions = lib.mkOption {
       type = lib.types.listOf lib.types.path;
@@ -32,10 +35,12 @@ in {
       example = "cascade";
     };
     settings = lib.mkOption {
-      type = types.attrsOf (jsonFormat.type
+      type = types.attrsOf (
+        jsonFormat.type
         // {
           description = "Firefox preference (int, bool, string, and also attrs, list, float as a JSON string)";
-        });
+        }
+      );
       default = {
         "general.smoothScroll" = true;
         "dom.security.https_only_mode" = true;
@@ -79,7 +84,7 @@ in {
               }
             ];
             icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = ["@np"];
+            definedAliases = [ "@np" ];
           };
           "NixOS Wiki" = {
             urls = [
@@ -89,7 +94,7 @@ in {
             ];
             icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000;
-            definedAliases = ["@nw"];
+            definedAliases = [ "@nw" ];
           };
           "wikipedia".metaData.alias = "@wiki";
           "amazondotcom-us".metaData.hidden = true;
@@ -100,48 +105,46 @@ in {
     };
     profiles = lib.mkOption {
       type = options.programs.firefox.profiles.type;
-      default = {};
+      default = { };
     };
   };
 
   config = lib.mkIf cfg.firefox.enable {
     programs.firefox = {
       enable = true;
-      policies =
-        {
-          CaptivePortal = true;
-          DisableFirefoxStudies = true;
-          DisablePocket = true;
-          DisableTelemetry = true;
-          DisableFirefoxAccounts = false;
-          NoDefaultBookmarks = true;
-          OfferToSaveLogins = false;
-          OfferToSaveLoginsDefault = false;
-          PasswordManagerEnabled = false;
-          FirefoxHome = {
-            Search = true;
-            Pocket = false;
-            Snippets = false;
-            TopSites = false;
-            Highlights = false;
-          };
-          UserMessaging = {
-            ExtensionRecommendations = false;
-            SkipOnboarding = true;
-          };
-        }
-        // cfg.firefox.extraPolicies;
-      profiles =
-        {
-          "company" = {
-            extensions.packages = cfg.firefox.extensions;
-            search = cfg.firefox.search;
-            settings = cfg.firefox.settings // stigConfig;
-            userContent = import "${inputs.self}/modules/home/user/desktop/programs/browsers/firefox/${cfg.firefox.defaultTheme}/user-content.nix";
-            userChrome = import "${inputs.self}/modules/home/user/desktop/programs/browsers/firefox/${cfg.firefox.defaultTheme}/user-chrome.nix";
-          };
-        }
-        // cfg.firefox.profiles;
+      policies = {
+        CaptivePortal = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisableFirefoxAccounts = false;
+        NoDefaultBookmarks = true;
+        OfferToSaveLogins = false;
+        OfferToSaveLoginsDefault = false;
+        PasswordManagerEnabled = false;
+        FirefoxHome = {
+          Search = true;
+          Pocket = false;
+          Snippets = false;
+          TopSites = false;
+          Highlights = false;
+        };
+        UserMessaging = {
+          ExtensionRecommendations = false;
+          SkipOnboarding = true;
+        };
+      }
+      // cfg.firefox.extraPolicies;
+      profiles = {
+        "company" = {
+          extensions.packages = cfg.firefox.extensions;
+          search = cfg.firefox.search;
+          settings = cfg.firefox.settings // stigConfig;
+          userContent = import "${self}/modules/home/user/desktop/programs/browsers/firefox/${cfg.firefox.defaultTheme}/user-content.nix";
+          userChrome = import "${self}/modules/home/user/desktop/programs/browsers/firefox/${cfg.firefox.defaultTheme}/user-chrome.nix";
+        };
+      }
+      // cfg.firefox.profiles;
     };
   };
 }

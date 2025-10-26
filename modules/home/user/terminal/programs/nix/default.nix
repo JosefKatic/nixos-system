@@ -8,7 +8,8 @@
 # nix tooling
 {
   home.packages = with pkgs; [
-    alejandra
+    nixd
+    nixfmt
     deadnix
     statix
   ];

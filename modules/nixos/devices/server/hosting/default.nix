@@ -1,7 +1,9 @@
-inputs: {
-  imports = let
-    website = import ./website inputs;
-  in [
-    website
+{
+  inputs,
+  ...
+}:
+{
+  imports = [
+    ./website
   ];
 }

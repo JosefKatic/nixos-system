@@ -1,13 +1,14 @@
-inputs: {
-  imports = let
-    programs = import ./programs inputs;
-    wayland = import ./wayland inputs;
-  in [
-    programs
+{
+  inputs,
+  ...
+}:
+{
+  imports = [
+    ./programs
     ./services
     ./monitors.nix
     ./gtk.nix
-    wayland
+    ./wayland
     ./qt.nix
   ];
 }
