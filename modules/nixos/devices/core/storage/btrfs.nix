@@ -4,22 +4,26 @@
   options,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device;
 
-  otherDrivesOpts = {
-    name,
-    config,
-    ...
-  }: {
-    options = {
-      path = lib.mkOption {
-        type = lib.types.path;
-        description = "The path to the drive.";
+  otherDrivesOpts =
+    {
+      name,
+      config,
+      ...
+    }:
+    {
+      options = {
+        path = lib.mkOption {
+          type = lib.types.path;
+          description = "The path to the drive.";
+        };
       };
     };
-  };
-in {
+in
+{
   options.device.core.storage = {
     systemDrive = {
       name = lib.mkOption {
@@ -34,8 +38,8 @@ in {
       };
     };
     otherDrives = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule [otherDrivesOpts]);
-      default = {};
+      type = lib.types.attrsOf (lib.types.submodule [ otherDrivesOpts ]);
+      default = { };
       description = "The names of the other drives.";
     };
   };
@@ -44,32 +48,52 @@ in {
       "/" = {
         device = "/dev/disk/by-label/system";
         fsType = "btrfs";
-        options = ["subvol=@root" "compress=zstd" "noatime"];
+        options = [
+          "subvol=@root"
+          "compress=zstd"
+          "noatime"
+        ];
       };
 
       "/home" = {
         device = "/dev/disk/by-label/system";
         fsType = "btrfs";
-        options = ["subvol=@home" "compress=zstd" "noatime"];
+        options = [
+          "subvol=@home"
+          "compress=zstd"
+          "noatime"
+        ];
       };
 
       "/nix" = {
         device = "/dev/disk/by-label/system";
         fsType = "btrfs";
-        options = ["subvol=@nix" "compress=zstd" "noatime"];
+        options = [
+          "subvol=@nix"
+          "compress=zstd"
+          "noatime"
+        ];
       };
 
       "/persist" = {
         device = "/dev/disk/by-label/system";
         fsType = "btrfs";
-        options = ["subvol=@persist" "compress=zstd" "noatime"];
+        options = [
+          "subvol=@persist"
+          "compress=zstd"
+          "noatime"
+        ];
         neededForBoot = true;
       };
 
       "/swap" = {
         device = "/dev/disk/by-label/system";
         fsType = "btrfs";
-        options = ["subvol=@swap" "compress=zstd" "noatime"];
+        options = [
+          "subvol=@swap"
+          "compress=zstd"
+          "noatime"
+        ];
       };
     };
   };

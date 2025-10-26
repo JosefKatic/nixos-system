@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.services.polkit_agent;
-in {
+in
+{
   options.user.desktop.services.polkit_agent = {
     enable = lib.mkEnableOption "Enable Polkit Agent";
   };

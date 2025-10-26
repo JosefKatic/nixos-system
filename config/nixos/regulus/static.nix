@@ -1,6 +1,12 @@
 {
   device.platform = "x86_64-linux";
-  boot.initrd.availableKernelModules = ["ata_piix" "sr_mod" "uhci_hcd" "virtio_blk" "virtio_pci"];
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "sr_mod"
+    "uhci_hcd"
+    "virtio_blk"
+    "virtio_pci"
+  ];
   device.type = "server";
   device.virtualized = false;
   device.boot.quietboot.enable = true;
@@ -15,10 +21,17 @@
   ];
   device.core.network.static.defaultGateway.address = "10.34.70.61";
   device.core.network.static.defaultGateway.interface = "eno2";
-  device.core.network.static.nameservers = ["10.34.70.61" "100.100.100.100"];
-  device.core.network.static.search = ["clients.joka00.dev" "internal.joka00.dev" "oraclevcn.com"];
+  device.core.network.static.nameservers = [
+    "10.34.70.61"
+    "100.100.100.100"
+  ];
+  device.core.network.static.search = [
+    "clients.joka00.dev"
+    "internal.joka00.dev"
+    "oraclevcn.com"
+  ];
   device.core.storage.enablePersistence = true;
-  device.core.storage.otherDrives = [];
+  device.core.storage.otherDrives = [ ];
   device.core.storage.swapFile.enable = true;
   device.core.storage.swapFile.path = "/swap/swapfile";
   device.core.storage.swapFile.size = 8;
@@ -38,5 +51,5 @@
   device.hardware.misc.trezor.enable = false;
   device.hardware.misc.xbox.enable = false;
   device.hardware.misc.yubikey.enable = false;
-  device.home.users = ["joka"];
+  device.home.users = [ "joka" ];
 }

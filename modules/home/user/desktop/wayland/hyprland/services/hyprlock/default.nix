@@ -2,12 +2,15 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.theme.colorscheme) colors;
   font_family = "Inter";
   cfg = config.user.desktop.wayland.hyprland.services.hyprlock;
-in {
-  options.user.desktop.wayland.hyprland.services.hyprlock.enable = lib.mkEnableOption "Enable Hyprlock";
+in
+{
+  options.user.desktop.wayland.hyprland.services.hyprlock.enable =
+    lib.mkEnableOption "Enable Hyprlock";
 
   config = lib.mkIf cfg.enable {
     programs.hyprlock = {
@@ -29,7 +32,9 @@ in {
 
         input-field = [
           {
-            monitor = builtins.head (builtins.map (m: m.name) (builtins.filter (m: m.primary) config.user.desktop.monitors));
+            monitor = builtins.head (
+              builtins.map (m: m.name) (builtins.filter (m: m.primary) config.user.desktop.monitors)
+            );
 
             size = "300, 50";
             outline_thickness = 2;

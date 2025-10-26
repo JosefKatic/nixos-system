@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.device.server.minecraft.enable {
     services.minecraft-servers.servers.proxy = {
       extraReload = ''

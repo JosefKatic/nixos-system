@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.desktop.wayland.windowManager.sway;
-in {
+in
+{
   options.device.desktop.wayland.windowManager.sway = {
     enable = lib.mkEnableOption "Enable Sway";
   };

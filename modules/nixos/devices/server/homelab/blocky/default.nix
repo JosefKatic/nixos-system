@@ -3,10 +3,12 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) types mkIf mkEnableOption;
   cfg = config.device.server.homelab;
-in {
+in
+{
   options.device.server.homelab = {
     blocky = {
       enable = mkEnableOption "Blocky DNS";
@@ -54,18 +56,17 @@ in {
             ];
           };
           allowlists = {
-            ads = let
-              whitelist =
-                pkgs.writeText
-                "whitelist.txt"
-                ''
+            ads =
+              let
+                whitelist = pkgs.writeText "whitelist.txt" ''
                   s.youtube.com
                   googleadservices.com
                   www.googleadservices.com
                 '';
-            in [
-              whitelist
-            ];
+              in
+              [
+                whitelist
+              ];
           };
           clientGroupsBlock = {
             default = [
@@ -86,18 +87,25 @@ in {
         bootstrapDns = [
           {
             upstream = "https://one.one.one.one/dns-query";
-            ips = ["1.1.1.1" "1.0.0.1"];
+            ips = [
+              "1.1.1.1"
+              "1.0.0.1"
+            ];
           }
         ];
       };
     };
 
-    networking.firewall.allowedTCPPorts = [53 4000 443];
-    networking.firewall.allowedUDPPorts = [53];
+    networking.firewall.allowedTCPPorts = [
+      53
+      4000
+      443
+    ];
+    networking.firewall.allowedUDPPorts = [ 53 ];
 
     environment.persistence = mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
-        directories = ["/var/lib/private/blocky"];
+        directories = [ "/var/lib/private/blocky" ];
       };
     };
   };

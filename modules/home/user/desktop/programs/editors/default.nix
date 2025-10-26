@@ -1,3 +1,6 @@
 {
-  imports = [./davinci ./vscode];
+  imports = [
+    ./davinci
+    ./vscode
+  ];
 }

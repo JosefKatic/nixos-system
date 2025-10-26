@@ -2,10 +2,12 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   inherit (lib) mkOption types;
   cfg = config.user.desktop.monitors;
-in {
+in
+{
   options.user.desktop.monitors = mkOption {
     type = types.listOf (
       types.submodule {
@@ -49,7 +51,7 @@ in {
         };
       }
     );
-    default = [];
+    default = [ ];
   };
   config = {
     assertions = [

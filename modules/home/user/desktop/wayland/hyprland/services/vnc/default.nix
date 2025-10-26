@@ -3,7 +3,8 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   enabledMonitors = lib.filter (m: m.enabled) config.user.desktop.monitors;
   # A nice VNC script for remotes running hyprland
   vncsh = pkgs.writeShellScriptBin "vnc.sh" ''
@@ -13,14 +14,14 @@
         export WAYLAND_DISPLAY="wayland-1"
         ip="$(ip addr show dev tailscale0 | grep 'inet ' | xargs | cut -d ' ' -f2 | cut -d '/' -f1)"
         ${lib.concatLines (
-      lib.forEach enabledMonitors (m: ''
-        hyprctl output create headless
-        monitor="$(hyprctl monitors -j | ${pkgs.jq}/bin/jq -r 'map(.name)[-1]')"
-        hyprctl keyword monitor "$monitor,${toString m.width}x${toString m.height}@60,${toString m.position},1"
-        ${pkgs.screen}/bin/screen -d -m wayvnc -k br -S /tmp/vnc-${m.workspace} -f 60 -o "$monitor" "$ip" 590${m.workspace}
-        sudo iptables -I INPUT -j ACCEPT -p tcp --dport 590${m.workspace}
-      '')
-    )}
+          lib.forEach enabledMonitors (m: ''
+            hyprctl output create headless
+            monitor="$(hyprctl monitors -j | ${pkgs.jq}/bin/jq -r 'map(.name)[-1]')"
+            hyprctl keyword monitor "$monitor,${toString m.width}x${toString m.height}@60,${toString m.position},1"
+            ${pkgs.screen}/bin/screen -d -m wayvnc -k br -S /tmp/vnc-${m.workspace} -f 60 -o "$monitor" "$ip" 590${m.workspace}
+            sudo iptables -I INPUT -j ACCEPT -p tcp --dport 590${m.workspace}
+          '')
+        )}
     EOF
 
     ${lib.concatLines (
@@ -43,15 +44,16 @@
         export WAYLAND_DISPLAY="wayland-1"
 
         ${lib.concatLines (
-      lib.forEach enabledMonitors (m: ''
-        monitor="$(hyprctl monitors -j | ${pkgs.jq}/bin/jq -r 'map(.name)[-1]')"
-        hyprctl output remove "$monitor"
-      '')
-    )}
+          lib.forEach enabledMonitors (m: ''
+            monitor="$(hyprctl monitors -j | ${pkgs.jq}/bin/jq -r 'map(.name)[-1]')"
+            hyprctl output remove "$monitor"
+          '')
+        )}
     EOF
 
   '';
-in {
+in
+{
   home.packages = with pkgs; [
     vncsh
     wayvnc

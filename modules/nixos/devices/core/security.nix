@@ -3,9 +3,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.core;
-in {
+in
+{
   options.device.core.securityRules = {
     enable = lib.mkOption {
       type = lib.types.bool;
@@ -54,15 +56,15 @@ in {
       "net.ipv4.tcp_congestion_control" = "bbr";
       "net.core.default_qdisc" = "cake";
     };
-    boot.kernelModules = ["tcp_bbr"];
+    boot.kernelModules = [ "tcp_bbr" ];
     security.sudo = {
       extraConfig = ''
         Defaults passprompt="🔒 Enter password for %p... "
       '';
       extraRules = [
         {
-          groups = ["admins"];
-          commands = ["SETENV: ALL"];
+          groups = [ "admins" ];
+          commands = [ "SETENV: ALL" ];
         }
       ];
     };

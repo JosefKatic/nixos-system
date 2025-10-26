@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.core.storage;
-in {
+in
+{
   options.device.core.storage.swapFile = {
     enable = lib.mkEnableOption "Enables the creation of a swap file";
     path = lib.mkOption {
@@ -31,7 +33,7 @@ in {
     systemd.services = {
       create-swapfile = {
         serviceConfig.Type = "oneshot";
-        wantedBy = ["swap-swapfile.swap"];
+        wantedBy = [ "swap-swapfile.swap" ];
         script = ''
           swapfile="/swap/swapfile"
             if [[ -f "$swapfile" ]]; then

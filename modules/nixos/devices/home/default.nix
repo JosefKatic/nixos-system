@@ -4,10 +4,17 @@
   pkgs,
   utils,
   ...
-}: let
+}:
+let
   inherit (config.device) home;
-  inherit (lib) types mkOption mkMerge optional;
-in {
+  inherit (lib)
+    types
+    mkOption
+    mkMerge
+    optional
+    ;
+in
+{
   options.device.home = {
     users = mkOption {
       type = types.listOf types.str;

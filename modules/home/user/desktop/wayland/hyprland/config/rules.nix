@@ -2,35 +2,55 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.wayland.hyprland;
-in {
+in
+{
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings = {
       # layer rules
-      layerrule = let
-        toRegex = list: let
-          elements = lib.concatStringsSep "|" list;
-        in "^(${elements})$";
+      layerrule =
+        let
+          toRegex =
+            list:
+            let
+              elements = lib.concatStringsSep "|" list;
+            in
+            "^(${elements})$";
 
-        ignorealpha = [
-          # ags
-          "blur,waybar"
-          "ignorezero,waybar"
-          "blur,notifications"
-          "ignorezero,notifications"
-          "osd"
-          "system-menu"
-          "anyrun"
+          ignorealpha = [
+            # ags
+            "blur,waybar"
+            "ignorezero,waybar"
+            "blur,notifications"
+            "ignorezero,notifications"
+            "osd"
+            "system-menu"
+            "anyrun"
+          ];
+
+          layers = ignorealpha ++ [
+            "bar"
+            "gtk-layer-shell"
+          ];
+        in
+        [
+          "blur, ${toRegex layers}"
+          "xray 1, ${
+            toRegex [
+              "bar"
+              "gtk-layer-shell"
+            ]
+          }"
+          "ignorealpha 0.2, ${
+            toRegex [
+              "bar"
+              "gtk-layer-shell"
+            ]
+          }"
+          "ignorealpha 0.5, ${toRegex (ignorealpha ++ [ "music" ])}"
         ];
-
-        layers = ignorealpha ++ ["bar" "gtk-layer-shell"];
-      in [
-        "blur, ${toRegex layers}"
-        "xray 1, ${toRegex ["bar" "gtk-layer-shell"]}"
-        "ignorealpha 0.2, ${toRegex ["bar" "gtk-layer-shell"]}"
-        "ignorealpha 0.5, ${toRegex (ignorealpha ++ ["music"])}"
-      ];
 
       # window rules
       windowrulev2 = [

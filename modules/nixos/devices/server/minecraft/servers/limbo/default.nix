@@ -1,7 +1,8 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   services.minecraft-servers.servers.limbo = {
     enable = true;
-    package = pkgs.callPackage ./nano-limbo-server.nix {};
+    package = pkgs.callPackage ./nano-limbo-server.nix { };
     jvmOpts = "";
     files."settings.yml".value = {
       bind.port = 25560;

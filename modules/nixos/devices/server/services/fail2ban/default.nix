@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   options.device.server.services.fail2ban = {
     enable = lib.mkEnableOption "Enable fail2ban";
   };

@@ -18,11 +18,11 @@
         subtype = "single_right";
       }
     ];
-    condition = [];
+    condition = [ ];
     action = [
       {
         service = "light.toggle";
-        data = {};
+        data = { };
         target = {
           entity_id = "light.josef_svetlo";
         };

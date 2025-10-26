@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.wayland.hyprland.plugins.hyprsplit;
-in {
+in
+{
   options.user.desktop.wayland.hyprland.plugins.hyprsplit = {
     enable = lib.mkEnableOption "Enable HyprSplit";
     numberOfWorkspaces = lib.mkOption {

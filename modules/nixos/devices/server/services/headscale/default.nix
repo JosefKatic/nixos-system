@@ -3,17 +3,19 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.server.services.headscale;
-in {
+in
+{
   options.services.headscale = {
     settings.oidc.allowed_groups = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = lib.mdDoc ''
         Groups allowed to authenticate even if not in allowedDomains.
       '';
-      example = ["headscale"];
+      example = [ "headscale" ];
     };
   };
   options.device.server.services = {
@@ -64,7 +66,11 @@ in {
             client_id = "headscale-vpn";
             client_secret_path = config.sops.secrets.headscale_secret.path;
             issuer = "https://sso.joka00.dev/realms/21bb13ca-8130-423c-ac0f-85de48db99bb";
-            scope = ["openid" "profile" "email"];
+            scope = [
+              "openid"
+              "profile"
+              "email"
+            ];
             # allowed_groups = ["headscale"];
           };
         };
@@ -85,7 +91,7 @@ in {
       owner = "headscale";
       group = "headscale";
     };
-    environment.systemPackages = [config.services.headscale.package];
+    environment.systemPackages = [ config.services.headscale.package ];
     environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
         directories = [

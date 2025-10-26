@@ -3,7 +3,10 @@
   device.build = "7fbd83526f387ab5b4acab76e64aa00a0b8bf066529129d150c2b42c9e31a197";
   device.core.disableDefaults = true;
   device.core.locale.defaultLocale = "en_US.UTF-8";
-  device.core.locale.supportedLocales = ["en_US.UTF-8/UTF-8" "cs_CZ.UTF-8/UTF-8"];
+  device.core.locale.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "cs_CZ.UTF-8/UTF-8"
+  ];
   device.core.locale.timeZone = "Europe/Prague";
   device.core.network.domain = "clients.joka00.dev";
   device.core.network.services.enableAvahi = true;

@@ -4,10 +4,12 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (lib) types mkIf mkEnableOption;
   cfg = config.device.server.homelab;
-in {
+in
+{
   options.device.server.homelab = {
     zigbee2mqtt = {
       enable = mkEnableOption "Zigbee2mqtt";
@@ -34,7 +36,7 @@ in {
       };
     };
 
-    networking.firewall.allowedTCPPorts = [8080];
+    networking.firewall.allowedTCPPorts = [ 8080 ];
 
     sops.templates."zigbee2mqtt-secrets.yaml" = {
       owner = "zigbee2mqtt";
@@ -50,7 +52,7 @@ in {
     };
     environment.persistence = mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
-        directories = ["/var/lib/zigbee2mqtt"];
+        directories = [ "/var/lib/zigbee2mqtt" ];
       };
     };
   };

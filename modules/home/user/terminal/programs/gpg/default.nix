@@ -4,51 +4,56 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   pinentry =
-    if config.gtk.enable
-    then {
-      package = pkgs.pinentry-gnome3;
-    }
-    else {
-      package = pkgs.pinentry-curses;
-    };
-in {
-  home.packages = [pkgs.gcr];
+    if config.gtk.enable then
+      {
+        package = pkgs.pinentry-gnome3;
+      }
+    else
+      {
+        package = pkgs.pinentry-curses;
+      };
+in
+{
+  home.packages = [ pkgs.gcr ];
 
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
-    sshKeys = ["DE6A74BB14BE619219D51E2F583F538192ADF68C"];
+    sshKeys = [ "DE6A74BB14BE619219D51E2F583F538192ADF68C" ];
     pinentry.package = pinentry.package;
     enableExtraSocket = true;
   };
 
-  programs = let
-    fixGpg = ''
-      gpgconf --launch gpg-agent
-    '';
-  in {
-    # Start gpg-agent if it's not running or tunneled in
-    # SSH does not start it automatically, so this is needed to avoid having to use a gpg command at startup
-    # https://www.gnupg.org/faq/whats-new-in-2.1.html#autostart
-    bash.profileExtra = fixGpg;
-    fish.loginShellInit = fixGpg;
-    zsh.loginExtra = fixGpg;
+  programs =
+    let
+      fixGpg = ''
+        gpgconf --launch gpg-agent
+      '';
+    in
+    {
+      # Start gpg-agent if it's not running or tunneled in
+      # SSH does not start it automatically, so this is needed to avoid having to use a gpg command at startup
+      # https://www.gnupg.org/faq/whats-new-in-2.1.html#autostart
+      bash.profileExtra = fixGpg;
+      fish.loginShellInit = fixGpg;
+      zsh.loginExtra = fixGpg;
 
-    gpg = {
-      enable = true;
-      settings = {
-        trust-model = "tofu+pgp";
+      gpg = {
+        enable = true;
+        settings = {
+          trust-model = "tofu+pgp";
+        };
+        publicKeys = [
+          {
+            source = "${self}/pgp.asc";
+            trust = 5;
+          }
+        ];
       };
-      publicKeys = [
-        {
-          source = "${self}/pgp.asc";
-          trust = 5;
-        }
-      ];
     };
-  };
 
   systemd.user.services = {
     # Link /run/user/$UID/gnupg to ~/.gnupg-sockets
@@ -63,9 +68,8 @@ in {
         ExecStop = "${pkgs.coreutils}/bin/rm $HOME/.gnupg-sockets";
         RemainAfterExit = true;
       };
-      Install.WantedBy = ["default.target"];
+      Install.WantedBy = [ "default.target" ];
     };
   };
 }
 # vim: filetype=nix
-

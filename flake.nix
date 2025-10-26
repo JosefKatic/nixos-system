@@ -25,12 +25,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    treefmt-nix.url = "github:numtide/treefmt-nix";
     authentik-nix.url = "github:nix-community/authentik-nix";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
@@ -79,27 +78,38 @@
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = {
-    self,
-    nixpkgs,
-    flake-parts,
-    systems,
-    nix-colors,
-    nur,
-    hm,
-    ...
-  } @ inputs:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux"];
-      perSystem = {system, ...}: {
-        _module.args.pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            inputs.self.overlays.joka00-modules
-            nur.overlays.default
-          ];
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-parts,
+      systems,
+      nix-colors,
+      nur,
+      hm,
+      treefmt-nix,
+      ...
+    }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      perSystem =
+        { system, pkgs, ... }:
+        let
+          treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+        in
+        {
+          formatter = treefmtEval.config.build.wrapper;
+          _module.args.pkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              inputs.self.overlays.joka00-modules
+              nur.overlays.default
+            ];
+          };
         };
-      };
       imports = [
         ./.hydra
         ./shell.nix
@@ -108,6 +118,7 @@
         ./modules
         ./pre-commit-hooks.nix
         ./config
+        treefmt-nix.flakeModule
       ];
     };
 }

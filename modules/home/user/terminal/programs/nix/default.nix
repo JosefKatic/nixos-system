@@ -9,7 +9,8 @@
 {
   home.packages = with pkgs; [
     nixd
-    nixfmt
+    nixfmt-rfc-style
+    nixfmt-tree
     deadnix
     statix
   ];

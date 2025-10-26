@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.games.minecraft;
-in {
+in
+{
   options.user.desktop.programs.games.minecraft.enable = lib.mkEnableOption "Enable Minecraft";
 
   config = lib.mkIf cfg.enable {

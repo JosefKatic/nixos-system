@@ -2,13 +2,15 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   inherit (config.networking) hostName;
   cfg = config.device;
-in {
+in
+{
   options.device.server.services.web.nginx.enable = lib.mkEnableOption "Enable nginx with metrics";
   config = lib.mkIf cfg.server.services.web.nginx.enable {
-    users.users.nginx.extraGroups = ["acme"];
+    users.users.nginx.extraGroups = [ "acme" ];
     services = {
       nginx = {
         enable = true;
@@ -25,9 +27,8 @@ in {
         settings.namespaces = [
           {
             name = "filelogger";
-            source.files = ["/var/log/nginx/access.log"];
-            format = ''
-              $remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent"'';
+            source.files = [ "/var/log/nginx/access.log" ];
+            format = ''$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent"'';
           }
         ];
       };
@@ -36,14 +37,17 @@ in {
         enable = true;
         user = "nginx";
         group = "nginx";
-        plugins = ["cgi"];
+        plugins = [ "cgi" ];
         instance = {
           type = "emperor";
-          vassals = lib.mkBefore {};
+          vassals = lib.mkBefore { };
         };
       };
     };
 
-    networking.firewall.allowedTCPPorts = [80 443];
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
   };
 }

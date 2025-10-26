@@ -4,9 +4,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.server.auth;
-in {
+in
+{
   options.device.server.auth.authentik = {
     enable = lib.mkEnableOption "Enable authentik";
   };
@@ -17,7 +19,18 @@ in {
     sops.secrets.authentik-ldap-env = {
       sopsFile = "${self}/secrets/services/auth/secrets.yaml";
     };
-    networking.firewall.allowedTCPPorts = [1812 359 636 3389 6636 9000 9900 9901 9300 9443];
+    networking.firewall.allowedTCPPorts = [
+      1812
+      359
+      636
+      3389
+      6636
+      9000
+      9900
+      9901
+      9300
+      9443
+    ];
     services = {
       authentik-ldap = {
         enable = true;

@@ -1,7 +1,13 @@
 {
   device.platform = "x86_64-linux";
-  boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "uhci_hcd"
+    "virtio_pci"
+    "sr_mod"
+    "virtio_blk"
+  ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   device.type = "server";
   device.virtualized = true;
   device.boot.quietboot.enable = true;
@@ -16,9 +22,12 @@
   ];
   device.core.network.static.defaultGateway.address = "193.41.237.1";
   device.core.network.static.defaultGateway.interface = "ens3";
-  device.core.network.static.nameservers = ["100.64.0.4" "1.1.1.1"];
+  device.core.network.static.nameservers = [
+    "100.64.0.4"
+    "1.1.1.1"
+  ];
   device.core.storage.enablePersistence = true;
-  device.core.storage.otherDrives = [];
+  device.core.storage.otherDrives = [ ];
   device.core.storage.swapFile.enable = true;
   device.core.storage.swapFile.path = "/swap/swapfile";
   device.core.storage.swapFile.size = 8;
@@ -38,5 +47,5 @@
   device.hardware.misc.trezor.enable = false;
   device.hardware.misc.xbox.enable = false;
   device.hardware.misc.yubikey.enable = false;
-  device.home.users = ["joka"];
+  device.home.users = [ "joka" ];
 }

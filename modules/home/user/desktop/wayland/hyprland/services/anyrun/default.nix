@@ -3,10 +3,12 @@
   lib,
   config,
   ...
-}: let
+}:
+let
   inherit (config.theme.colorscheme) colors;
   cfg = config.user.desktop.wayland.hyprland.services.anyrun;
-in {
+in
+{
   options.user.desktop.wayland.hyprland.services.anyrun = {
     enable = lib.mkEnableOption "Enable anyrun";
   };

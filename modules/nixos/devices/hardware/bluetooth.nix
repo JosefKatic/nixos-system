@@ -4,9 +4,11 @@
   options,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.hardware;
-in {
+in
+{
   options.device.hardware.bluetooth = {
     enable = lib.mkEnableOption "Enable Bluetooth support";
     enableManager = lib.mkOption {
@@ -19,7 +21,11 @@ in {
   config = lib.mkIf cfg.bluetooth.enable {
     hardware.bluetooth = {
       enable = true;
-      settings = {General = {Experimental = true;};};
+      settings = {
+        General = {
+          Experimental = true;
+        };
+      };
     };
     services.blueman.enable = cfg.bluetooth.enableManager;
 
@@ -28,7 +34,7 @@ in {
 
     environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
-        directories = ["/var/lib/bluetooth"];
+        directories = [ "/var/lib/bluetooth" ];
       };
     };
   };

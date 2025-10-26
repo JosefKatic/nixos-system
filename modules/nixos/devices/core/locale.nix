@@ -4,9 +4,11 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.core;
-in {
+in
+{
   options.device.core.locale = {
     defaultLocale = lib.mkOption {
       type = options.i18n.defaultLocale.type;
@@ -14,7 +16,10 @@ in {
     };
     supportedLocales = lib.mkOption {
       type = options.i18n.supportedLocales.type;
-      default = ["en_US.UTF-8/UTF-8" "cs_CZ.UTF-8/UTF-8"];
+      default = [
+        "en_US.UTF-8/UTF-8"
+        "cs_CZ.UTF-8/UTF-8"
+      ];
     };
     timeZone = lib.mkOption {
       type = options.time.timeZone.type;
@@ -43,7 +48,7 @@ in {
         roboto
         dosis
         rubik
-        (google-fonts.override {fonts = ["Inter"];})
+        (google-fonts.override { fonts = [ "Inter" ]; })
 
         # monospace fonts
         jetbrains-mono
@@ -59,10 +64,19 @@ in {
       # the reason there's Noto Color Emoji everywhere is to override DejaVu's
       # B&W emojis that would sometimes show instead of some Color emojis
       fontconfig.defaultFonts = {
-        serif = ["Noto Serif" "Noto Color Emoji"];
-        sansSerif = ["Inter" "Noto Color Emoji"];
-        monospace = ["JetBrains Mono" "Noto Color Emoji"];
-        emoji = ["Noto Color Emoji"];
+        serif = [
+          "Noto Serif"
+          "Noto Color Emoji"
+        ];
+        sansSerif = [
+          "Inter"
+          "Noto Color Emoji"
+        ];
+        monospace = [
+          "JetBrains Mono"
+          "Noto Color Emoji"
+        ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
   };

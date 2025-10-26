@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.utils.virtualisation;
-in {
+in
+{
   options.device.utils.virtualisation.libvirtd = {
     enable = lib.mkEnableOption "Whether to enable libvirtd";
   };

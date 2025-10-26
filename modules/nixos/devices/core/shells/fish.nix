@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.core.shells;
-in {
+in
+{
   options.device.core.shells.fish = {
     enable = lib.mkEnableOption "Enable fish shell";
   };

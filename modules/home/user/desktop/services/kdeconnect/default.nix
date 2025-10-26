@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   options.user.desktop.services.kdeconnect = {
     enable = lib.mkEnableOption "Enable KDEConnect";
   };
@@ -16,7 +17,7 @@
         ExecStart = "${pkgs.kdePackages.kdeconnect-kde}/bin/kdeconnect-indicator";
         TimeoutStopSec = 5;
       };
-      Install.WantedBy = ["graphical-session.target"];
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }

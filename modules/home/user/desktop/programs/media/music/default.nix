@@ -1,3 +1,3 @@
 {
-  imports = [./youtube-music];
+  imports = [ ./youtube-music ];
 }

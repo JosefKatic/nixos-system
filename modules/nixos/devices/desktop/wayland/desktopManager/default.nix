@@ -3,12 +3,18 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.desktop.wayland.desktopManager;
-in {
+in
+{
   options.device.desktop.wayland.desktopManager = {
-    gnome = {enable = lib.mkEnableOption "Enable Gnome";};
-    plasma6 = {enable = lib.mkEnableOption "Enable Plasma6";};
+    gnome = {
+      enable = lib.mkEnableOption "Enable Gnome";
+    };
+    plasma6 = {
+      enable = lib.mkEnableOption "Enable Plasma6";
+    };
   };
 
   config = {
@@ -36,7 +42,8 @@ in {
         gnome-contacts
         gnome-initial-setup
       ]);
-    environment.systemPackages = with pkgs;
+    environment.systemPackages =
+      with pkgs;
       lib.optionals (cfg.gnome.enable) [
         gnome.gnome-tweaks
       ];

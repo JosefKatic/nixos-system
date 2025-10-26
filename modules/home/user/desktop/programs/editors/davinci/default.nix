@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.editors.davinci;
-in {
+in
+{
   options = {
     user.desktop.programs.editors.davinci = {
       enable = lib.mkEnableOption "Enable DaVinci Resolve";
@@ -13,6 +15,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [pkgs.davinci-resolve];
+    home.packages = [ pkgs.davinci-resolve ];
   };
 }

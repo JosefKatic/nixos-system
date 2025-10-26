@@ -3,10 +3,12 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   inherit (lib) types mkIf mkEnableOption;
   cfg = config.device.server.homelab;
-in {
+in
+{
   options.device.server.homelab = {
     mosquitto = {
       enable = mkEnableOption "Mosquitto";
@@ -14,7 +16,10 @@ in {
   };
 
   config = mkIf cfg.mosquitto.enable {
-    networking.firewall.allowedTCPPorts = [1883 9001];
+    networking.firewall.allowedTCPPorts = [
+      1883
+      9001
+    ];
 
     services.mosquitto = {
       enable = true;
@@ -31,7 +36,7 @@ in {
     };
     environment.persistence = mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
-        directories = ["/var/lib/mosquitto"];
+        directories = [ "/var/lib/mosquitto" ];
       };
     };
 

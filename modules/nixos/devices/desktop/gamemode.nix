@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.desktop;
   programs = lib.makeBinPath [
     config.programs.hyprland.package
@@ -24,7 +25,8 @@
     hyprctl --batch 'keyword decoration:blur 1 ; keyword animations:enabled 1 ; keyword misc:vfr 1'
     powerprofilesctl set power-saver
   '';
-in {
+in
+{
   options.device.desktop.gamemode = {
     enable = lib.mkEnableOption "Enable gamemode";
   };

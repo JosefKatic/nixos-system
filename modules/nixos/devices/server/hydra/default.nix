@@ -1,3 +1,6 @@
 {
-  imports = [./service.nix ./devices.nix];
+  imports = [
+    ./service.nix
+    ./devices.nix
+  ];
 }

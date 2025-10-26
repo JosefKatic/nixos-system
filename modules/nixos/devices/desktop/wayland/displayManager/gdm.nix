@@ -5,14 +5,16 @@
   options,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (config.device) home;
   cfg = config.device.desktop.wayland.displayManager.gdm;
   logoFile = pkgs.fetchurl {
     url = "https://joka00.dev/assets/logo__dark.svg";
     sha256 = "1xd5hfxlh0m5687mfxndyv18a2k6aq7njna4n5smn7f7ynal1i28";
   };
-in {
+in
+{
   options.device.desktop.wayland.displayManager.gdm = {
     enable = lib.mkEnableOption "Enable GDM";
   };
@@ -20,7 +22,7 @@ in {
   config = lib.mkIf cfg.enable {
     environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
-        directories = ["/var/lib/AccountsService"];
+        directories = [ "/var/lib/AccountsService" ];
       };
     };
     services.xserver.enable = true;

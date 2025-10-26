@@ -5,7 +5,8 @@
   self,
   inputs,
   ...
-}: {
+}:
+{
   options = {
     user = {
       name = lib.mkOption {
@@ -17,17 +18,20 @@
   };
   config = {
     nixpkgs = {
-      overlays =
-        builtins.attrValues inputs.self.overlays
-        ++ [
-          (final: prev: {
-            lib =
-              prev.lib
-              // {
-                colors = import "${self}/lib/colors" lib;
-              };
-          })
-        ];
+      overlays = builtins.attrValues inputs.self.overlays ++ [
+        (final: prev: {
+          inherit (prev.lixPackageSets.stable)
+            nixpkgs-review
+            nix-eval-jobs
+            nix-fast-build
+            ;
+        })
+        (final: prev: {
+          lib = prev.lib // {
+            colors = import "${self}/lib/colors" lib;
+          };
+        })
+      ];
       config = {
         allowBroken = true;
         allowUnfree = true;
@@ -44,9 +48,12 @@
     };
 
     nix = {
-      package = lib.mkDefault pkgs.lix;
+      package = pkgs.lixPackageSets.stable.lix;
       settings = {
-        experimental-features = ["nix-command" "flakes"];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
         warn-dirty = false;
       };
     };
@@ -60,10 +67,21 @@
     fonts.fontconfig = {
       enable = true;
       defaultFonts = {
-        serif = ["Noto Serif" "Noto Color Emoji"];
-        sansSerif = ["Noto Sans" "Noto Color Emoji"];
-        monospace = ["Fira Code" "JetBrains Mono" "" "Noto Color Emoji"];
-        emoji = ["Noto Color Emoji"];
+        serif = [
+          "Noto Serif"
+          "Noto Color Emoji"
+        ];
+        sansSerif = [
+          "Noto Sans"
+          "Noto Color Emoji"
+        ];
+        monospace = [
+          "Fira Code"
+          "JetBrains Mono"
+          ""
+          "Noto Color Emoji"
+        ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
 
@@ -71,7 +89,7 @@
       username = config.user.name;
       homeDirectory = lib.mkDefault "/home/${config.user.name}";
       stateVersion = lib.mkDefault "24.05";
-      sessionPath = ["$HOME/.local/bin"];
+      sessionPath = [ "$HOME/.local/bin" ];
       sessionVariables = {
         FLAKE = "$HOME/.nixos-system";
         NH_FLAKE = "$HOME/.nixos-system";
@@ -90,7 +108,7 @@
         roboto
         dosis
         rubik
-        (google-fonts.override {fonts = ["Inter"];})
+        (google-fonts.override { fonts = [ "Inter" ]; })
 
         # monospace fonts
         jetbrains-mono

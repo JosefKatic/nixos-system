@@ -2,14 +2,16 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device;
-in {
+in
+{
   config = lib.mkIf (cfg.boot.uefi.enable == false) {
     boot = {
       initrd = {
         systemd.enable = true;
-        supportedFilesystems = ["btrfs"];
+        supportedFilesystems = [ "btrfs" ];
       };
       loader = {
         grub = {
@@ -21,7 +23,7 @@ in {
     fileSystems."/boot" = {
       device = lib.mkDefault cfg.core.storage.systemDrive.path;
       fsType = "btrfs";
-      options = ["subvol=@boot"];
+      options = [ "subvol=@boot" ];
     };
   };
 }

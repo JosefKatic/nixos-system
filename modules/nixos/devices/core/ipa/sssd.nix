@@ -4,14 +4,17 @@
   lib,
   pkgs,
   ...
-}: let
-  inherit (lib) mkForce optionalString concatStringsSep toLower;
+}:
+let
+  inherit (lib)
+    mkForce
+    optionalString
+    concatStringsSep
+    toLower
+    ;
   cfg = config.security.ipa;
   hasOptinPersistence = config.environment.persistence ? "/persist";
-  pyBool = x:
-    if x
-    then "True"
-    else "False";
+  pyBool = x: if x then "True" else "False";
 
   ldapConf = pkgs.writeText "ldap.conf" ''
     # Turning this off breaks GSSAPI used with krb5 when rdns = false
@@ -23,15 +26,16 @@
   '';
   nssDb =
     pkgs.runCommand "ipa-nssdb"
-    {
-      nativeBuildInputs = [pkgs.nss.tools];
-    }
-    ''
-      mkdir -p $out
-      certutil -d $out -N --empty-password
-      certutil -d $out -A --empty-password -n "${cfg.realm} IPA CA" -t CT,C,C -i ${cfg.certificate}
-    '';
-in {
+      {
+        nativeBuildInputs = [ pkgs.nss.tools ];
+      }
+      ''
+        mkdir -p $out
+        certutil -d $out -N --empty-password
+        certutil -d $out -A --empty-password -n "${cfg.realm} IPA CA" -t CT,C,C -i ${cfg.certificate}
+      '';
+in
+{
   services.sssd.config = mkForce ''
     [domain/${cfg.domain}]
     id_provider = ipa

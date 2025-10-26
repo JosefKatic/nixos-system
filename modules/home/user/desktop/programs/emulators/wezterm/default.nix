@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.emulators.wezterm;
-in {
+in
+{
   options.user.desktop.programs.emulators.wezterm = {
     enable = lib.mkEnableOption "Enable Wezterm";
   };

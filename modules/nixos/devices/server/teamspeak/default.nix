@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.server;
-in {
+in
+{
   options.device.server.teamspeak.enable = lib.mkEnableOption "Enable teamspeak server";
 
   config = lib.mkIf cfg.teamspeak.enable {

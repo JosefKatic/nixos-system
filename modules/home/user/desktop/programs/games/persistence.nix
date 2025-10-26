@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   home.persistence = {
     "/persist/home/${config.user.name}" = {
       allowOther = true;

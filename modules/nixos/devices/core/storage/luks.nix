@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.device.core.storage;
-in {
+in
+{
   options.device.core.storage.systemDrive.encrypted = {
     enable = lib.mkEnableOption "Encrypt system drive";
     path = lib.mkOption {
@@ -18,8 +20,7 @@ in {
 
   config = lib.mkIf cfg.systemDrive.encrypted.enable {
     boot.initrd.luks.devices = {
-      ${cfg.systemDrive.name}.device =
-        cfg.systemDrive.encrypted.path;
+      ${cfg.systemDrive.name}.device = cfg.systemDrive.encrypted.path;
     };
   };
 }

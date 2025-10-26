@@ -3,9 +3,11 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.productivity.zathura;
-in {
+in
+{
   options.user.desktop.programs.productivity.zathura = {
     enable = lib.mkEnableOption "Enable Zathura PDF viewer";
   };
@@ -30,12 +32,7 @@ in {
       };
 
       extraConfig =
-        "include catppuccin-"
-        + (
-          if config.programs.matugen.variant == "light"
-          then "latte"
-          else "mocha"
-        );
+        "include catppuccin-" + (if config.programs.matugen.variant == "light" then "latte" else "mocha");
     };
 
     xdg.configFile = {

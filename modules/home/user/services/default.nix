@@ -1,3 +1,6 @@
 {
-  imports = [./media ./system];
+  imports = [
+    ./media
+    ./system
+  ];
 }

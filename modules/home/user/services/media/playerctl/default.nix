@@ -3,14 +3,16 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.services.media.playerctl;
-in {
+in
+{
   options.user.services.media.playerctl = {
     enable = lib.mkEnableOption "Enable playerctl";
   };
   config = lib.mkIf cfg.enable {
-    home.packages = [pkgs.playerctl];
+    home.packages = [ pkgs.playerctl ];
     services.playerctld.enable = true;
   };
 }

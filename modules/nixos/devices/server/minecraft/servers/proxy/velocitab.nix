@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   config = lib.mkIf config.device.server.minecraft.enable {
     services.minecraft-servers.servers.proxy = {
       extraReload = ''
@@ -24,16 +25,16 @@
           only_list_players_in_same_group = false;
           remove_spectator_effect = true;
           sort_players = false;
-          server_display_names = {};
+          server_display_names = { };
         };
         "plugins/velocitab/tab_groups.yml".value = {
           groups = [
             {
               name = "default";
-              headers = [];
-              footers = [];
+              headers = [ ];
+              footers = [ ];
               format = "&7[%server%] &r%prefix%%username%";
-              servers = [];
+              servers = [ ];
               header_footer_update_rate = 1000;
               placeholder_update_rate = 1000;
             }

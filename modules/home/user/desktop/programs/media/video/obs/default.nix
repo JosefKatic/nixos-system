@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.programs.media.video.obs;
-in {
+in
+{
   options = {
     user.desktop.programs.media.video = {
       obs = {

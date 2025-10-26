@@ -3,10 +3,12 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.user.desktop.services;
   inherit (config.theme.colorscheme) colors mode;
-in {
+in
+{
   options.user.desktop.services.mako = {
     enable = lib.mkEnableOption "Enable Mako notifications";
   };
@@ -16,9 +18,10 @@ in {
       enable = true;
       settings = {
         icon-path =
-          if mode == "dark"
-          then "${config.gtk.iconTheme.package}/share/icons/Papirus-Dark"
-          else "${config.gtk.iconTheme.package}/share/icons/Papirus-Light";
+          if mode == "dark" then
+            "${config.gtk.iconTheme.package}/share/icons/Papirus-Dark"
+          else
+            "${config.gtk.iconTheme.package}/share/icons/Papirus-Light";
         font = "Fira Sans 12";
         padding = "10,20";
         anchor = "top-center";

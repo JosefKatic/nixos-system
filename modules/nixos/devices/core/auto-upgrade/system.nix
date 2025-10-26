@@ -6,11 +6,13 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.company.autoUpgrade;
   # Only enable auto upgrade if current config came from a clean tree
   # This avoids accidental auto-upgrades when working locally.
-in {
+in
+{
   options = {
     company.autoUpgrade.system = {
       enable = lib.mkEnableOption "Periodic hydra-based auto upgrade";
@@ -49,9 +51,10 @@ in {
         nvd
       ];
 
-      script = let
-        buildUrl = "${cfg.instance}/job/${cfg.project}/${cfg.jobset}/${cfg.system.job}/latest";
-      in
+      script =
+        let
+          buildUrl = "${cfg.instance}/job/${cfg.project}/${cfg.jobset}/${cfg.system.job}/latest";
+        in
         (lib.optionalString (cfg.oldFlakeRef != null) ''
           eval="$(curl -sLH 'accept: application/json' "${buildUrl}" | jq -r '.jobsetevals[0]')"
           echo "Evaluating $eval" >&2
@@ -96,8 +99,8 @@ in {
         '';
 
       startAt = cfg.dates;
-      after = ["network-online.target"];
-      wants = ["network-online.target"];
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
     };
   };
 }

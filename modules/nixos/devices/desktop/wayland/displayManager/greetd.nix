@@ -5,20 +5,17 @@
   pkgs,
   default,
   ...
-}: let
+}:
+let
   variant = config.theme.colorscheme.mode;
   cfg = config.device.desktop.wayland.displayManager.regreet;
 
   homeCfgs = config.home-manager.users;
   homeSharePaths = lib.mapAttrsToList (n: v: "${v.home.path}/share") homeCfgs;
-  vars = ''
-    XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}"'';
+  vars = ''XDG_DATA_DIRS="$XDG_DATA_DIRS:${lib.concatStringsSep ":" homeSharePaths}"'';
 
   gtkTheme = {
-    name =
-      if variant == "light"
-      then "adw-gtk3"
-      else "adw-gtk3-dark";
+    name = if variant == "light" then "adw-gtk3" else "adw-gtk3-dark";
     package = "adw-gtk3";
   };
   iconTheme = {
@@ -30,20 +27,20 @@
     package = "bibata-cursors";
   };
 
-  sway-kiosk = command: "${lib.getExe pkgs.sway} --unsupported-gpu --config ${
-    pkgs.writeText "kiosk.config" ''
+  sway-kiosk =
+    command:
+    "${lib.getExe pkgs.sway} --unsupported-gpu --config ${pkgs.writeText "kiosk.config" ''
       output * bg #000000 solid_color
       xwayland disable
       input "type:touchpad" {
         tap enabled
       }
       exec 'WLR_NO_HARDWARE_CURSORS=1 GTK_USE_PORTAL=0 ${vars} ${command}; ${pkgs.sway}/bin/swaymsg exit'
-    ''
-  }";
-in {
+    ''}";
+in
+{
   options.device.desktop.wayland.displayManager.regreet = {
-    enable =
-      lib.mkEnableOption "Enable greetd as the display manager for wayland";
+    enable = lib.mkEnableOption "Enable greetd as the display manager for wayland";
     themes = {
       gtk = {
         name = lib.mkOption {
@@ -105,8 +102,7 @@ in {
     };
     services.greetd = {
       enable = true;
-      settings.default_session.command =
-        sway-kiosk (lib.getExe config.programs.regreet.package);
+      settings.default_session.command = sway-kiosk (lib.getExe config.programs.regreet.package);
     };
     security.pam.services.greetd.enableGnomeKeyring = true;
   };

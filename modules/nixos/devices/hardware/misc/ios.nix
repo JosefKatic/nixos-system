@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.device.hardware.misc;
-in {
+in
+{
   options.device.hardware.misc.ios.enable = lib.mkEnableOption "Enable iOS device support";
 
   config = lib.mkIf cfg.ios.enable {

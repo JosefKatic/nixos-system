@@ -2,7 +2,8 @@
   config,
   lib,
   ...
-}: {
+}:
+{
   config = lib.mkIf (config.device.type == "laptop") {
     services.tlp = {
       enable = true;

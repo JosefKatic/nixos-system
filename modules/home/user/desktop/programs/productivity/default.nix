@@ -1,3 +1,6 @@
 {
-  imports = [./proton ./zathura];
+  imports = [
+    ./proton
+    ./zathura
+  ];
 }

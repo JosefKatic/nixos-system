@@ -5,7 +5,8 @@
   options,
   self,
   ...
-}: {
+}:
+{
   options.device.server.services.deploy = {
     enable = lib.mkEnableOption "Enable deploy command and add users";
   };
