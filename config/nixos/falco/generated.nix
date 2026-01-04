@@ -20,8 +20,6 @@
   device.desktop.wayland.displayManager.gdm.enable = false;
   device.desktop.wayland.windowManager.hyprland.enable = false;
   device.desktop.wayland.windowManager.sway.enable = false;
-  device.server.auth.freeipa.enable = false;
-  device.server.auth.keycloak.enable = false;
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = false;
@@ -30,7 +28,6 @@
   device.server.hosting.website.enable = true;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = false;
-  device.server.nixConfigurator.enable = true;
   device.server.teamspeak.enable = false;
   device.server.services.fail2ban.enable = true;
   device.server.services.headscale.enable = false;

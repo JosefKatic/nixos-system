@@ -24,41 +24,18 @@ in
           sha256 = "1xd5hfxlh0m5687mfxndyv18a2k6aq7njna4n5smn7f7ynal1i28";
         };
 
-        variant = config.programs.matugen.variant;
-        colors = config.programs.matugen.theme.colors.colors.${variant};
         # Dependencies
-        cat = "${pkgs.coreutils}/bin/cat";
         cut = "${pkgs.coreutils}/bin/cut";
-        find = "${pkgs.findutils}/bin/find";
-        grep = "${pkgs.gnugrep}/bin/grep";
-        perl = "${pkgs.perl}/bin/perl";
-        pgrep = "${pkgs.procps}/bin/pgrep";
-        sed = "${pkgs.gnused}/bin/sed";
         tail = "${pkgs.coreutils}/bin/tail";
         wc = "${pkgs.coreutils}/bin/wc";
-        xargs = "${pkgs.findutils}/bin/xargs";
         timeout = "${pkgs.coreutils}/bin/timeout";
         ping = "${pkgs.iputils}/bin/ping";
 
         jq = "${pkgs.jq}/bin/jq";
-        xml = "${pkgs.xmlstarlet}/bin/xml";
-        gamemoded = "${pkgs.gamemode}/bin/gamemoded";
-        systemctl = "${pkgs.systemd}/bin/systemctl";
-        journalctl = "${pkgs.systemd}/bin/journalctl";
         playerctl = "${pkgs.playerctl}/bin/playerctl";
         playerctld = "${pkgs.playerctl}/bin/playerctld";
-        neomutt = "${pkgs.neomutt}/bin/neomutt";
         pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
-        btop = "${pkgs.bottom}/bin/btop";
-        wofi = "${pkgs.wofi}/bin/wofi";
         #  ikhal = "${pkgs.khal}/bin/ikhal";
-
-        terminal = "${pkgs.kitty}/bin/kitty";
-        terminal-spawn = cmd: "${terminal} $SHELL -i -c ${cmd}";
-
-        #calendar = terminal-spawn ikhal;
-        systemMonitor = terminal-spawn btop;
-        mail = terminal-spawn neomutt;
 
         # Function to simplify making waybar outputs
         jsonOutput =
@@ -82,11 +59,6 @@ in
               --arg percentage "${percentage}" \
               '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
           ''}/bin/waybar-${name}";
-
-        hasSway = config.wayland.windowManager.sway.enable;
-        sway = config.wayland.windowManager.sway.package;
-        hasHyprland = config.wayland.windowManager.hyprland.enable;
-        hyprland = config.wayland.windowManager.hyprland.package;
 
         clockTime = {
           format = "{:%R %p}";

@@ -1,11 +1,10 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
-  inherit (lib) types mkIf mkEnableOption;
+  inherit (lib) mkIf mkEnableOption;
   cfg = config.device.server.homelab;
 in
 {
@@ -23,39 +22,47 @@ in
         ];
       };
     };
-    services = {
-      # nginx.virtualHosts."hass.joka00.dev" = {
-      #   extraConfig = ''
-      #     allow 10.34.70.0/23;
-      #     allow 100.64.0.0/10;
-      #     deny all;
-      #   '';
-      #   forceSSL = true;
-      #   useACMEHost = "joka00.dev";
-      #   locations."/" = {
-      #     proxyPass = "http://[::1]:${toString config.services.home-assistant.config.http.server_port}";
-      #     proxyWebsockets = true;
-      #   };
-      # };
+    services.traefik = {
+      dynamicConfigOptions = {
+        http = {
+          services.homeAssistant.loadBalancer.servers = [
+            {
+              url = "http://localhost:8123";
+            }
+          ];
+
+          routers.homeAssistant = {
+            entryPoints = [ "websecure" ];
+            rule = "Host(`hass.joka00.dev`)";
+            service = "homeAssistant";
+            tls.certResolver = "cloudflare";
+          };
+        };
+      };
     };
     virtualisation.oci-containers = {
       backend = "podman";
       containers.homeassistant = {
-        volumes = [ "home-assistant:/config" ];
-        environment.TZ = "Europe/Berlin";
         image = "ghcr.io/home-assistant/home-assistant:stable";
+        volumes = [
+          "home-assistant:/config"
+          "/run/dbus:/run/dbus:ro"
+        ];
+        environment.TZ = "Europe/Prague";
         extraOptions = [
           "--network=host"
+          "--cap-add=NET_RAW"
+          "--cap-add=NET_ADMIN"
           "--device=/dev/ttyACM0:/dev/ttyACM0"
         ];
       };
     };
-    networking.firewall.allowedTCPPorts = [
-      8123
+    networking.firewall.interfaces."eno2".allowedTCPPorts = [
       21063
       21064
+      8123
     ];
-    networking.firewall.allowedUDPPorts = [
+    networking.firewall.interfaces."eno2".allowedUDPPorts = [
       5353
       21063
       21064

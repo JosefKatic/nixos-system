@@ -12,25 +12,35 @@
     ];
   };
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    hardware.url = "github:nixos/nixos-hardware";
-    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-    nix-colors.url = "github:misterio77/nix-colors";
-    systems.url = "github:nix-systems/default-linux";
+    # Flake
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/pre-commit-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    systems.url = "github:nix-systems/default-linux";
+
+    # Core
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    hardware.url = "github:nixos/nixos-hardware";
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nh = {
+      url = "github:viperML/nh";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hm = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-colors.url = "github:misterio77/nix-colors";
+
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    authentik-nix.url = "github:nix-community/authentik-nix";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
 
@@ -40,24 +50,12 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-configurator-api = {
-      url = "github:JosefKatic/nix-configurator-api";
-    };
-    nix-configurator-web = {
-      url = "github:JosefKatic/nix-configurator-web";
-    };
+    nixcord.url = "github:kaylorben/nixcord";
+
     nix-gaming.url = "github:fufexan/nix-gaming";
 
-    nh = {
-      url = "github:viperML/nh";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     matugen = {
       url = "github:InioX/Matugen";
-    };
-    pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     rust-overlay = {
@@ -77,16 +75,23 @@
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    crowdsec-module-rework.url = "github:TornaxO7/nixpkgs/crowdsec";
+
+    # Server
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-configurator-api = {
+      url = "github:JosefKatic/nix-configurator-api";
+    };
+    nix-configurator-web = {
+      url = "github:JosefKatic/nix-configurator-web";
+    };
+
   };
   outputs =
     {
-      self,
       nixpkgs,
       flake-parts,
-      systems,
-      nix-colors,
       nur,
-      hm,
       treefmt-nix,
       ...
     }@inputs:

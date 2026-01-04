@@ -34,6 +34,13 @@ let
         certutil -d $out -N --empty-password
         certutil -d $out -A --empty-password -n "${cfg.realm} IPA CA" -t CT,C,C -i ${cfg.certificate}
       '';
+  ldap = rec {
+    server = "auth.joka00.dev";
+    domain = "${cfg.domain}";
+    baseDN = "dc=joka00,dc=dev";
+    uri = "ldaps://auth.joka00.dev";
+    bindDN = "cn=ldapservice,ou=service-accounts,ou=goauthentik.io,${baseDN}";
+  };
 in
 {
   services.sssd.config = mkForce ''

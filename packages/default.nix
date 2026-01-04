@@ -15,6 +15,7 @@
       ...
     }:
     let
+      teamspeak6-server = pkgs.callPackage ./teamspeak6-server { };
       wl-ocr = pkgs.callPackage ./wl-ocr { };
       # My wallpaper collection - taken from misterio77 - https://github.com/Misterio77/nix-config
       wallpapers = import ./wallpapers { inherit pkgs; };
@@ -33,7 +34,7 @@
     in
     {
       overlayAttrs = {
-        inherit (config.packages) nordpvn wl-ocr;
+        inherit (config.packages) wl-ocr;
         inherit (config.legacyPackages)
           wallpapers
           allWallpapers
@@ -43,7 +44,7 @@
           ;
       };
       packages = {
-        inherit wl-ocr;
+        inherit wl-ocr teamspeak6-server;
       };
       legacyPackages = {
         inherit

@@ -1,8 +1,4 @@
 {
-  inputs,
-  ...
-}:
-{
   imports =
     let
     in
@@ -15,8 +11,8 @@
       ./hosting
       ./hydra
       ./minecraft
+      ./proxy
       ./services
       ./teamspeak
-      ./nix-configurator
     ];
 }

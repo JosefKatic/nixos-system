@@ -10,8 +10,6 @@
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.sops-nix.nixosModules.sops
     inputs.impermanence.nixosModules.impermanence
-    inputs.nix-configurator-api.nixosModules.default
-    inputs.authentik-nix.nixosModules.default
     ./boot
     ./core
     ./desktop

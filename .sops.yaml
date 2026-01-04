@@ -23,6 +23,18 @@ creation_rules:
           - *strix
         pgp:
           - *joka
+  - path_regex: secrets/services/dns/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *regulus
+        pgp:
+          - *joka
+  - path_regex: secrets/services/proxy/secrets.ya?ml$
+    key_groups:
+      - age:
+          - *regulus
+        pgp:
+          - *joka
   - path_regex: secrets/services/auth/secrets.ya?ml$
     key_groups:
       - age:

@@ -18,7 +18,7 @@ in
       pkgs.spice
       pkgs.spice-gtk
       pkgs.spice-protocol
-      pkgs.win-virtio
+      pkgs.virtio-win
       pkgs.win-spice
     ];
 

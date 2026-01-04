@@ -9,6 +9,7 @@
   documentation.dev.enable = true;
   hardware.graphics.enable = true;
   imports = [
+    ./audit
     ./auto-upgrade
     ./build.nix
     ./storage

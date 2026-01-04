@@ -17,12 +17,7 @@
     };
 
     hardware.graphics.extraPackages = with pkgs; [
-      (
-        if (lib.versionOlder (lib.versions.majorMinor lib.version) "23.11") then
-          vaapiIntel
-        else
-          intel-vaapi-driver
-      )
+      intel-vaapi-driver
       libvdpau-va-gl
       intel-media-driver
     ];
