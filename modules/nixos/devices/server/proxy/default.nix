@@ -14,9 +14,10 @@ in
     enableDashboard = lib.mkEnableOption "Enable Traefik dashboard.";
     defaultCertResolver = lib.mkOption {
       type = lib.types.str;
-      default = "cloudflare";
+      default = "letsencrypt";
       description = "Default certificate resolver for Traefik.";
     };
+    localResolverEnabled = lib.mkEnableOption "Enable local DNS resolver for ACME DNS-01 challenges.";
   };
 
   config = lib.mkIf cfg.traefik.enable {
@@ -30,7 +31,7 @@ in
         traefikUser = config.users.users.traefik.name;
         traefikGroup = config.users.users.traefik.group;
       in
-      {
+      lib.mkIf cfg.traefik.localResolverEnabled {
         cd_api_email = {
           sopsFile = "${self}/secrets/services/proxy/secrets.yaml";
           owner = traefikUser;
@@ -74,27 +75,11 @@ in
               to = "websecure";
               scheme = "https";
             };
-            proxyProtocol = {
-              insecure = false;
-              trustedIPs = [ ];
-            };
-            forwardedHeaders = {
-              insecure = false;
-              trustedIPs = [ ];
-            };
           };
           websecure = {
             address = ":443";
             asDefault = true;
             http.tls.certResolver = cfg.traefik.defaultCertResolver;
-            proxyProtocol = {
-              insecure = false;
-              trustedIPs = [ ];
-            };
-            forwardedHeaders = {
-              insecure = false;
-              trustedIPs = [ ];
-            };
           };
         };
 
@@ -109,9 +94,12 @@ in
             acme = {
               email = "josef@joka00.dev";
               storage = "${config.services.traefik.dataDir}/acme.json";
+              httpChallenge = {
+                entryPoint = "web";
+              };
             };
           };
-          cloudflare = {
+          cloudflare = lib.mkIf cfg.traefik.localResolverEnabled {
             acme = {
               email = "josef@joka00.dev";
               storage = "${config.services.traefik.dataDir}/acme.json";
@@ -134,7 +122,7 @@ in
         http.services = { };
       };
     };
-    systemd.services.traefik.environment = {
+    systemd.services.traefik.environment = lib.mkIf cfg.traefik.localResolverEnabled {
       CF_API_EMAIL_FILE = secrets.cd_api_email.path;
       CF_DNS_API_TOKEN_FILE = secrets.cd_api_token.path;
     };

@@ -14,7 +14,7 @@ in
         enable = true;
         settings = {
           ldap_base_dn = "dc=joka00,dc=dev";
-          ldap_user_email = "admin@joka00.dev";
+          ldap_user_email = "josef@joka00.dev";
           ldap_user_pass_file = config.sops.secrets.lldap-password.path;
           force_ldap_user_pass_reset = "always";
           database_url = "postgresql://lldap@localhost/lldap?host=/run/postgresql";
@@ -22,6 +22,27 @@ in
         environment = {
           LLDAP_JWT_SECRET_FILE = config.sops.secrets.lldap-jwt-secret.path;
           LLDAP_KEY_SEED_FILE = config.sops.secrets.lldap-key-seed.path;
+        };
+      };
+      traefik = {
+        dynamicConfigOptions = {
+          http = {
+            lldap = {
+              lldap.loadBalancer.servers = [
+                {
+                  url = "http://localhost:17170";
+                }
+              ];
+            };
+            routers = {
+              lldap = {
+                entryPoints = "websecure";
+                rule = "Host(`ldap.auth.joka00.dev`)";
+                service = "lldap";
+                tls.certResolver = "cloudflare";
+              };
+            };
+          };
         };
       };
     };

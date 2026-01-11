@@ -1,7 +1,5 @@
 {
   inputs,
-  lib,
-  self,
   ...
 }:
 {
@@ -9,28 +7,18 @@
   perSystem =
     {
       pkgs,
-      inputs',
       config,
-      lib,
       ...
     }:
     let
       teamspeak6-server = pkgs.callPackage ./teamspeak6-server { };
       wl-ocr = pkgs.callPackage ./wl-ocr { };
-      # My wallpaper collection - taken from misterio77 - https://github.com/Misterio77/nix-config
       wallpapers = import ./wallpapers { inherit pkgs; };
       allWallpapers = pkgs.linkFarmFromDrvs "wallpapers" (pkgs.lib.attrValues wallpapers);
       # And colorschemes based on it
       generateColorscheme = import ./colorschemes/generator.nix { inherit pkgs; };
       colorschemes = import ./colorschemes { inherit pkgs wallpapers generateColorscheme; };
-      allColorschemes =
-        let
-          # This is here to help us keep IFD cached (hopefully)
-          combined = pkgs.writeText "colorschemes.json" (
-            builtins.toJSON (pkgs.lib.mapAttrs (_: drv: drv.imported) colorschemes)
-          );
-        in
-        pkgs.linkFarmFromDrvs "colorschemes" (pkgs.lib.attrValues colorschemes ++ [ combined ]);
+      allColorschemes = pkgs.linkFarmFromDrvs "colorschemes" (pkgs.lib.attrValues colorschemes);
     in
     {
       overlayAttrs = {

@@ -16,7 +16,7 @@
           gnupg
           age
           nixd
-          nixfmt-rfc-style
+          nixfmt
           nixfmt-tree
         ];
         name = "config";

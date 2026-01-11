@@ -47,16 +47,16 @@
       enableZshIntegration = true;
     };
 
-    nix = {
-      package = pkgs.lixPackageSets.stable.lix;
-      settings = {
-        experimental-features = [
-          "nix-command"
-          "flakes"
-        ];
-        warn-dirty = false;
-      };
-    };
+    # nix = {
+    #   package = pkgs.lixPackageSets.stable.lix;
+    #   settings = {
+    #     experimental-features = [
+    #       "nix-command"
+    #       "flakes"
+    #     ];
+    #     warn-dirty = false;
+    #   };
+    # };
 
     systemd.user.startServices = "sd-switch";
 
@@ -118,7 +118,7 @@
       ];
 
       persistence = {
-        "/persist/home/${config.user.name}" = {
+        "/persist" = {
           directories = [
             "Documents"
             "Downloads"
@@ -128,7 +128,6 @@
             ".local/bin"
             ".local/share/nix" # trusted settings and repl history
           ];
-          allowOther = true;
         };
       };
     };

@@ -36,7 +36,6 @@
   device.hardware.misc.yubikey.enable = true;
   device.home.users = [
     "joka"
-    "joka-ipa"
   ];
   # device.utils.proton.vpn.enable = true;
 }

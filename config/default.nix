@@ -4,26 +4,16 @@
   ...
 }:
 let
-  inherit (inputs) nixpkgs hm systems;
+  inherit (inputs) nixpkgs hm;
 in
 {
   flake =
     let
       lib = nixpkgs.lib // hm.lib;
-      pkgsFor = lib.genAttrs (import systems) (
-        system:
-        import nixpkgs {
-          inherit system;
-          overlays = [ self.overlays.joka00-modules ];
-          config = {
-            allowUnfree = true;
-            allowUnsupportedSystem = true;
-          };
-        }
-      );
       hosts = import "${self}/config/nixos/hosts.nix";
     in
     {
+      lib = lib;
       nixosConfigurations =
         let
           specialArgs = { inherit inputs self; };
@@ -35,6 +25,7 @@ in
               modules =
                 let
                   hostConfig = import "${self}/config/nixos/${host}/default.nix";
+                  hostStaticConfig = import "${self}/config/nixos/${host}/static.nix";
                 in
                 [
                   {
@@ -44,34 +35,25 @@ in
                       hostConfig
                       "${self}/config/nixos/company.nix"
                     ];
+                    home-manager.extraSpecialArgs = specialArgs;
+                    home-manager.users =
+                      let
+                        users = map (user: {
+                          name = user;
+                          value = {
+                            imports = [
+                              self.homeManagerModules.default
+                              "${self}/config/home/${host}/${user}/default.nix"
+                            ];
+                          };
+                        }) hostStaticConfig.device.home.users;
+                      in
+                      builtins.listToAttrs users;
                   }
                 ];
             };
           }) hosts;
         in
         builtins.listToAttrs deviceConfigurations;
-
-      homeConfigurations =
-        let
-          inherit (lib) homeManagerConfiguration concatMap;
-          configs = concatMap (
-            host:
-            let
-              hostConfig = import "${self}/config/nixos/${host}/static.nix";
-            in
-            map (user: {
-              name = "${user}@${host}";
-              value = homeManagerConfiguration {
-                modules = [
-                  self.homeManagerModules.default
-                  "${self}/config/home/${host}/${user}/default.nix"
-                ];
-                pkgs = pkgsFor.${hostConfig.device.platform};
-                extraSpecialArgs = { inherit inputs self; };
-              };
-            }) hostConfig.device.home.users
-          ) hosts;
-        in
-        builtins.listToAttrs configs;
     };
 }

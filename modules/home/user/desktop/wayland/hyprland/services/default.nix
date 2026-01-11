@@ -2,7 +2,7 @@
   imports = [
     ./anyrun
     ./hypridle
-    ./hyprlock
+    ./hyprlock # Temporarily disabled due to stack overflow
     ./hyprpaper
     ./hyprsunset
     ./vnc

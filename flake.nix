@@ -24,7 +24,7 @@
     systems.url = "github:nix-systems/default-linux";
 
     # Core
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:nixos/nixos-hardware";
     sops-nix = {
       url = "github:mic92/sops-nix";
@@ -79,13 +79,26 @@
 
     # Server
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-    nix-configurator-api = {
-      url = "github:JosefKatic/nix-configurator-api";
-    };
-    nix-configurator-web = {
-      url = "github:JosefKatic/nix-configurator-web";
-    };
 
+    hyprland = {
+      url = "github:hyprwm/Hyprland?ref=v0.53.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprsplit = {
+      url = "github:shezdy/hyprsplit";
+      inputs.hyprland.follows = "hyprland";
+    };
+    hypridle = {
+      url = "github:hyprwm/hypridle";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprlock = {
+      url = "github:hyprwm/hyprlock";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hydra = {
+      url = "github:NixOS/hydra";
+    };
   };
   outputs =
     {
@@ -109,6 +122,9 @@
           formatter = treefmtEval.config.build.wrapper;
           _module.args.pkgs = import nixpkgs {
             inherit system;
+            config = {
+              allowUnfree = true;
+            };
             overlays = [
               inputs.self.overlays.joka00-modules
               nur.overlays.default

@@ -1,4 +1,0 @@
-2026-01-03 18:39:36.641779|INFO    |ServerLibPriv |   |TeamSpeak Server v6.0.0-beta7 (2025-10-20 09:34:57)
-2026-01-03 18:39:36.646233|INFO    |ServerLibPriv |   |SystemInformation: Linux 6.17.2-zen1 #1-NixOS ZEN SMP PREEMPT_DYNAMIC Tue Jan  1 00:00:00 UTC 1980 x86_64 Binary: 64bit
-2026-01-03 18:39:36.646901|ERROR   |              |   |db_connect() failed unable to open database file
-2026-01-03 18:39:36.646960|CRITICAL|ServerLibPriv |   |Server() DatabaseError out of memory

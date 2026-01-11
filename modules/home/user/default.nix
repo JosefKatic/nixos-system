@@ -1,7 +1,5 @@
 {
   inputs,
-  self,
-  lib,
   ...
 }:
 {
@@ -11,7 +9,6 @@
     ./terminal
     ./desktop
     ./theme
-    inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.matugen.nixosModules.default
     inputs.nix-index-db.homeModules.nix-index
     inputs.nur.modules.homeManager.default

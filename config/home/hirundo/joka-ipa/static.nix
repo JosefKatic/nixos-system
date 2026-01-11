@@ -5,7 +5,7 @@
 }:
 {
   theme = {
-    wallpaper = inputs.self.legacyPackages.${pkgs.system}.wallpapers.astronaut-minimalism.outPath;
+    wallpaper = pkgs.inputs.self.wallpapers.astronaut-minimalism.outPath;
     colorscheme.type = "content";
   };
   user = {

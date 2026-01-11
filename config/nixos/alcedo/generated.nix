@@ -29,11 +29,10 @@
   device.server.hosting.website.enable = false;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = false;
+  device.server.proxy.traefik.enable = true;
   device.server.teamspeak.enable = false;
   device.server.services.fail2ban.enable = false;
   device.server.services.headscale.enable = false;
-  device.server.services.web.acme.enable = false;
-  device.server.services.web.nginx.enable = false;
   device.utils.kdeconnect.enable = true;
   device.utils.virtualisation.docker.enable = true;
   device.utils.virtualisation.libvirtd.enable = true;

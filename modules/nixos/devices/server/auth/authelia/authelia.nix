@@ -1,4 +1,5 @@
 {
+  self,
   config,
   lib,
   ...
@@ -14,15 +15,41 @@ in
     redisEnable = lib.mkEnableOption "Enable Redis for Authelia.";
   };
   config = lib.mkIf cfg.authelia.enable {
+    sops.secrets = {
+      authelia-smtp = {
+        sopsFile = "${self}/secrets/services/auth/secrets.yaml";
+        owner = authelia;
+      };
+      authelia-storage = {
+        sopsFile = "${self}/secrets/services/auth/secrets.yaml";
+        owner = authelia;
+      };
+      authelia-jwt = {
+        sopsFile = "${self}/secrets/services/auth/secrets.yaml";
+        owner = authelia;
+      };
+      authelia-session = {
+        sopsFile = "${self}/secrets/services/auth/secrets.yaml";
+        owner = authelia;
+      };
+      authelia-ldap-password = {
+        sopsFile = "${self}/secrets/services/auth/secrets.yaml";
+        owner = authelia;
+        key = "lldap-password";
+      };
+    };
     services = {
       authelia.instances.main = {
         enable = true;
         secrets = {
-          jwtSecretFile = "/var/lib/authelia-main/jwt_secret";
-          sessionSecretFile = "/var/lib/authelia-main/session_secret";
-          storageEncryptionKeyFile = "/var/lib/authelia-main/storage_key";
+          jwtSecretFile = config.sops.secrets.authelia-jwt.path;
+          sessionSecretFile = config.sops.secrets.authelia-session.path;
+          storageEncryptionKeyFile = config.sops.secrets.authelia-storage.path;
         };
-
+        environmentVariables = with config.sops; {
+          AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE = secrets.authelia-smtp.path;
+          AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE = secrets.authelia-ldap-password.path;
+        };
         settings = {
           theme = "dark";
           server.address = "tcp://127.0.0.1:9091";
@@ -42,7 +69,7 @@ in
               user = "uid=admin,ou=people,dc=joka00,dc=dev";
               # LLDAP specific defaults for users and groups
               additional_users_dn = "ou=people";
-              users_filter = "(&(|(uid={input})(mail={input}))(objectClass=person))";
+              users_filter = "(&(|({username_attribute}={input})({mail_attribute}={input}))(objectClass=person))";
 
               additional_groups_dn = "ou=groups";
               groups_filter = "(&(member={dn})(objectClass=groupOfNames))";
@@ -52,7 +79,7 @@ in
             smtp = {
               address = "submission://smtp.protonmail.ch:587";
               username = "auth@joka00.dev";
-              from = "auth@joka00.dev";
+              sender = "auth@joka00.dev";
             };
           };
 
@@ -63,7 +90,7 @@ in
             username = authelia;
           };
           session = {
-            redis.host = "/var/run/redis-main/redis.sock";
+            redis.host = "/var/run/redis-${authelia}/redis.sock";
             cookies = [
               {
                 domain = "joka00.dev";
@@ -89,10 +116,6 @@ in
               }
             ];
           };
-        };
-
-        environmentVariables = with config.sops; {
-          AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE = secrets.authelia-smtp.path;
         };
       };
 
@@ -120,17 +143,17 @@ in
             };
 
             services = {
-              auth.loadBalancer.servers = [
+              authelia.loadBalancer.servers = [
                 {
-                  url = "http://localhost:9001";
+                  url = "http://localhost:9091";
                 }
               ];
             };
             routers = {
-              auth = {
+              authelia = {
                 entryPoints = "websecure";
-                rule = "Host(`auth.joka00.dev`) || HostRegexp(`{subdomain:[a-z0-9]+}.joka00.dev`) && PathPrefix(`/outpost.goauthentik.io/`)";
-                service = "auth";
+                rule = "Host(`auth.joka00.dev`)";
+                service = "authelia";
                 tls.certResolver = "cloudflare";
               };
             };

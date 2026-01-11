@@ -2,14 +2,13 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 
 with lib;
 
 let
-  ts6 = inputs.self.packages.${pkgs.system}.teamspeak6-server;
+  ts6 = pkgs.inputs.self.teamspeak6-server;
   cfg = config.services.teamspeak6;
   user = "teamspeak";
   group = "teamspeak";
@@ -46,12 +45,9 @@ in
       };
 
       voiceIP = mkOption {
-        type = types.listOf types.str;
-        default = [
-          "0.0.0.0"
-          "::"
-        ];
-        example = "[::]";
+        type = types.str;
+        default = "0.0.0.0";
+        example = "::";
         description = ''
           IP on which the server instance will listen for incoming voice connections. Defaults to any IP.
         '';
@@ -66,12 +62,9 @@ in
       };
 
       fileTransferIP = mkOption {
-        type = types.listOf types.str;
-        default = [
-          "0.0.0.0"
-          "::"
-        ];
-        example = "[::]";
+        type = types.str;
+        default = "0.0.0.0";
+        example = "::";
         description = ''
           IP on which the server instance will listen for incoming file transfer connections. Defaults to any IP.
         '';
@@ -132,14 +125,15 @@ in
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       environment = {
-        TSSERVER_LICENSE_ACCEPTED = "1";
-        TSSERVER_DATABASE_PLUGIN = "${ts6}/lib/teamspeak/sql/";
+        TSSERVER_LICENSE_ACCEPTED = "accept";
         TSSERVER_LOG_PATH = cfg.logPath;
-        TSSERVER_DB_PLUGIN = "sqlite3";
-        TSSERVER_VOICE_IP = toString cfg.voiceIP;
+        TSSERVER_DATABASE_PLUGIN = "sqlite3";
+        TSSERVER_VOICE_IP = cfg.voiceIP;
         TSSERVER_DEFAULT_PORT = toString cfg.defaultVoicePort;
         TSSERVER_FILE_TRANSFER_PORT = toString cfg.fileTransferPort;
-        TSSERVER_FILE_TRANSFER_IP = toString cfg.fileTransferIP;
+        TSSERVER_FILE_TRANSFER_IP = cfg.fileTransferIP;
+        TSSERVER_DATABASE_SQL_PATH = "${ts6}/lib/teamspeak/sql";
+        TSSERVER_DATABASE_SQL_CREATE_PATH = "${ts6}/lib/teamspeak/sql/create_sqlite";
       };
       serviceConfig = {
         ExecStart = ''

@@ -13,6 +13,12 @@
         ++ lib.optionals config.device.server.homelab.dns.enable [
           "pdns"
           "powerdnsadmin"
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.lldapEnable [
+          "lldap"
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.enable [
+          "authelia-main"
         ];
       ensureUsers =
         [ ]
@@ -24,6 +30,21 @@
           {
             name = "powerdnsadmin";
             ensureDBOwnership = true;
+          }
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.enable [
+          {
+            name = "authelia-main";
+            ensureDBOwnership = true;
+          }
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.lldapEnable [
+          {
+            name = "lldap";
+            ensureDBOwnership = true;
+            ensureClauses = {
+              createrole = true;
+            };
           }
         ];
     };

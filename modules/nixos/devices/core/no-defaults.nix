@@ -19,6 +19,5 @@ in
     environment.defaultPackages = lib.mkForce [ ];
     # TODO: Disable in future
     programs.nano.enable = true;
-    programs.adb.enable = true;
   };
 }

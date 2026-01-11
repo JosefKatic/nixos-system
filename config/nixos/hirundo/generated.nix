@@ -31,8 +31,6 @@
   device.server.minecraft.enable = false;
   device.server.services.fail2ban.enable = false;
   device.server.services.headscale.enable = false;
-  device.server.services.web.nginx.enable = false;
-  device.server.services.web.acme.enable = false;
   device.server.teamspeak.enable = false;
   device.utils.kdeconnect.enable = true;
   device.utils.virtualisation.docker.enable = true;

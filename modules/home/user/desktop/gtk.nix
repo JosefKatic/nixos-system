@@ -5,7 +5,8 @@
   ...
 }:
 let
-  hash = builtins.hashString "md5" (builtins.toJSON config.theme.colorscheme);
+  inherit (config.theme.colorscheme) colors;
+  hash = builtins.hashString "md5" (builtins.toJSON config.theme.colorscheme.type);
   rendersvg = pkgs.runCommand "rendersvg" { } ''
     mkdir -p $out/bin
     ln -s ${pkgs.resvg}/bin/resvg $out/bin/rendersvg
@@ -97,9 +98,7 @@ in
       };
       theme = {
         name = "generated-${hash}";
-        package = materiaTheme (
-          lib.mapAttrs (_: v: lib.removePrefix "#" v) config.theme.colorscheme.colors
-        );
+        package = materiaTheme (lib.mapAttrs (_: v: lib.removePrefix "#" v.default) colors);
       };
       iconTheme = {
         name = "Papirus";
