@@ -16,13 +16,13 @@ in
       enable = true;
       package = pkgs.hyprpaper;
       settings = {
-        ipc = "off";
         splash = false;
-        preload = [
-          "${config.theme.wallpaper}"
-        ];
         wallpaper = [
-          " ,${config.theme.wallpaper}"
+          {
+            monitor = "";
+            fit_mode = "cover";
+            path = config.theme.wallpaper;
+          }
         ];
       };
     };

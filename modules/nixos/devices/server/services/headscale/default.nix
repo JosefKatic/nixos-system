@@ -76,12 +76,25 @@ in
         };
       };
 
-      nginx.virtualHosts.${cfg.domain} = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.headscale.port}";
-          proxyWebsockets = true;
+      traefik = {
+        dynamicConfigOptions = {
+          http = {
+            services = {
+              vpn.loadBalancer.servers = [
+                {
+                  url = "http://localhost:${toString cfg.port}";
+                }
+              ];
+            };
+            routers = {
+              vpn = {
+                entryPoints = "websecure";
+                rule = "Host(`vpn.joka00.dev`)";
+                service = "vpn";
+                tls.certResolver = "letsencrypt";
+              };
+            };
+          };
         };
       };
     };

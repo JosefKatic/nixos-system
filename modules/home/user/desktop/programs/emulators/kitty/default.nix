@@ -4,7 +4,7 @@
   ...
 }:
 let
-  inherit (config.theme.colorscheme) colors;
+  inherit (config.theme.colorscheme) colors mode;
   cfg = config.user.desktop.programs.emulators.kitty;
 in
 {
@@ -30,41 +30,41 @@ in
 
         copy_on_select = "clipboard";
 
-        foreground = "${colors.on_surface}";
-        background = "${colors.surface}";
-        selection_background = "${colors.on_surface}";
-        selection_foreground = "${colors.surface}";
-        url_color = "${colors.on_surface_variant}";
-        cursor = "${colors.on_surface}";
-        active_border_color = "${colors.outline}";
-        inactive_border_color = "${colors.surface_bright}";
-        active_tab_background = "${colors.surface}";
-        active_tab_foreground = "${colors.on_surface}";
-        inactive_tab_background = "${colors.surface_bright}";
-        inactive_tab_foreground = "${colors.on_surface_variant}";
-        tab_bar_background = "${colors.surface_bright}";
-        color0 = "${colors.surface}";
-        color1 = "${colors.red_source}";
-        color2 = "${colors.green_source}";
-        color3 = "${colors.yellow_source}";
-        color4 = "${colors.blue_source}";
-        color5 = "${colors.magenta_source}";
-        color6 = "${colors.cyan_source}";
-        color7 = "${colors.on_surface}";
-        color8 = "${colors.outline}";
-        color9 = "${colors.red_source}";
-        color10 = "${colors.green_source}";
-        color11 = "${colors.yellow_source}";
-        color12 = "${colors.blue_source}";
-        color13 = "${colors.magenta_source}";
-        color14 = "${colors.cyan_source}";
-        color15 = "${colors.surface_dim}";
-        color16 = "${colors.orange_source}";
-        color17 = "${colors.error}";
-        color18 = "${colors.surface_bright}";
-        color19 = "${colors.surface_container}";
-        color20 = "${colors.on_surface_variant}";
-        color21 = "${colors.inverse_surface}";
+        foreground = "${colors.on_surface.default}";
+        background = "${colors.surface.default}";
+        selection_background = "${colors.on_surface.default}";
+        selection_foreground = "${colors.surface.default}";
+        url_color = "${colors.on_surface_variant.default}";
+        cursor = "${colors.on_surface.default}";
+        active_border_color = "${colors.outline.default}";
+        inactive_border_color = "${colors.surface_bright.default}";
+        active_tab_background = "${colors.surface.default}";
+        active_tab_foreground = "${colors.on_surface.default}";
+        inactive_tab_background = "${colors.surface_bright.default}";
+        inactive_tab_foreground = "${colors.on_surface_variant.default}";
+        tab_bar_background = "${colors.surface_bright.default}";
+        color0 = "${colors.surface.default}";
+        color1 = "${colors.red_source.default}";
+        color2 = "${colors.green_source.default}";
+        color3 = "${colors.yellow_source.default}";
+        color4 = "${colors.blue_source.default}";
+        color5 = "${colors.magenta_source.default}";
+        color6 = "${colors.cyan_source.default}";
+        color7 = "${colors.on_surface.default}";
+        color8 = "${colors.outline.default}";
+        color9 = "${colors.red_source.default}";
+        color10 = "${colors.green_source.default}";
+        color11 = "${colors.yellow_source.default}";
+        color12 = "${colors.blue_source.default}";
+        color13 = "${colors.magenta_source.default}";
+        color14 = "${colors.cyan_source.default}";
+        color15 = "${colors.surface_dim.default}";
+        color16 = "${colors.orange_source.default}";
+        color17 = "${colors.error.default}";
+        color18 = "${colors.surface_bright.default}";
+        color19 = "${colors.surface_container.default}";
+        color20 = "${colors.on_surface_variant.default}";
+        color21 = "${colors.inverse_surface.default}";
       };
     };
   };

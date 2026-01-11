@@ -17,8 +17,9 @@ in
     environment.systemPackages = with pkgs; [ kdePackages.qtdeclarative ];
     programs.hyprland = {
       enable = true;
-      package = pkgs.hyprland;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
+      withUWSM = true;
+      package = pkgs.inputs.hyprland.default;
+      portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
     };
     security.pam.services.hyprlock.text = "auth include login";
   };

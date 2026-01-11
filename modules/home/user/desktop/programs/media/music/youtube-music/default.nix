@@ -15,7 +15,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [
-      pkgs.youtube-music
+      pkgs.pear-desktop
     ];
 
     wayland.windowManager.hyprland.settings = lib.mkIf cfgHyprland.enable {
@@ -24,7 +24,7 @@ in
         "ALT, M, togglespecialworkspace, ytm"
       ];
       exec-once = [
-        "[workspace special:ytm silent] youtube-music"
+        "[workspace special:ytm silent] pear-desktop"
       ];
     };
   };

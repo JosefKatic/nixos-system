@@ -10,20 +10,13 @@ let
   inherit (lib) types mkOption;
 
   hexColor = types.strMatching "#([0-9a-fA-F]{3}){1,2}";
-
-  removeFilterPrefixAttrs =
-    prefix: attrs:
-    lib.mapAttrs' (n: v: {
-      name = lib.removePrefix prefix n;
-      value = v;
-    }) (lib.filterAttrs (n: _: lib.hasPrefix prefix n) attrs);
 in
 {
   options.theme = {
     colorscheme = {
       source = mkOption {
         type = types.either types.path hexColor;
-        default = if config.theme.wallpaper != null then config.theme.wallpaper else "#FFFFFF";
+        default = if config.theme.wallpaper != null then config.theme.wallpaper else "#2B3975";
       };
       mode = mkOption {
         type = types.enum [
@@ -33,16 +26,13 @@ in
         default = "dark";
       };
       type = mkOption {
-        type =
-          types.enum
-            (inputs.self.legacyPackages.${pkgs.system}.generateColorscheme null null).schemeTypes;
-        default = "tonal-spot";
+        type = types.str;
+        default = "rainbow";
       };
+
       generatedDrv = mkOption {
         type = types.package;
-        default = inputs.self.legacyPackages.${pkgs.system}.generateColorscheme (cfg.source.name
-          or "default"
-        ) cfg.source;
+        default = pkgs.inputs.self.generateColorscheme (cfg.source.name or "default") cfg.source;
       };
       rawColorscheme = mkOption {
         type = types.attrs;
@@ -51,15 +41,29 @@ in
 
       colors = mkOption {
         readOnly = true;
-        type = types.attrsOf hexColor;
-        default = cfg.rawColorscheme.colors.${cfg.mode};
+        type = types.attrsOf (
+          types.submodule {
+            options = {
+              dark = mkOption {
+                type = hexColor;
+              };
+              default = mkOption {
+                type = hexColor;
+              };
+              light = mkOption {
+                type = hexColor;
+              };
+            };
+          }
+        );
+        default = cfg.rawColorscheme.colors;
       };
     };
     wallpaper = lib.mkOption {
       description = ''
         Location of the wallpaper to use throughout the system.
       '';
-      default = inputs.self.legacyPackages.${pkgs.system}.wallpapers.astronaut-minimalism;
+      default = pkgs.inputs.self.wallpapers.astronaut-minimalism;
       type = types.path;
       example = lib.literalExample "./wallpaper.png";
     };

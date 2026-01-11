@@ -26,7 +26,7 @@
 
     # environment.systemPackages = [
     #   pkgs.deploySystem
-    #   self.packages.${pkgs.system}.prefetchConfig
+    #   self.packages.${pkgs.stdenv.hostPlatform.system}.prefetchConfig
     # ];
   };
 }

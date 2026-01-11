@@ -24,41 +24,18 @@ in
           sha256 = "1xd5hfxlh0m5687mfxndyv18a2k6aq7njna4n5smn7f7ynal1i28";
         };
 
-        variant = config.programs.matugen.variant;
-        colors = config.programs.matugen.theme.colors.colors.${variant};
         # Dependencies
-        cat = "${pkgs.coreutils}/bin/cat";
         cut = "${pkgs.coreutils}/bin/cut";
-        find = "${pkgs.findutils}/bin/find";
-        grep = "${pkgs.gnugrep}/bin/grep";
-        perl = "${pkgs.perl}/bin/perl";
-        pgrep = "${pkgs.procps}/bin/pgrep";
-        sed = "${pkgs.gnused}/bin/sed";
         tail = "${pkgs.coreutils}/bin/tail";
         wc = "${pkgs.coreutils}/bin/wc";
-        xargs = "${pkgs.findutils}/bin/xargs";
         timeout = "${pkgs.coreutils}/bin/timeout";
         ping = "${pkgs.iputils}/bin/ping";
 
         jq = "${pkgs.jq}/bin/jq";
-        xml = "${pkgs.xmlstarlet}/bin/xml";
-        gamemoded = "${pkgs.gamemode}/bin/gamemoded";
-        systemctl = "${pkgs.systemd}/bin/systemctl";
-        journalctl = "${pkgs.systemd}/bin/journalctl";
         playerctl = "${pkgs.playerctl}/bin/playerctl";
         playerctld = "${pkgs.playerctl}/bin/playerctld";
-        neomutt = "${pkgs.neomutt}/bin/neomutt";
         pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
-        btop = "${pkgs.bottom}/bin/btop";
-        wofi = "${pkgs.wofi}/bin/wofi";
         #  ikhal = "${pkgs.khal}/bin/ikhal";
-
-        terminal = "${pkgs.kitty}/bin/kitty";
-        terminal-spawn = cmd: "${terminal} $SHELL -i -c ${cmd}";
-
-        #calendar = terminal-spawn ikhal;
-        systemMonitor = terminal-spawn btop;
-        mail = terminal-spawn neomutt;
 
         # Function to simplify making waybar outputs
         jsonOutput =
@@ -82,11 +59,6 @@ in
               --arg percentage "${percentage}" \
               '{text:$text,tooltip:$tooltip,alt:$alt,class:$class,percentage:$percentage}'
           ''}/bin/waybar-${name}";
-
-        hasSway = config.wayland.windowManager.sway.enable;
-        sway = config.wayland.windowManager.sway.package;
-        hasHyprland = config.wayland.windowManager.hyprland.enable;
-        hyprland = config.wayland.windowManager.hyprland.package;
 
         clockTime = {
           format = "{:%R %p}";
@@ -362,7 +334,7 @@ in
         style =
           let
             inherit (inputs.nix-colors.lib.conversions) hexToRGBString;
-            inherit (config.theme.colorscheme) colors;
+            inherit (config.theme.colorscheme) colors mode;
             toRGBA = color: opacity: "rgba(${hexToRGBString "," (lib.removePrefix "#" color)},${opacity})";
           in
           /* css */ ''
@@ -381,8 +353,8 @@ in
             window#waybar {
               padding: 0;
               border-radius: 0.5em;
-              background-color: ${toRGBA colors.surface "0.3"};
-              color: ${colors.on_surface};
+              background-color: ${toRGBA colors.surface.default "0.3"};
+              color: ${colors.on_surface.default};
             }
             .modules-left {
               margin-left: -0.65em;
@@ -394,20 +366,20 @@ in
             }
 
             #workspaces button {
-              color: ${colors.on_surface};
+              color: ${colors.on_surface.default};
               padding-left: 0.4em;
               padding-right: 0.4em;
               margin-top: 0.15em;
               margin-bottom: 0.15em;
             }
             #workspaces button.hidden {
-              background-color: ${colors.surface};
-              color: ${colors.on_surface_variant};
+              background-color: ${colors.surface.default};
+              color: ${colors.on_surface_variant.default};
             }
             #workspaces button.focused,
             #workspaces button.active {
-              background-color: ${colors.primary};
-              color: ${colors.on_primary};
+              background-color: ${colors.primary.default};
+              color: ${colors.on_primary.default};
             }
 
             #clock {
@@ -419,7 +391,7 @@ in
               padding-right: 0;
             }
             #tray {
-              color: ${colors.on_surface};
+              color: ${colors.on_surface.default};
             }
           '';
       };

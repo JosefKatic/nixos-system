@@ -45,12 +45,12 @@ in
   };
 
   config = {
+    environment.systemPackages = with pkgs; [
+      openssl
+      unixtools.net-tools
+    ];
     networking = {
       domain = cfg.network.domain;
-      extraHosts = lib.mkIf (config.device.server.auth.freeipa.enable == false) ''
-        100.64.0.4 ipa.internal.joka00.dev
-      '';
-      # extraHosts = import ./blocker/etc-hosts.nix;
       firewall = {
         enable = true;
         trustedInterfaces = [ "tailscale0" ];

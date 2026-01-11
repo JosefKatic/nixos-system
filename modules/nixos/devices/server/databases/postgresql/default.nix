@@ -6,8 +6,48 @@
 {
   options.device.server.databases.postgresql.enable = lib.mkEnableOption "Enable postgresql";
   config = lib.mkIf config.device.server.databases.postgresql.enable {
-    services.postgresql.enable = true;
-
+    services.postgresql = {
+      enable = true;
+      ensureDatabases =
+        [ ]
+        ++ lib.optionals config.device.server.homelab.dns.enable [
+          "pdns"
+          "powerdnsadmin"
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.lldapEnable [
+          "lldap"
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.enable [
+          "authelia-main"
+        ];
+      ensureUsers =
+        [ ]
+        ++ lib.optionals config.device.server.homelab.dns.enable [
+          {
+            name = "pdns";
+            ensureDBOwnership = true;
+          }
+          {
+            name = "powerdnsadmin";
+            ensureDBOwnership = true;
+          }
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.enable [
+          {
+            name = "authelia-main";
+            ensureDBOwnership = true;
+          }
+        ]
+        ++ lib.optionals config.device.server.auth.authelia.lldapEnable [
+          {
+            name = "lldap";
+            ensureDBOwnership = true;
+            ensureClauses = {
+              createrole = true;
+            };
+          }
+        ];
+    };
     environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
       "/persist".directories = [
         "/var/lib/postgresql"

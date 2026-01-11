@@ -14,8 +14,8 @@ in
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
-      package = pkgs.hyprland;
-      portalPackage = pkgs.xdg-desktop-portal-hyprland;
+      package = pkgs.inputs.hyprland.default;
+      portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
       # make sure to also set the portal package, so that they are in sync
       systemd = {
         variables = [ "--all" ];

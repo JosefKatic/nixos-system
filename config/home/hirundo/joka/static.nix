@@ -1,11 +1,10 @@
 {
-  inputs,
   pkgs,
   ...
 }:
 {
   theme = {
-    wallpaper = inputs.self.legacyPackages.${pkgs.system}.wallpapers.binary-black-8k.outPath;
+    wallpaper = pkgs.inputs.self.wallpapers.binary-black-8k.outPath;
     colorscheme.type = "monochrome";
   };
   user = {

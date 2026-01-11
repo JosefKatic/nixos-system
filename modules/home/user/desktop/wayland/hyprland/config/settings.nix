@@ -4,14 +4,15 @@
   ...
 }:
 let
+  inherit (config.theme.colorscheme) colors mode;
   cfg = config.user.desktop.wayland.hyprland;
 in
 {
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings =
       let
-        active = "0xaa${lib.removePrefix "#" config.theme.colorscheme.colors.primary}";
-        inactive = "0xaa${lib.removePrefix "#" config.theme.colorscheme.colors.surface_bright}";
+        active = "0xaa${lib.removePrefix "#" colors.primary.default}";
+        inactive = "0xaa${lib.removePrefix "#" colors.surface_bright.default}";
         pointer = config.home.pointerCursor;
       in
       {
@@ -124,7 +125,7 @@ in
           close_special_on_empty = true;
           focus_on_activate = true;
           # Unfullscreen when opening something
-          new_window_takes_over_fullscreen = 2;
+          on_focus_under_fullscreen = 2;
 
           disable_hyprland_logo = true;
           disable_splash_rendering = true;

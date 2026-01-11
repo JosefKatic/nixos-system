@@ -17,14 +17,12 @@ in
             let
               elements = lib.concatStringsSep "|" list;
             in
-            "^(${elements})$";
+            "match:namespace ^(${elements})$";
 
           ignorealpha = [
-            # ags
-            "blur,waybar"
-            "ignorezero,waybar"
-            "blur,notifications"
-            "ignorezero,notifications"
+            "waybar,blur on"
+            "waybar,ignore_alpha 0"
+            "notifications,ignore_alpha 0,blur on"
             "osd"
             "system-menu"
             "anyrun"
@@ -36,47 +34,45 @@ in
           ];
         in
         [
-          "blur, ${toRegex layers}"
-          "xray 1, ${
+          "${toRegex layers}, blur on"
+          "${
             toRegex [
               "bar"
               "gtk-layer-shell"
             ]
-          }"
-          "ignorealpha 0.2, ${
+          }, xray on"
+          "${
             toRegex [
               "bar"
               "gtk-layer-shell"
             ]
-          }"
-          "ignorealpha 0.5, ${toRegex (ignorealpha ++ [ "music" ])}"
+          }, ignore_alpha 0.2"
+          "${toRegex (ignorealpha ++ [ "music" ])}, ignore_alpha 0.5"
         ];
 
       # window rules
-      windowrulev2 = [
-        # telegram media viewer
-        "float, title:^(Media viewer)$"
-
+      windowrule = [
+        "match:title ^(.*Proton Pass.*)$, size 800 600, float on, pin on, center on, dim_around on"
         # allow tearing in games
-        "immediate, class:^(osu\!|cs2)$"
+        "match:class ^(osu\!|cs2)$, immediate on"
 
         # make Firefox PiP window floating and sticky
-        "float, title:^(Picture-in-Picture)$"
-        "pin, title:^(Picture-in-Picture)$"
+        "match:title ^(Picture-in-Picture)$, float on, pin on"
 
         # throw sharing indicators away
-        "workspace special silent, title:^(Firefox — Sharing Indicator)$"
-        "workspace special silent, title:^(.*is sharing (your screen|a window)\.)$"
+        "match:title ^(Firefox — Sharing Indicator)$, workspace special silent"
+        "match:title ^(.*is sharing (your screen|a window)\.)$, workspace special silent"
 
         # idle inhibit while watching videos
-        "idleinhibit focus, class:^(mpv|.+exe|celluloid)$"
-        "idleinhibit focus, class:^(firefox|zen|brave|chromium)$, title:^(.*YouTube.*)$"
-        "idleinhibit fullscreen, class:^(firefox|zen|brave|chromium)$"
+        "match:class ^(mpv|.+exe|celluloid)$, idle_inhibit focus"
+        "match:class ^(firefox|zen|brave|chromium)$, match:title ^(.*YouTube.*)$, idle_inhibit focus"
+        "match:content ^(2|3)$, idle_inhibit focus"
+        "match:content ^(2|3)$, idle_inhibit fullscreen"
+        "match:class ^(firefox|zen|brave|chromium)$, idle_inhibit fullscreen"
 
-        "dimaround, class:^(gcr-prompter)$"
-
+        "match:class ^(gcr-prompter)$, dim_around on"
         # fix xwayland apps
-        "rounding 0, xwayland:1"
+        "match:xwayland true, rounding 0"
       ];
     };
   };

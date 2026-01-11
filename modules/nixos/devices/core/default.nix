@@ -1,14 +1,12 @@
 {
-  config,
   lib,
-  options,
-  pkgs,
   ...
 }:
 {
   documentation.dev.enable = true;
   hardware.graphics.enable = true;
   imports = [
+    ./audit
     ./auto-upgrade
     ./build.nix
     ./storage
@@ -29,7 +27,11 @@
 
   # These are configs that needs to be everywhere
   hardware.enableRedistributableFirmware = true;
-  services.timesyncd.enable = true;
+  services.chrony = {
+    enable = true;
+    enableNTS = true;
+    servers = [ "time.cloudflare.com" ];
+  };
   # DON"T CHANGE THIS!
   system.stateVersion = lib.mkDefault "24.05";
 }

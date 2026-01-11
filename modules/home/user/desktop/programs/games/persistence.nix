@@ -5,17 +5,12 @@
 }:
 {
   home.persistence = {
-    "/persist/home/${config.user.name}" = {
-      allowOther = true;
+    "/persist" = {
       directories = [
         ".local/share/Steam"
         ".config/lutris"
         ".local/share/lutris"
-        {
-          # Use symlink, as games may be IO-heavy
-          directory = "Games";
-          method = "symlink";
-        }
+        "Games"
       ];
     };
   };

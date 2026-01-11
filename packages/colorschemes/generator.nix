@@ -49,7 +49,7 @@ let
         for type in ${lib.concatStringsSep " " schemeTypes}; do
           ${pkgs.matugen}/bin/matugen ${
             if (isHexColor source) then "color hex" else "image"
-          } --config ${config} -j hex -t "scheme-$type" "${source}" > "$out/$type.json"
+          } --config ${config} --include-image-in-json false -j hex -t "scheme-$type" "${source}" > "$out/$type.json"
         done
       '';
 in

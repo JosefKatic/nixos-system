@@ -29,8 +29,8 @@ in
         height = 150;
         border-size = 0;
         default-timeout = 12000;
-        background-color = "${colors.surface}dd";
-        text-color = "${colors.on_surface}dd";
+        background-color = "${colors.surface.default}dd";
+        text-color = "${colors.on_surface.default}dd";
         layer = "overlay";
       };
     };

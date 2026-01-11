@@ -7,6 +7,7 @@
 {
   imports = [
     ./blocky
+    ./dns
     ./homeassistant
     ./matter
     ./mosquitto

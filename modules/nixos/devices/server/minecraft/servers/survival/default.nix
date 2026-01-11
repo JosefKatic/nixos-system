@@ -10,7 +10,8 @@
     services.minecraft-servers.servers.survival = {
       enable = true;
       enableReload = true;
-      package = inputs.nix-minecraft.legacyPackages.${pkgs.system}.paperServers.paper-1_21;
+      package =
+        inputs.nix-minecraft.legacyPackages.${pkgs.stdenv.hostPlatform.system}.paperServers.paper-1_21;
       jvmOpts = ((import ../../flags.nix) "6G") + "-Dpaper.disableChannelLimit=true";
       whitelist = import ../../whitelist.nix;
       serverProperties = {
@@ -79,14 +80,6 @@
         #   url = "https://cdn.modrinth.com/data/1u6JkXh5/versions/yAujLUIK/${pname}-bukkit-${version}.jar";
         #   hash = "sha256-85MQWheIaM/9mdvjnykGHESwx1vqy11apZwIDNQjyXk=";
         # };
-      };
-    };
-
-    services.nginx.virtualHosts."survival.joka00.dev" = {
-      forceSSL = true;
-      enableACME = true;
-      locations."/" = {
-        proxyPass = "http://localhost:8100";
       };
     };
   };

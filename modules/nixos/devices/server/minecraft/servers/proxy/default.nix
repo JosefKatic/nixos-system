@@ -38,7 +38,7 @@ in
         echo 'velocity reload' > /run/minecraft-server/proxy.stdin
       '';
 
-      package = inputs.nix-minecraft.packages.${pkgs.system}.velocity-server; # Latest build
+      package = inputs.nix-minecraft.packages.${pkgs.stdenv.hostPlatform.system}.velocity-server; # Latest build
       jvmOpts = proxyFlags "1G";
       files = {
         "velocity.toml".value = {
