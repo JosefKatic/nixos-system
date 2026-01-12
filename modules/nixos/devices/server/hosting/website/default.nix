@@ -17,25 +17,47 @@ in
     enable = lib.mkEnableOption "Enable website hosting";
   };
   config = lib.mkIf config.device.server.hosting.website.enable {
-    services.nginx.virtualHosts = {
-      "joka00.dev" = {
-        forceSSL = true;
-        enableACME = true;
-        locations = {
-          "/" = {
-            root = "${website}/public";
+    services.nginx = {
+      enable = true;
+      virtualHosts = {
+        "joka00.dev" = {
+          listen = [
+            {
+              addr = "127.0.0.1";
+              port = 8081;
+            }
+          ];
+          locations = {
+            "/" = {
+              root = "${website}/public";
+            };
+            "/assets/" = {
+              root = "${website}/public";
+              extraConfig = ''
+                add_header Cache-Control "max-age=${days 30}";
+              '';
+            };
           };
-          "/assets/" = {
-            root = "${website}/public";
-            extraConfig = ''
-              add_header Cache-Control "max-age=${days 30}";
-            '';
-          };
+        };
+      };
+    };
 
-          # "=/pgp.asc".alias = pgpKey;
-          # "=/pgp".alias = pgpKey;
-          # "=/ssh.pub".alias = sshKey;
-          # "=/ssh".alias = sshKey;
+    services.traefik = {
+      dynamicConfigOptions = {
+        http = {
+          routers.website = {
+            rule = "Host(`joka00.dev`)";
+            entryPoints = [ "websecure" ];
+            service = "website";
+            tls.certResolver = "letsencrypt";
+          };
+          services.website = {
+            loadBalancer.servers = [
+              {
+                url = "http://127.0.0.1:8081";
+              }
+            ];
+          };
         };
       };
     };
