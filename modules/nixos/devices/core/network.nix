@@ -99,10 +99,6 @@ in
       "/persist" = {
         directories = [
           "/var/lib/tailscale"
-          "/var/lib/ipa-client"
-          # Caching wouldn't work
-          "/var/lib/sssd"
-          "/var/lib/sss"
         ];
         files = [ "/etc/krb5.keytab" ];
       };

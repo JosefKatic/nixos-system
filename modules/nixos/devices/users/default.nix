@@ -34,7 +34,6 @@ in
 
   config = {
     users.mutableUsers = false;
-    # BACKUP ACCOUNT IN CASE SSSD won't work
     users.users.joka = {
       isNormalUser = true;
       shell = pkgs.fish;

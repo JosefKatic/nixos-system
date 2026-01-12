@@ -11,7 +11,6 @@
     ./build.nix
     ./storage
     ./locale.nix
-    ./ipa
     ./network.nix
     ./nix.nix
     ./kernel.nix

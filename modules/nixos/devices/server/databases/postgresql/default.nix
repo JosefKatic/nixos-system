@@ -19,6 +19,9 @@
         ]
         ++ lib.optionals config.device.server.auth.authelia.enable [
           "authelia-main"
+        ]
+        ++ lib.optionals config.device.server.hydra.enable [
+          "hydra"
         ];
       ensureUsers =
         [ ]
@@ -41,6 +44,15 @@
         ++ lib.optionals config.device.server.auth.authelia.lldapEnable [
           {
             name = "lldap";
+            ensureDBOwnership = true;
+            ensureClauses = {
+              createrole = true;
+            };
+          }
+        ]
+        ++ lib.optionals config.device.server.hydra.enable [
+          {
+            name = "hydra";
             ensureDBOwnership = true;
             ensureClauses = {
               createrole = true;
