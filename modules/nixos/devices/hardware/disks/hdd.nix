@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -12,6 +13,9 @@ in
   };
 
   config = lib.mkIf cfg.disks.hdd.enable {
-    services.hdapsd.enable = lib.mkDefault true;
+    # services.hdapsd.enable = lib.mkDefault true;
+    boot.kernelModules = [ "hdapsd" ];
+    services.udev.packages = [ pkgs.inputs.self.hdapsd ];
+    systemd.packages = [ pkgs.inputs.self.hdapsd ];
   };
 }

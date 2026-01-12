@@ -19,7 +19,7 @@
     };
     project = lib.mkOption {
       type = lib.types.str;
-      default = "nix-config";
+      default = "nixos-system";
     };
     jobset = lib.mkOption {
       type = lib.types.str;
