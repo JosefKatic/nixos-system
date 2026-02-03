@@ -14,6 +14,7 @@ in
     home.packages = with pkgs; [
       prismlauncher
       lunar-client
+      javaPackages.compiler.openjdk25
     ];
   };
 }

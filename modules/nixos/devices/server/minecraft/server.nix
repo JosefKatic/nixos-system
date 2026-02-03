@@ -14,7 +14,6 @@
       owner = "minecraft";
       group = "minecraft";
       mode = "0440";
-      # VELOCITY_FORWARDING_SECRET, DATABASE_PASSWORD
       sopsFile = "${self}/secrets/services/minecraft/secrets.yaml";
     };
     services.minecraft-servers = {

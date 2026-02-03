@@ -1,9 +1,6 @@
 {
   imports = [
-    # proxy
-    # survival
-    ./servers/modpack
-    # ./servers/limbo
+    ./servers/gtnh
     ./server.nix
   ];
 }

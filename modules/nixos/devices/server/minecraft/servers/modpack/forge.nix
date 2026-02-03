@@ -1,10 +1,10 @@
 { pkgs, ... }:
 let
-  minecraftVersion = "1.20.1";
-  forgeVersion = "47.4.0";
+  minecraftVersion = "1.7.10";
+  forgeVersion = "10.13.4.1614-1.7.10";
   version = "${minecraftVersion}-${forgeVersion}";
 in
-pkgs.runCommandNoCC "forge-${version}"
+pkgs.runCommand "forge-${version}"
   {
     inherit version;
     nativeBuildInputs = with pkgs; [
@@ -14,7 +14,7 @@ pkgs.runCommandNoCC "forge-${version}"
     ];
 
     outputHashMode = "recursive";
-    outputHash = "sha256-EtqyOX9REjT5sCxm2s+dhSzXnIvuFEhdFqlwgVbEugw=";
+    outputHash = "sha256-pQpattmS9VmO3ZIQUFn66az8GSmB4IvYhTTCFn6SUmo=";
   }
   ''
     mkdir -p "$out"
