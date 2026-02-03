@@ -93,7 +93,7 @@ in
       # DNS resolver
       resolved.enable = cfg.network.services.enableResolved;
       # Just to be sure it won't fail
-      resolved.fallbackDns = [ "1.1.1.1" ];
+      resolved.settings.Resolve.FallbackDNS = [ "1.1.1.1" ];
     };
     environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
