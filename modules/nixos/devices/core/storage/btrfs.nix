@@ -63,6 +63,7 @@ in
           "compress=zstd"
           "noatime"
         ];
+        neededForBoot = true;
       };
 
       "/nix" = {
