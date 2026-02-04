@@ -23,6 +23,7 @@ in
       white-list = true;
       max-tick-time = -1; # unlimited
       level-seed = "4387134805370572030";
+      enable-rcon = true;
       "rcon.password" = "@RCON_PASSWORD@";
       "rcon.port" = 24472;
     };
