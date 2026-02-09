@@ -1,9 +1,8 @@
 {
-  device.server.homelab.enable = true;
-  device.server.services.frigate.enable = false;
-  device.server.homelab.dns.enable = true;
-  device.server.homelab.homeassistant.enable = true;
-  device.server.homelab.matter.enable = true;
-  device.server.homelab.mosquitto.enable = true;
-  device.server.homelab.zigbee2mqtt.enable = true;
+  device.server.services.dns.enable = true;
+  device.server.services.sure.enable = true;
+  device.server.services.homelab.homeassistant.enable = true;
+  device.server.services.homelab.matter.enable = true;
+  device.server.services.homelab.mosquitto.enable = true;
+  device.server.services.homelab.zigbee2mqtt.enable = true;
 }

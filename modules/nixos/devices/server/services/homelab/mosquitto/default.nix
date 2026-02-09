@@ -5,11 +5,11 @@
   ...
 }:
 let
-  inherit (lib) types mkIf mkEnableOption;
-  cfg = config.device.server.homelab;
+  inherit (lib) mkIf mkEnableOption;
+  cfg = config.device.server.services.homelab;
 in
 {
-  options.device.server.homelab = {
+  options.device.server.services.homelab = {
     mosquitto = {
       enable = mkEnableOption "Mosquitto";
     };

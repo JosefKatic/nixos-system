@@ -10,7 +10,7 @@
       enable = true;
       ensureDatabases =
         [ ]
-        ++ lib.optionals config.device.server.homelab.dns.enable [
+        ++ lib.optionals config.device.server.services.dns.enable [
           "pdns"
           "powerdnsadmin"
         ]
@@ -22,10 +22,13 @@
         ]
         ++ lib.optionals config.device.server.hydra.enable [
           "hydra"
+        ]
+        ++ lib.optionals config.device.server.services.sure.enable [
+          "sure"
         ];
       ensureUsers =
         [ ]
-        ++ lib.optionals config.device.server.homelab.dns.enable [
+        ++ lib.optionals config.device.server.services.dns.enable [
           {
             name = "pdns";
             ensureDBOwnership = true;
@@ -57,6 +60,12 @@
             ensureClauses = {
               createrole = true;
             };
+          }
+        ]
+        ++ lib.optionals config.device.server.services.sure.enable [
+          {
+            name = "sure";
+            ensureDBOwnership = true;
           }
         ];
     };

@@ -1,13 +1,10 @@
 {
-  self,
   config,
   lib,
-  options,
   pkgs,
   ...
 }:
 let
-  inherit (config.device) home;
   cfg = config.device.desktop.wayland.displayManager.gdm;
   logoFile = pkgs.fetchurl {
     url = "https://joka00.dev/assets/logo__dark.svg";

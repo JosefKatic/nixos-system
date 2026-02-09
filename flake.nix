@@ -99,6 +99,9 @@
     hydra = {
       url = "github:NixOS/hydra";
     };
+    sure = {
+      url = "git+file:///home/joka/develop/sure";
+    };
   };
   outputs =
     {

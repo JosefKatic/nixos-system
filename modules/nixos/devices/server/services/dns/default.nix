@@ -5,7 +5,7 @@
   ...
 }:
 {
-  options.device.server.homelab.dns = {
+  options.device.server.services.dns = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -13,7 +13,7 @@
     };
   };
 
-  config = lib.mkIf config.device.server.homelab.dns.enable {
+  config = lib.mkIf config.device.server.services.dns.enable {
     sops.secrets =
       let
         pdnsAdminUser = config.users.users.powerdnsadmin.name;
@@ -66,7 +66,7 @@
       };
       pdns-recursor = {
         enable = true;
-        yaml-settings = {
+        settings = {
           logging = {
             disable_syslog = false;
             timestamp = true;
@@ -109,6 +109,33 @@
           SESSION_CACHELIB = cachelib.simple.SimpleCache()
         '';
       };
+      traefik = {
+        dynamicConfigOptions = {
+          http = {
+            routers.pdns = {
+              rule = "Host(`dns.joka00.dev`)";
+              entryPoints = [ "websecure" ];
+              service = "dns";
+              tls = {
+                certResolver = "cloudflare";
+                domains = [
+                  {
+                    main = "joka00.dev";
+                    sans = [ "*.joka00.dev" ];
+                  }
+                ];
+              };
+            };
+            services.dns = {
+              loadBalancer.servers = [
+                {
+                  url = "http://localhost:9191";
+                }
+              ];
+            };
+          };
+        };
+      };
     };
     systemd.services.powerdns-admin = {
       serviceConfig = {
@@ -116,10 +143,9 @@
       };
     };
     networking.firewall.allowedTCPPorts = [
-      8000
-      9191
       5300
       53
+      9191
     ];
     networking.firewall.allowedUDPPorts = [
       53

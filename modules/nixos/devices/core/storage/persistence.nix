@@ -57,6 +57,10 @@ in
       "/persist" = {
         directories = [
           "/var/log"
+          {
+            directory = "/var/lib/private";
+            mode = "700";
+          }
           "/var/lib/nixos"
           "/var/lib/systemd"
           "/var/lib/docker"
@@ -64,6 +68,7 @@ in
           "/srv"
           "/etc/nixos"
           "/etc/NetworkManager/system-connections"
+
         ];
       };
     };

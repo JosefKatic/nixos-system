@@ -5,10 +5,10 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption;
-  cfg = config.device.server.homelab;
+  cfg = config.device.server.services.homelab;
 in
 {
-  options.device.server.homelab = {
+  options.device.server.services.homelab = {
     matter = {
       enable = mkEnableOption "Matter";
     };
@@ -18,11 +18,6 @@ in
     networking.firewall.allowedTCPPorts = [ 5580 ];
     services.matter-server = {
       enable = true;
-    };
-    environment.persistence = mkIf config.device.core.storage.enablePersistence {
-      "/persist" = {
-        directories = [ "/var/lib/private/matter-server" ];
-      };
     };
   };
 }

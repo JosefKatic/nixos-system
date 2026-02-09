@@ -12,10 +12,10 @@ let
   days = n: toString (n * 60 * 60 * 24);
 in
 {
-  options.device.server.hosting.website = {
+  options.device.server.services.hosting.website = {
     enable = lib.mkEnableOption "Enable website hosting";
   };
-  config = lib.mkIf config.device.server.hosting.website.enable {
+  config = lib.mkIf config.device.server.services.hosting.website.enable {
     services.nginx = {
       enable = true;
       virtualHosts = {

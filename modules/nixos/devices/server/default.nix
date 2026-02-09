@@ -6,9 +6,6 @@
       ./auth
       ./cache
       ./databases
-      ./git
-      ./homelab
-      ./hosting
       ./hydra
       ./minecraft
       ./proxy
