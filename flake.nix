@@ -100,7 +100,8 @@
       url = "github:NixOS/hydra";
     };
     sure = {
-      url = "git+file:///home/joka/develop/sure";
+      url = "github:JosefKatic/sure/nix-support";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   outputs =
