@@ -2,15 +2,14 @@
   self,
   config,
   lib,
-  pkgs,
   ...
 }:
 let
-  inherit (lib) types mkIf mkEnableOption;
-  cfg = config.device.server.homelab;
+  inherit (lib) mkIf mkEnableOption;
+  cfg = config.device.server.services.homelab;
 in
 {
-  options.device.server.homelab = {
+  options.device.server.services.homelab = {
     zigbee2mqtt = {
       enable = mkEnableOption "Zigbee2mqtt";
     };
@@ -20,7 +19,7 @@ in
     services.zigbee2mqtt = {
       enable = cfg.zigbee2mqtt.enable;
       settings = {
-        homeassistant.enabled = config.device.server.homelab.homeassistant.enable;
+        homeassistant.enabled = config.device.server.services.homelab.homeassistant.enable;
         permit_join = false;
         mqtt = {
           base_topic = "zigbee2mqtt";

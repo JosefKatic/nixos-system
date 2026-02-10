@@ -154,7 +154,15 @@ in
                 entryPoints = "websecure";
                 rule = "Host(`auth.joka00.dev`)";
                 service = "authelia";
-                tls.certResolver = "cloudflare";
+                tls = {
+                  certResolver = "cloudflare";
+                  domains = [
+                    {
+                      main = "auth.joka00.dev";
+                      sans = [ "*.auth.joka00.dev" ];
+                    }
+                  ];
+                };
               };
             };
           };

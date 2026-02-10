@@ -7,7 +7,7 @@
   user = {
     name = "joka";
   };
-  theme = rec {
+  theme = {
     colorscheme.source = "#BC9A55";
   };
 }

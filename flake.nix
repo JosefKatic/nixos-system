@@ -99,6 +99,10 @@
     hydra = {
       url = "github:NixOS/hydra";
     };
+    sure = {
+      url = "github:JosefKatic/sure/nix-support";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     {

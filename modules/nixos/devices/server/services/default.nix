@@ -1,7 +1,11 @@
 {
   imports = [
+    ./dns
     ./fail2ban
-    ./frigate.nix
+    ./gatus
     ./headscale
+    ./homelab
+    ./hosting
+    ./sure
   ];
 }

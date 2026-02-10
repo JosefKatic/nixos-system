@@ -10,6 +10,7 @@
     inputs.nix-minecraft.nixosModules.minecraft-servers
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.sops-nix.nixosModules.sops
+    inputs.sure.nixosModules.default
     ./boot
     ./core
     ./desktop

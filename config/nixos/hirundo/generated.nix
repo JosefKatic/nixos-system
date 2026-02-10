@@ -24,13 +24,11 @@
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = false;
-  device.server.git.daemon.enable = false;
-  device.server.git.cgit.enable = false;
-  device.server.hosting.website.enable = false;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = false;
   device.server.services.fail2ban.enable = false;
   device.server.services.headscale.enable = false;
+  device.server.services.hosting.website.enable = false;
   device.server.teamspeak.enable = false;
   device.utils.kdeconnect.enable = true;
   device.utils.virtualisation.docker.enable = true;

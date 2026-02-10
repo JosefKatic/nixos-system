@@ -1,6 +1,0 @@
-{
-  imports = [
-    ./daemon.nix
-    ./cgit
-  ];
-}

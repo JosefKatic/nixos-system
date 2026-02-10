@@ -27,7 +27,7 @@ in
       traefik = {
         dynamicConfigOptions = {
           http = {
-            lldap = {
+            services = {
               lldap.loadBalancer.servers = [
                 {
                   url = "http://localhost:17170";
@@ -39,7 +39,15 @@ in
                 entryPoints = "websecure";
                 rule = "Host(`ldap.auth.joka00.dev`)";
                 service = "lldap";
-                tls.certResolver = "cloudflare";
+                tls = {
+                  certResolver = "cloudflare";
+                  domains = [
+                    {
+                      main = "auth.joka00.dev";
+                      sans = [ "*.auth.joka00.dev" ];
+                    }
+                  ];
+                };
               };
             };
           };

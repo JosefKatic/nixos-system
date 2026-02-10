@@ -29,7 +29,7 @@ in
       port = lib.mkOption {
         type = lib.types.int;
         default = 8080;
-        description = "The port of the headsc ale server";
+        description = "The port of the headscale server";
       };
     };
   };

@@ -5,10 +5,10 @@
 }:
 let
   inherit (lib) mkIf mkEnableOption;
-  cfg = config.device.server.homelab;
+  cfg = config.device.server.services.homelab;
 in
 {
-  options.device.server.homelab = {
+  options.device.server.services.homelab = {
     homeassistant = {
       enable = mkEnableOption "Home Assistant";
     };
@@ -35,26 +35,36 @@ in
             entryPoints = [ "websecure" ];
             rule = "Host(`hass.joka00.dev`)";
             service = "homeAssistant";
-            tls.certResolver = "cloudflare";
+            tls = {
+              certResolver = "cloudflare";
+              domains = [
+                {
+                  main = "joka00.dev";
+                  sans = [ "*.joka00.dev" ];
+                }
+              ];
+            };
           };
         };
       };
     };
     virtualisation.oci-containers = {
       backend = "podman";
-      containers.homeassistant = {
-        image = "ghcr.io/home-assistant/home-assistant:stable";
-        volumes = [
-          "home-assistant:/config"
-          "/run/dbus:/run/dbus:ro"
-        ];
-        environment.TZ = "Europe/Prague";
-        extraOptions = [
-          "--network=host"
-          "--cap-add=NET_RAW"
-          "--cap-add=NET_ADMIN"
-          "--device=/dev/ttyACM0:/dev/ttyACM0"
-        ];
+      containers = {
+        homeassistant = {
+          image = "ghcr.io/home-assistant/home-assistant:stable";
+          volumes = [
+            "home-assistant:/config"
+            "/run/dbus:/run/dbus:ro"
+          ];
+          environment.TZ = "Europe/Prague";
+          extraOptions = [
+            "--network=host"
+            "--cap-add=NET_RAW"
+            "--cap-add=NET_ADMIN"
+            "--device=/dev/ttyACM0:/dev/ttyACM0"
+          ];
+        };
       };
     };
     networking.firewall.interfaces."eno2".allowedTCPPorts = [

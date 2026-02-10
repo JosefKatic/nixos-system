@@ -23,15 +23,13 @@
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = false;
-  device.server.git.daemon.enable = false;
-  device.server.git.cgit.enable = false;
-  device.server.hosting.website.enable = true;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = false;
   device.server.proxy.traefik.enable = true;
   device.server.teamspeak.enable = false;
   device.server.services.fail2ban.enable = true;
   device.server.services.headscale.enable = false;
+  device.server.services.hosting.website.enable = true;
   device.utils.kdeconnect.enable = false;
   device.utils.virtualisation.docker.enable = false;
   device.utils.virtualisation.libvirtd.enable = false;
