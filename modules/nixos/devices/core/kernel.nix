@@ -10,14 +10,18 @@ in
 {
   options = {
     device.core.kernel = lib.mkOption {
-      default = if config.device.type == "server" then "linux" else "linux_zen";
+      default = if config.device.type == "server" then "default" else "zen";
       type = lib.types.str;
     };
   };
 
   config = {
     boot = {
-      kernelPackages = pkgs.linuxKernel.packages.${config.device.core.kernel};
+      kernelPackages =
+        if config.device.core.kernel == "default" then
+          pkgs.linuxPackages
+        else
+          pkgs."linuxPackages_${config.device.core.kernel}";
       extraModulePackages = lib.mkIf (config.device.type != "server") (
         with config.boot.kernelPackages; [ ddcci-driver ]
       );
