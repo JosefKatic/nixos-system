@@ -11,6 +11,7 @@
     "sr_mod"
     "ddcci_backlight"
   ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   device.type = "desktop";
   device.virtualized = false;
   device.boot.quietboot.enable = true;

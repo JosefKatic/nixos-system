@@ -7,6 +7,7 @@
     "virtio_blk"
     "virtio_pci"
   ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   device.type = "laptop";
   device.virtualized = false;
   device.boot.quietboot.enable = true;
