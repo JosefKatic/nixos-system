@@ -80,22 +80,22 @@
     # Server
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprsplit = {
-      url = "github:shezdy/hyprsplit";
-      inputs.hyprland.follows = "hyprland";
-    };
-    hypridle = {
-      url = "github:hyprwm/hypridle";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprlock = {
-      url = "github:hyprwm/hyprlock";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # hyprsplit = {
+    #   url = "github:shezdy/hyprsplit";
+    #   inputs.hyprland.follows = "hyprland";
+    # };
+    # hypridle = {
+    #   url = "github:hyprwm/hypridle";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # hyprlock = {
+    #   url = "github:hyprwm/hyprlock";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     hydra = {
       url = "github:NixOS/hydra";
     };

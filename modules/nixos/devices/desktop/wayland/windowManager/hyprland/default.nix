@@ -18,8 +18,8 @@ in
     programs.hyprland = {
       enable = true;
       withUWSM = true;
-      package = pkgs.inputs.hyprland.default;
-      portalPackage = pkgs.inputs.hyprland.xdg-desktop-portal-hyprland;
+      package = pkgs.hyprland;
+      portalPackage = pkgs.xdg-desktop-portal-hyprland;
     };
     security.pam.services.hyprlock.text = "auth include login";
   };

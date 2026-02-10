@@ -21,7 +21,7 @@ in
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       plugins = [
-        pkgs.inputs.hyprsplit.default
+        pkgs.hyprlandPlugins.hyprsplit
       ];
       settings = {
         plugin = {
