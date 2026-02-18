@@ -25,7 +25,7 @@ in
         };
       };
       traefik = {
-        dynamic.files.pocket-id-lldap.settings = {
+        dynamicConfigOptions = {
           http = {
             services = {
               lldap.loadBalancer.servers = [

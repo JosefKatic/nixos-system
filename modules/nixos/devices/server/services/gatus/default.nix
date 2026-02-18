@@ -86,7 +86,7 @@
         };
       };
       traefik = {
-        dynamic.files.gatus.settings = {
+        dynamicConfigOptions = {
           http = {
             routers.gatus = {
               rule = "Host(`health.joka00.dev`)";

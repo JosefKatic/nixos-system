@@ -48,7 +48,7 @@ in
 
     services.traefik = lib.mkIf cfg.traefik.enable {
       enable = true;
-      static.settings = {
+      staticConfigOptions = {
         tls = {
           options = {
             modern = {
@@ -117,7 +117,10 @@ in
         api.dashboard = cfg.traefik.enableDashboard;
       };
 
-      dynamic.dir = "/var/lib/traefik/dynamic";
+      dynamicConfigOptions = {
+        http.routers = { };
+        http.services = { };
+      };
     };
     systemd.services.traefik.environment = lib.mkIf cfg.traefik.localResolverEnabled {
       CF_API_EMAIL_FILE = secrets.cd_api_email.path;

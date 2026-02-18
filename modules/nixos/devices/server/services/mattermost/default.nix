@@ -49,7 +49,7 @@ in
         };
       };
       traefik = {
-        dynamic.files.mattermost.settings = {
+        dynamicConfigOptions = {
           http = {
             routers.chat = {
               rule = "Host(`chat.joka00.dev`)";

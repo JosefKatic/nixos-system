@@ -23,7 +23,7 @@ in
       };
     };
     services.traefik = {
-      dynamic.files.homeassistant.settings = {
+      dynamicConfigOptions = {
         http = {
           services.homeAssistant.loadBalancer.servers = [
             {

@@ -125,7 +125,7 @@ in
       };
 
       traefik = {
-        dynamic.files.authelia.settings = {
+        dynamicConfigOptions = {
           http = {
             middlewares = {
               authelia = {

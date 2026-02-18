@@ -71,7 +71,7 @@ in
         dynmapCfg = cfg.files."dynmap/configuration.txt".value;
       in
       {
-        dynamic.files.gtnh-dynmap.settings = {
+        dynamicConfigOptions = {
           http = {
             services = {
               mc-dynmap.loadBalancer.servers = [

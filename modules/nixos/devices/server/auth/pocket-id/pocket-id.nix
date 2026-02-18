@@ -36,7 +36,7 @@ in
         };
       };
       traefik = {
-        dynamic.files.pocket-id.settings = {
+        dynamicConfigOptions = {
           http = {
             middlewares = {
               pocket-id = {

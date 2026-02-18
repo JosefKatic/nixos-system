@@ -23,7 +23,7 @@
       };
 
       traefik = {
-        dynamic.files.cache.settings = {
+        dynamicConfigOptions = {
           http = {
             services = {
               cache.loadBalancer.servers = [

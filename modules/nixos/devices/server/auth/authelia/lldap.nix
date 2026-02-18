@@ -25,7 +25,7 @@ in
         };
       };
       traefik = {
-        dynamic.files.authelia-lldap.settings = {
+        dynamicConfigOptions = {
           http = {
             services = {
               lldap.loadBalancer.servers = [

@@ -39,7 +39,7 @@
       };
 
       traefik = {
-        dynamic.files.hydra.settings = {
+        dynamicConfigOptions = {
           http = {
             services = {
               hydra.loadBalancer.servers = [

@@ -44,7 +44,7 @@
         puma.workers = 2;
       };
       traefik = {
-        dynamic.files.sure.settings = {
+        dynamicConfigOptions = {
           http = {
             services.sure.loadBalancer.servers = [
               {

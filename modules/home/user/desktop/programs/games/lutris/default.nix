@@ -39,7 +39,7 @@ in
     home.packages = with pkgs; [
       (lutris.override {
         extraPkgs = p: [
-          p.wineWowPackages.staging
+          p.wineWow64Packages.staging
           p.pixman
           p.libjpeg
           p.zenity

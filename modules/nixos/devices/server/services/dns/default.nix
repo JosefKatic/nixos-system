@@ -110,7 +110,7 @@
         '';
       };
       traefik = {
-        dynamic.files.dns.settings = {
+        dynamicConfigOptions = {
           http = {
             routers.pdns = {
               rule = "Host(`dns.joka00.dev`)";
