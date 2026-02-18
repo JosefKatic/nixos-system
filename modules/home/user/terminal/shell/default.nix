@@ -1,5 +1,7 @@
 {
   imports = [
+    ./bash
+    ./blesh
     ./fish
   ];
 }

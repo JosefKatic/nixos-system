@@ -30,4 +30,6 @@
   user.services.media.playerctl.enable = true;
   user.services.system.udiskie.enable = true;
   user.terminal.shell.fish.enable = true;
+  user.terminal.shell.bash.enable = true;
+  user.terminal.shell.blesh.enable = true;
 }

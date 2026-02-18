@@ -22,6 +22,7 @@ in
       pkgs.ntfs3g
       pkgs.kitty
       pkgs.home-manager
+      pkgs.devenv
     ];
 
     programs.nh = {

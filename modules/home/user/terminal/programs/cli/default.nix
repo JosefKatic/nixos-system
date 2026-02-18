@@ -34,10 +34,21 @@ in
 
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      ControlPath ~/.ssh/sockets/%r@%h:%p
-    '';
+    enableDefaultConfig = false;
     matchBlocks = {
+      # Default values (formerly from enableDefaultConfig), plus our ControlPath
+      "*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/sockets/%r@%h:%p";
+        controlPersist = "no";
+      };
       net = {
         host = lib.concatStringsSep " " (
           lib.flatten (

@@ -17,12 +17,8 @@ in
       let
         packageNames = map (p: p.pname or p.name or null) config.home.packages;
         hasPackage = name: lib.any (x: x == name) packageNames;
-        hasRipgrep = hasPackage "ripgrep";
         hasExa = hasPackage "eza";
         hasSpecialisationCli = hasPackage "specialisation";
-        hasNeovim = config.programs.neovim.enable;
-        hasEmacs = config.programs.emacs.enable;
-        hasNeomutt = config.programs.neomutt.enable;
         hasKitty = config.programs.kitty.enable;
       in
       {
@@ -50,16 +46,6 @@ in
           ls = mkIf hasExa "eza";
           exa = mkIf hasExa "eza";
 
-          e = mkIf hasEmacs "emacsclient -t";
-
-          vrg = mkIf (hasNeomutt && hasRipgrep) "nvimrg";
-          vim = mkIf hasNeovim "nvim";
-          vi = vim;
-          v = vim;
-
-          mutt = mkIf hasNeomutt "neomutt";
-          m = mutt;
-
           cik = mkIf hasKitty "clone-in-kitty --type os-window";
           ck = cik;
         };
@@ -70,8 +56,6 @@ in
         functions = {
           # Disable greeting
           fish_greeting = "";
-          # Grep using ripgrep and pass to nvim
-          nvimrg = mkIf (hasNeomutt && hasRipgrep) "nvim -q (rg --vimgrep $argv | psub)";
         };
         interactiveShellInit =
           # Open command buffer in vim when alt+e is pressed

@@ -20,12 +20,12 @@
   device.desktop.wayland.displayManager.gdm.enable = false;
   device.desktop.wayland.windowManager.hyprland.enable = false;
   device.desktop.wayland.windowManager.sway.enable = false;
-  device.server.auth.authelia.enable = true;
-  device.server.auth.authelia.lldapEnable = true;
-  device.server.auth.authelia.redisEnable = true;
+  device.server.auth.pocket-id.enable = true;
+  device.server.auth.pocket-id.lldapEnable = true;
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = true;
+  device.server.databases.postgresql.enableRemoteAccess = true;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = false;
   device.server.proxy.traefik.enable = true;
@@ -34,6 +34,7 @@
   device.server.services.headscale.enable = false;
   device.server.services.hosting.website.enable = false;
   device.server.services.gatus.enable = true;
+  device.server.services.mattermost.enable = true;
   device.server.teamspeak.enable = false;
   device.utils.kdeconnect.enable = false;
   device.utils.virtualisation.docker.enable = false;

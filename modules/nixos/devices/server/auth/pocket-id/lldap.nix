@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.device.server.auth.authelia;
+  cfg = config.device.server.auth.pocket-id;
 in
 {
   config = lib.mkIf cfg.lldapEnable {
@@ -25,7 +25,7 @@ in
         };
       };
       traefik = {
-        dynamic.files.authelia-lldap.settings = {
+        dynamic.files.pocket-id-lldap.settings = {
           http = {
             services = {
               lldap.loadBalancer.servers = [

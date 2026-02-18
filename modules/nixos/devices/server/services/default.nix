@@ -6,6 +6,7 @@
     ./headscale
     ./homelab
     ./hosting
+    ./mattermost
     ./sure
   ];
 }

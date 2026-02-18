@@ -42,7 +42,7 @@ in
     };
 
     services.traefik = {
-      dynamicConfigOptions = {
+      dynamic.files.website.settings = {
         http = {
           routers.website = {
             rule = "Host(`joka00.dev`)";

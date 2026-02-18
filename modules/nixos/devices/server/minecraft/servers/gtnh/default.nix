@@ -30,6 +30,7 @@ in
         max-tick-time = -1; # unlimited
         level-seed = "4387134805370572030";
         enable-rcon = true;
+        flying = 1;
         "rcon.password" = "@RCON_PASSWORD@";
         "rcon.port" = 24472;
       };
@@ -70,7 +71,7 @@ in
         dynmapCfg = cfg.files."dynmap/configuration.txt".value;
       in
       {
-        dynamicConfigOptions = {
+        dynamic.files.gtnh-dynmap.settings = {
           http = {
             services = {
               mc-dynmap.loadBalancer.servers = [

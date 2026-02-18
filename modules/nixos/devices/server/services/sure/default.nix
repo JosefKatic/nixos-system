@@ -17,25 +17,38 @@
         group = "root";
         mode = "0400";
       };
+      sure-db-pass = {
+        sopsFile = "${self}/secrets/services/homelab/secrets.yaml";
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
     };
 
     services = {
       sure = {
         enable = true;
         secretKeyBaseFile = config.sops.secrets.sure-rails-secret.path;
+        port = 3002;
         environment = {
           APP_DOMAIN = "finance.joka00.dev";
         };
-        database.createLocally = true;
-        redis.createLocally = true;
+        database = {
+          passwordFile = config.sops.secrets.sure-db-pass.path;
+          createLocally = true;
+        };
+        redis = {
+          createLocally = true;
+          port = 6380;
+        };
         puma.workers = 2;
       };
       traefik = {
-        dynamicConfigOptions = {
+        dynamic.files.sure.settings = {
           http = {
             services.sure.loadBalancer.servers = [
               {
-                url = "http://localhost:3000";
+                url = "http://localhost:3002";
               }
             ];
             routers.sure = {

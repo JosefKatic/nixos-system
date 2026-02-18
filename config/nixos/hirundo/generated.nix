@@ -13,6 +13,7 @@
   device.core.network.services.enableNetworkManager = true;
   device.core.network.services.enableResolved = true;
   device.core.securityRules.enable = true;
+  device.core.shells.bash.enable = true;
   device.core.shells.fish.enable = true;
   device.core.shells.zsh.enable = false;
   device.desktop.gamemode.enable = true;

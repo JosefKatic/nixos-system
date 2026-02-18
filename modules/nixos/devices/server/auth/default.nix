@@ -1,5 +1,6 @@
 {
   imports = [
     ./authelia
+    ./pocket-id
   ];
 }

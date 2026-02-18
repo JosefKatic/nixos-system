@@ -100,7 +100,7 @@
       url = "github:NixOS/hydra";
     };
     sure = {
-      url = "github:JosefKatic/sure/nix-support";
+      url = "github:JosefKatic/sure/processor-fixes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

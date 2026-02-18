@@ -77,7 +77,7 @@ in
       };
 
       traefik = {
-        dynamicConfigOptions = {
+        dynamic.files.headscale.settings = {
           http = {
             services = {
               vpn.loadBalancer.servers = [

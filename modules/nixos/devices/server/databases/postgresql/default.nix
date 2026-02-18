@@ -3,11 +3,34 @@
   lib,
   ...
 }:
+let
+  cfg = config.device.server.databases.postgresql;
+in
 {
-  options.device.server.databases.postgresql.enable = lib.mkEnableOption "Enable postgresql";
+  options.device.server.databases.postgresql = {
+    enable = lib.mkEnableOption "Enable postgresql";
+    enableRemoteAccess = lib.mkEnableOption "Allow PostgreSQL access from the local network (no SSL; fine for LAN)";
+  };
+
   config = lib.mkIf config.device.server.databases.postgresql.enable {
+    networking.firewall.allowedTCPPorts = lib.mkIf cfg.enableRemoteAccess [
+      config.services.postgresql.settings.port
+    ];
+
     services.postgresql = {
       enable = true;
+      enableTCPIP = lib.mkDefault cfg.enableRemoteAccess;
+
+      authentication = lib.mkIf cfg.enableRemoteAccess (
+        lib.mkForce ''
+          # TYPE  DATABASE        USER            ADDRESS                 METHOD
+          local   all             all                                     trust
+          host    all             all             127.0.0.1/32            trust
+          host    all             all             10.34.70.0/23          scram-sha-256
+          host    all             all             ::1/128                 trust
+        ''
+      );
+
       ensureDatabases =
         [ ]
         ++ lib.optionals config.device.server.services.dns.enable [

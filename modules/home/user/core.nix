@@ -43,20 +43,11 @@
     };
     programs.direnv = {
       enable = true;
+      silent = true;
       nix-direnv.enable = true;
       enableZshIntegration = true;
+      enableFishIntegration = true;
     };
-
-    # nix = {
-    #   package = pkgs.lixPackageSets.stable.lix;
-    #   settings = {
-    #     experimental-features = [
-    #       "nix-command"
-    #       "flakes"
-    #     ];
-    #     warn-dirty = false;
-    #   };
-    # };
 
     systemd.user.startServices = "sd-switch";
 
