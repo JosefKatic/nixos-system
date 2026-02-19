@@ -30,7 +30,7 @@ in
         max-tick-time = -1; # unlimited
         level-seed = "4387134805370572030";
         enable-rcon = true;
-        flying = 1;
+        allow-flight = true;
         "rcon.password" = "@RCON_PASSWORD@";
         "rcon.port" = 24472;
       };
@@ -39,6 +39,7 @@ in
         serverutilities = "${package}/lib/serverutilities";
         "serverutilities/serverutilities.cfg" = ./configs/serverutilities.cfg;
         "config/JourneyMapServer/world.cfg" = ./configs/journeymap-world.cfg;
+        "config/GregTech/Pollution.cfg" = ./configs/gregtech-pollution.cfg;
         # "config/SpecialMobs.cfg" = ./configs/SpecialMobs.cfg;
         "dynmap/configuration.txt" = {
           format = pkgs.formats.yaml { };

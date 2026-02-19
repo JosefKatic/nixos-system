@@ -23,6 +23,7 @@
   device.server.auth.pocket-id.enable = true;
   device.server.auth.pocket-id.lldapEnable = true;
   device.server.cache.enable = false;
+  device.server.cloudflared.enable = true;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = true;
   device.server.databases.postgresql.enableRemoteAccess = true;

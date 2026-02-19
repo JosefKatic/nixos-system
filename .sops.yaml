@@ -43,6 +43,12 @@ creation_rules:
           - *regulus
         pgp:
           - *joka
+  - path_regex: secrets/services/cloudflared/secrets.json
+    key_groups:
+      - age:
+          - *regulus
+        pgp:
+          - *joka
   - path_regex: secrets/services/headscale/secrets.ya?ml$
     key_groups:
       - age:
@@ -78,13 +84,5 @@ creation_rules:
           - *strix
           - *falco
           - *regulus
-        pgp:
-          - *joka
-  - path_regex: secrets/services/nix-configurator/secrets.ya?ml$
-    key_groups:
-      - age:
-          - *falco
-          - *strix
-          - *hirundo
         pgp:
           - *joka
