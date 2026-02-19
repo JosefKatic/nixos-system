@@ -23,7 +23,7 @@ in
       serverProperties = {
         level-type = "rwg";
         difficulty = 2;
-        spawn-protection = 1;
+        spawn-protection = 0;
         server-port = 25565;
         online-mode = true;
         white-list = true;
