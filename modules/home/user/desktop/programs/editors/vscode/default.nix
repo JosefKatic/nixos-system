@@ -29,5 +29,10 @@ in
       };
       mutableExtensionsDir = true;
     };
+    home.packages = [
+      pkgs.code-cursor
+      pkgs.cursor-cli
+      pkgs.claude-code
+    ];
   };
 }
