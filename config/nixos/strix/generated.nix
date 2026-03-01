@@ -10,25 +10,29 @@
   device.core.network.domain = "clients.joka00.dev";
   device.core.network.services.enableAvahi = false;
   device.core.network.services.enableNetworkManager = false;
-  device.core.network.services.enableResolved = false;
+  device.core.network.services.enableResolved = true;
   device.core.securityRules.enable = true;
   device.core.shells.fish.enable = true;
   device.core.shells.zsh.enable = false;
   device.desktop.gamemode.enable = false;
-  device.desktop.wayland.desktopManager.gnome.enable = false;
-  device.desktop.wayland.desktopManager.plasma6.enable = false;
   device.desktop.wayland.displayManager.gdm.enable = false;
   device.desktop.wayland.windowManager.hyprland.enable = false;
-  device.desktop.wayland.windowManager.sway.enable = false;
   device.server.cache.enable = true;
   device.server.databases.mysql.enable = true;
   device.server.databases.postgresql.enable = true;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = true;
   device.server.proxy.traefik.enable = true;
+  device.server.proxy.traefik.acmeDomains = [
+    {
+      domain = "joka00.dev";
+      extraDomainNames = [ "*.joka00.dev" ];
+    }
+  ];
   device.server.teamspeak.enable = true;
   device.server.services.fail2ban.enable = true;
-  device.server.services.headscale.enable = false;
+  device.server.services.netbird.client.enable = true;
+  device.server.services.netbird.server.enable = true;
   device.server.services.hosting.website.enable = false;
   device.utils.kdeconnect.enable = false;
   device.utils.virtualisation.docker.enable = false;

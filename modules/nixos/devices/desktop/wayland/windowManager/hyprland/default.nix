@@ -14,7 +14,10 @@ in
 
   config = lib.mkIf cfg.enable {
     qt.enable = true;
-    environment.systemPackages = with pkgs; [ kdePackages.qtdeclarative ];
+    environment.systemPackages = with pkgs; [
+      kdePackages.qtdeclarative
+    ];
+    environment.pathsToLink = [ "/share/icons" ];
     programs.hyprland = {
       enable = true;
       withUWSM = true;

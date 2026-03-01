@@ -66,7 +66,6 @@ in
                 rule = "Host(`auth.joka00.dev`)";
                 service = "pocket-id";
                 tls = {
-                  certResolver = "cloudflare";
                   domains = [
                     {
                       main = "auth.joka00.dev";

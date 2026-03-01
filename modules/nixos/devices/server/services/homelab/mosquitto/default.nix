@@ -41,7 +41,7 @@ in
     };
 
     sops.secrets.mqtt_server = {
-      sopsFile = "${self}/secrets/services/mosquitto/secrets.yaml";
+      sopsFile = "${self}/secrets/services/homelab/secrets.yaml";
       owner = "mosquitto";
     };
   };

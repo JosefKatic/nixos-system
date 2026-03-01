@@ -17,14 +17,13 @@
   device.core.shells.fish.enable = true;
   device.core.shells.zsh.enable = false;
   device.desktop.gamemode.enable = true;
-  device.desktop.wayland.desktopManager.gnome.enable = false;
-  device.desktop.wayland.desktopManager.plasma6.enable = false;
   device.desktop.wayland.displayManager.gdm.enable = true;
   device.desktop.wayland.windowManager.hyprland.enable = true;
-  device.desktop.wayland.windowManager.sway.enable = false;
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = false;
+  device.server.services.netbird.client.enable = true;
+  device.server.services.netbird.client.ui.enable = true;
   device.server.hydra.enable = false;
   device.server.minecraft.enable = false;
   device.server.services.fail2ban.enable = false;
@@ -32,7 +31,7 @@
   device.server.services.hosting.website.enable = false;
   device.server.teamspeak.enable = false;
   device.utils.kdeconnect.enable = true;
-  device.utils.virtualisation.docker.enable = true;
+  device.utils.virtualisation.docker.enable = false;
   device.utils.virtualisation.libvirtd.enable = false;
   device.utils.virtualisation.podman.enable = true;
 }

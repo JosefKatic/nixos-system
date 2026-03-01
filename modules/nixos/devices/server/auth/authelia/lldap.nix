@@ -40,7 +40,6 @@ in
                 rule = "Host(`ldap.auth.joka00.dev`)";
                 service = "lldap";
                 tls = {
-                  certResolver = "cloudflare";
                   domains = [
                     {
                       main = "auth.joka00.dev";

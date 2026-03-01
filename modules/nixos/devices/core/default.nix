@@ -31,6 +31,7 @@
     enableNTS = true;
     servers = [ "time.cloudflare.com" ];
   };
+
   # DON"T CHANGE THIS!
   system.stateVersion = lib.mkDefault "24.05";
 }

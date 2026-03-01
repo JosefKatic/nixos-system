@@ -14,37 +14,90 @@ in
     enableDashboard = lib.mkEnableOption "Enable Traefik dashboard.";
     defaultCertResolver = lib.mkOption {
       type = lib.types.str;
-      default = "letsencrypt";
-      description = "Default certificate resolver for Traefik.";
+      default = "cloudflare";
+      description = "Default certificate resolver for Traefik (used only when acmeDomains is empty).";
     };
-    localResolverEnabled = lib.mkEnableOption "Enable local DNS resolver for ACME DNS-01 challenges.";
+    localResolverEnabled = lib.mkEnableOption "Enable local DNS resolver for ACME DNS-01 challenges (used only when acmeDomains is empty).";
+    acmeDomains = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            domain = lib.mkOption {
+              type = lib.types.str;
+              description = "Primary domain for the ACME certificate.";
+            };
+            extraDomainNames = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "Additional SANs (e.g. wildcard *.example.com).";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "Domains to request via NixOS ACME (DNS challenge). Certs are passed to Traefik and usable by other services.";
+    };
+    acmeEmail = lib.mkOption {
+      type = lib.types.str;
+      default = "josef@joka00.dev";
+      description = "Email used for ACME registration.";
+    };
   };
 
   config = lib.mkIf cfg.traefik.enable {
     environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
       "/persist" = {
-        directories = [ "/var/lib/traefik" ];
+        directories = [
+          "/var/lib/traefik"
+        ]
+        ++ lib.optionals (cfg.traefik.acmeDomains != [ ]) [ "/var/lib/acme" ];
       };
     };
     sops.secrets =
       let
         traefikUser = config.users.users.traefik.name;
         traefikGroup = config.users.users.traefik.group;
+        acmeGroup = "acme";
+        useCloudflare = cfg.traefik.localResolverEnabled || (cfg.traefik.acmeDomains != [ ]);
       in
-      lib.mkIf cfg.traefik.localResolverEnabled {
+      lib.mkIf useCloudflare {
         cd_api_email = {
           sopsFile = "${self}/secrets/services/proxy/secrets.yaml";
           owner = traefikUser;
-          group = traefikGroup;
+          group = if cfg.traefik.acmeDomains != [ ] then acmeGroup else traefikGroup;
           mode = "0440";
         };
         cd_api_token = {
           sopsFile = "${self}/secrets/services/proxy/secrets.yaml";
           owner = traefikUser;
-          group = traefikGroup;
+          group = if cfg.traefik.acmeDomains != [ ] then acmeGroup else traefikGroup;
           mode = "0440";
         };
       };
+
+    security.acme = lib.mkIf (cfg.traefik.acmeDomains != [ ]) {
+      acceptTerms = true;
+      defaults = {
+        email = cfg.traefik.acmeEmail;
+        dnsProvider = "cloudflare";
+        dnsResolver = "1.1.1.1:53";
+        credentialFiles = {
+          CF_DNS_API_TOKEN_FILE = secrets.cd_api_token.path;
+        };
+        group = "acme";
+      };
+      certs = lib.listToAttrs (
+        map (e: {
+          name = e.domain;
+          value = {
+            domain = e.domain;
+            extraDomainNames = e.extraDomainNames;
+          };
+        }) cfg.traefik.acmeDomains
+      );
+    };
+
+    users.users.traefik.extraGroups = lib.mkIf (cfg.traefik.acmeDomains != [ ]) [ "acme" ];
 
     services.traefik = lib.mkIf cfg.traefik.enable {
       enable = true;
@@ -79,7 +132,8 @@ in
           websecure = {
             address = ":443";
             asDefault = true;
-            http.tls.certResolver = cfg.traefik.defaultCertResolver;
+            # When using NixOS ACME (acmeDomains), certs come from file provider; no resolver.
+            http.tls.certResolver = lib.mkIf (cfg.traefik.acmeDomains == [ ]) cfg.traefik.defaultCertResolver;
           };
         };
 
@@ -89,10 +143,11 @@ in
           format = "json";
         };
 
-        certificatesResolvers = {
+        # Built-in ACME resolvers only when not using NixOS ACME (acmeDomains).
+        certificatesResolvers = lib.mkIf (cfg.traefik.acmeDomains == [ ]) {
           letsencrypt = {
             acme = {
-              email = "josef@joka00.dev";
+              email = cfg.traefik.acmeEmail;
               storage = "${config.services.traefik.dataDir}/acme.json";
               httpChallenge = {
                 entryPoint = "web";
@@ -101,7 +156,7 @@ in
           };
           cloudflare = lib.mkIf cfg.traefik.localResolverEnabled {
             acme = {
-              email = "josef@joka00.dev";
+              email = cfg.traefik.acmeEmail;
               storage = "${config.services.traefik.dataDir}/acme.json";
               dnsChallenge = {
                 provider = "cloudflare";
@@ -117,17 +172,33 @@ in
         api.dashboard = cfg.traefik.enableDashboard;
       };
 
-      dynamicConfigOptions = {
-        http.routers = { };
-        http.services = { };
+      dynamicConfigOptions = lib.mkMerge [
+        {
+          http.routers = { };
+          http.services = { };
+        }
+        (lib.mkIf (cfg.traefik.acmeDomains != [ ]) {
+          tls.certificates = map (e: {
+            certFile = "${config.security.acme.certs."${e.domain}".directory}/fullchain.pem";
+            keyFile = "${config.security.acme.certs."${e.domain}".directory}/key.pem";
+          }) cfg.traefik.acmeDomains;
+        })
+      ];
+    };
+
+    systemd.services.traefik = lib.mkIf cfg.traefik.enable {
+      after = lib.mkIf (cfg.traefik.acmeDomains != [ ]) (
+        map (e: "acme-${e.domain}.service") cfg.traefik.acmeDomains
+      );
+      serviceConfig.ReadOnlyPaths = lib.mkIf (cfg.traefik.acmeDomains != [ ]) (
+        map (e: config.security.acme.certs."${e.domain}".directory) cfg.traefik.acmeDomains
+      );
+      environment = lib.mkIf (cfg.traefik.localResolverEnabled || (cfg.traefik.acmeDomains != [ ])) {
+        CF_API_EMAIL_FILE = secrets.cd_api_email.path;
+        CF_DNS_API_TOKEN_FILE = secrets.cd_api_token.path;
       };
     };
-    systemd.services.traefik.environment = lib.mkIf cfg.traefik.localResolverEnabled {
-      CF_API_EMAIL_FILE = secrets.cd_api_email.path;
-      CF_DNS_API_TOKEN_FILE = secrets.cd_api_token.path;
-    };
     networking.firewall.allowedTCPPorts = [
-      80
       443
       389
       8083

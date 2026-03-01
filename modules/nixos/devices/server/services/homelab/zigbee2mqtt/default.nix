@@ -46,7 +46,7 @@ in
     };
 
     sops.secrets.mqtt_client = {
-      sopsFile = "${self}/secrets/services/mosquitto/secrets.yaml";
+      sopsFile = "${self}/secrets/services/homelab/secrets.yaml";
       owner = "zigbee2mqtt";
     };
     environment.persistence = mkIf config.device.core.storage.enablePersistence {

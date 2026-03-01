@@ -25,6 +25,13 @@
 
     # Core
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
+    # nixpkgs-patchrowdsec-module-rework.url = "github:TornaxO7/nixpkgs/crowdsec";
+    nixpkgs-patch-netbird = {
+      url = "https://github.com/NixOS/nixpkgs/pull/487367.diff";
+      flake = false;
+    };
+
     hardware.url = "github:nixos/nixos-hardware";
     sops-nix = {
       url = "github:mic92/sops-nix";
@@ -68,6 +75,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # NUR
     nur.url = "github:nix-community/NUR";
 
@@ -75,32 +87,15 @@
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
-    crowdsec-module-rework.url = "github:TornaxO7/nixpkgs/crowdsec";
 
     # Server
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
 
-    # hyprland = {
-    #   url = "github:hyprwm/Hyprland";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # hyprsplit = {
-    #   url = "github:shezdy/hyprsplit";
-    #   inputs.hyprland.follows = "hyprland";
-    # };
-    # hypridle = {
-    #   url = "github:hyprwm/hypridle";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # hyprlock = {
-    #   url = "github:hyprwm/hyprlock";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     hydra = {
       url = "github:NixOS/hydra";
     };
     sure = {
-      url = "github:JosefKatic/sure/processor-fixes";
+      url = "git+file:///home/joka/develop/sure";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -110,6 +105,7 @@
       flake-parts,
       nur,
       treefmt-nix,
+      nixpkgs-patcher,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -121,10 +117,11 @@
         { system, pkgs, ... }:
         let
           treefmtEval = treefmt-nix.lib.evalModule pkgs ./treefmt.nix;
+          nixpkgs-patched = nixpkgs-patcher.lib.patchNixpkgs { inherit inputs system; };
         in
         {
           formatter = treefmtEval.config.build.wrapper;
-          _module.args.pkgs = import nixpkgs {
+          _module.args.pkgs = import nixpkgs-patched {
             inherit system;
             config = {
               allowUnfree = true;

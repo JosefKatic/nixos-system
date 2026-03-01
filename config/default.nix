@@ -4,12 +4,12 @@
   ...
 }:
 let
-  inherit (inputs) nixpkgs hm;
+  inherit (inputs) nixpkgs nixpkgs-patcher hm;
 in
 {
   flake =
     let
-      lib = nixpkgs.lib // hm.lib;
+      lib = nixpkgs-patcher.lib // hm.lib;
       hosts = import "${self}/config/nixos/hosts.nix";
     in
     {
@@ -17,11 +17,13 @@ in
       nixosConfigurations =
         let
           specialArgs = { inherit inputs self; };
-          inherit (nixpkgs.lib) nixosSystem;
+          inherit (lib) nixosSystem;
           deviceConfigurations = map (host: {
             name = host;
             value = nixosSystem {
               specialArgs = specialArgs;
+              nixpkgsPatcher.nixpkgs = nixpkgs;
+              nixpkgsPatcher.inputs = inputs;
               modules =
                 let
                   hostConfig = import "${self}/config/nixos/${host}/default.nix";

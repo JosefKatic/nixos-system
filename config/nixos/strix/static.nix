@@ -13,19 +13,6 @@
   device.boot.quietboot.enable = true;
   device.boot.uefi.enable = false;
   device.boot.uefi.secureboot = false;
-  device.core.network.static.enable = true;
-  device.core.network.static.interfaces."ens3".ipv4.addresses = [
-    {
-      address = "193.41.237.192";
-      prefixLength = 24;
-    }
-  ];
-  device.core.network.static.defaultGateway.address = "193.41.237.1";
-  device.core.network.static.defaultGateway.interface = "ens3";
-  device.core.network.static.nameservers = [
-    "100.64.0.4"
-    "1.1.1.1"
-  ];
   device.core.storage.enablePersistence = true;
   device.core.storage.otherDrives = [ ];
   device.core.storage.swapFile.enable = true;

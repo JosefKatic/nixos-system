@@ -19,35 +19,41 @@ in
             in
             "match:namespace ^(${elements})$";
 
-          ignorealpha = [
-            "waybar,blur on"
-            "waybar,ignore_alpha 0"
-            "notifications,ignore_alpha 0,blur on"
-            "osd"
-            "system-menu"
-            "anyrun"
+          lowopacity = [
+            "quickshell:notifications:overlay"
+            "quickshell:osd"
           ];
 
-          layers = ignorealpha ++ [
-            "bar"
-            "gtk-layer-shell"
+          highopacity = [
+            "vicinae"
+            "osd"
+            "logout_dialog"
+            "quickshell:sidebar"
+          ];
+
+          blurred = lib.concatLists [
+            lowopacity
+            highopacity
+            [ "quickshell:bar" ]
+          ];
+
+          xray = [
+            "quickshell:bar"
+          ];
+
+          no_anim = [
+            "quickshell:notifications:overlay"
+            "quickshell:sidebar"
           ];
         in
         [
-          "${toRegex layers}, blur on"
-          "${
-            toRegex [
-              "bar"
-              "gtk-layer-shell"
-            ]
-          }, xray on"
-          "${
-            toRegex [
-              "bar"
-              "gtk-layer-shell"
-            ]
-          }, ignore_alpha 0.2"
-          "${toRegex (ignorealpha ++ [ "music" ])}, ignore_alpha 0.5"
+          "${toRegex blurred}, blur true"
+          "${toRegex xray}, xray true"
+          "${toRegex lowopacity}, ignore_alpha 0.2"
+          "${toRegex highopacity}, ignore_alpha 0.5"
+          "match:namespace ^quickshell.*$, blur_popups true"
+          "${toRegex [ "quickshell:bar" ]}, ignore_alpha 0.1"
+          "${toRegex no_anim}, no_anim true"
         ];
 
       # window rules

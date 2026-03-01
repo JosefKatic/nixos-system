@@ -37,7 +37,6 @@
                 entryPoints = "websecure";
                 rule = "Host(`cache.joka00.dev`)";
                 service = "cache";
-                tls.certResolver = "letsencrypt";
               };
             };
           };

@@ -48,7 +48,6 @@ in
             rule = "Host(`joka00.dev`)";
             entryPoints = [ "websecure" ];
             service = "website";
-            tls.certResolver = "letsencrypt";
           };
           services.website = {
             loadBalancer.servers = [

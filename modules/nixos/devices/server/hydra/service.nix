@@ -53,7 +53,6 @@
                 entryPoints = "websecure";
                 rule = "Host(`hydra.joka00.dev`)";
                 service = "hydra";
-                tls.certResolver = "letsencrypt";
               };
             };
           };

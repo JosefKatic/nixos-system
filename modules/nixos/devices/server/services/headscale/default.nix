@@ -91,7 +91,6 @@ in
                 entryPoints = "websecure";
                 rule = "Host(`vpn.joka00.dev`)";
                 service = "vpn";
-                tls.certResolver = "letsencrypt";
               };
             };
           };

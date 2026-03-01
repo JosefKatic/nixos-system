@@ -4,9 +4,6 @@
   pkgs,
   ...
 }:
-let
-  cfg = config.device.core;
-in
 {
   options = {
     device.core.kernel = lib.mkOption {

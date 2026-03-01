@@ -56,7 +56,6 @@ in
               entryPoints = [ "websecure" ];
               service = "chat";
               tls = {
-                certResolver = "cloudflare";
                 domains = [
                   {
                     main = "joka00.dev";

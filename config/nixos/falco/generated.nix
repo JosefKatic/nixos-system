@@ -15,11 +15,8 @@
   device.core.shells.fish.enable = true;
   device.core.shells.zsh.enable = false;
   device.desktop.gamemode.enable = false;
-  device.desktop.wayland.desktopManager.gnome.enable = false;
-  device.desktop.wayland.desktopManager.plasma6.enable = false;
   device.desktop.wayland.displayManager.gdm.enable = false;
   device.desktop.wayland.windowManager.hyprland.enable = false;
-  device.desktop.wayland.windowManager.sway.enable = false;
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = false;

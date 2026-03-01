@@ -93,7 +93,6 @@
               entryPoints = [ "websecure" ];
               service = "gatus";
               tls = {
-                certResolver = "cloudflare";
                 domains = [
                   {
                     main = "joka00.dev";

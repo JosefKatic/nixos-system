@@ -86,7 +86,14 @@ in
                 entryPoints = "websecure";
                 rule = "Host(`mc.joka00.dev`)";
                 service = "mc-dynmap";
-                tls.certResolver = "letsencrypt";
+                tls = {
+                  domains = [
+                    {
+                      main = "joka00.dev";
+                      sans = [ "*.joka00.dev" ];
+                    }
+                  ];
+                };
               };
             };
           };

@@ -23,6 +23,12 @@
         group = "root";
         mode = "0400";
       };
+      sure-env = {
+        sopsFile = "${self}/secrets/services/homelab/secrets.yaml";
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
     };
 
     services = {
@@ -42,6 +48,7 @@
           port = 6380;
         };
         puma.workers = 2;
+        environmentFile = config.sops.secrets.sure-env.path;
       };
       traefik = {
         dynamicConfigOptions = {
@@ -56,7 +63,6 @@
               rule = "Host(`finance.joka00.dev`)";
               service = "sure";
               tls = {
-                certResolver = "cloudflare";
                 domains = [
                   {
                     main = "joka00.dev";

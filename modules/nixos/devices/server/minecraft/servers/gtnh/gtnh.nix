@@ -23,7 +23,7 @@ let
     println(attributes.get(Name.CLASS_PATH).split(' ').collect{"$pathPrefix/$it"}.join(':'))
   '';
 in
-stdenvNoCC.mkDerivation {
+stdenvNoCC.mkDerivation rec {
   pname = "gt-new-horizons";
   version = "2.8.4";
 
@@ -67,4 +67,5 @@ stdenvNoCC.mkDerivation {
       --run 'mods="$(find "$(realpath --relative-to="$PWD" '$out'/lib/mods)" -name "*.jar" | tr "\n" ",")"' \
       --append-flags "@$out/lib/java9args.txt -cp $mainJar:$class_path $main_class nogui --mods \"\$mods\""
   '';
+  meta.mainProgram = "${pname}";
 }

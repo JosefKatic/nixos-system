@@ -66,6 +66,10 @@
       };
       pdns-recursor = {
         enable = true;
+        dns.address = [
+          "10.34.70.20"
+          "127.0.0.1"
+        ];
         settings = {
           logging = {
             disable_syslog = false;
@@ -117,7 +121,6 @@
               entryPoints = [ "websecure" ];
               service = "dns";
               tls = {
-                certResolver = "cloudflare";
                 domains = [
                   {
                     main = "joka00.dev";

@@ -25,7 +25,8 @@
   user.desktop.wayland.hyprland.settings.mod = "SUPER";
   user.desktop.wayland.hyprland.plugins.hyprsplit.enable = true;
   user.desktop.wayland.hyprland.plugins.hyprsplit.numberOfWorkspaces = 10;
-  user.desktop.wayland.waybar.enable = true;
+  user.desktop.wayland.waybar.enable = false;
+  user.desktop.wayland.shell.enable = true;
   user.desktop.gtk.enable = true;
   user.services.media.playerctl.enable = true;
   user.services.system.udiskie.enable = true;

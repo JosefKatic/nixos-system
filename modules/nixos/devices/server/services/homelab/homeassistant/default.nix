@@ -15,13 +15,6 @@ in
   };
 
   config = mkIf cfg.homeassistant.enable {
-    environment.persistence = lib.mkIf config.device.core.storage.enablePersistence {
-      "/persist" = {
-        directories = [
-          "/var/lib/containers"
-        ];
-      };
-    };
     services.traefik = {
       dynamicConfigOptions = {
         http = {
@@ -36,7 +29,6 @@ in
             rule = "Host(`hass.joka00.dev`)";
             service = "homeAssistant";
             tls = {
-              certResolver = "cloudflare";
               domains = [
                 {
                   main = "joka00.dev";

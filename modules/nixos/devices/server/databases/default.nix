@@ -2,5 +2,6 @@
   imports = [
     ./mysql
     ./postgresql
+    ./mongodb
   ];
 }

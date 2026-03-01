@@ -6,6 +6,14 @@
 }:
 let
   cfg = config.user.desktop.wayland.hyprland;
+  toggle =
+    program:
+    let
+      prog = builtins.substring 0 14 program;
+    in
+    "pkill ${prog} || uwsm app -- ${program}";
+
+  runOnce = program: "pgrep ${program} || uwsm app -- ${program}";
 in
 {
   options.user.desktop.wayland.hyprland.settings = {
@@ -75,14 +83,14 @@ in
 
             # utility
             # terminal
-            "$mod, Q, exec,kitty"
-            "$mod, B, exec,${config.user.desktop.programs.browsers.default}"
+            "$mod, Q, exec,uwsm-app -- kitty"
+            "$mod, B, exec,uwsm-app -- ${config.user.desktop.programs.browsers.default}"
             # logout menu
             "$mod, Escape, exec, ${pkgs.wlogout} -p layer-shell"
             # lock screen
             "$mod, backspace, exec, loginctl lock-session"
             # select area to perform OCR on
-            "$mod, O, exec, run-as-service wl-ocr"
+            "$mod, O, exec, ${runOnce "wl-ocr"}"
 
             # move focus
             "$mod, left, movefocus, l"
@@ -113,7 +121,7 @@ in
 
         bindr = [
           # launcher
-          "$mod, A, exec, pkill .anyrun-wrapped || run-as-service anyrun"
+          "$mod, A, global, caelestia:launcher"
         ];
 
         bindl = [

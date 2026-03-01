@@ -22,6 +22,8 @@
   device.core.network.static.defaultGateway.address = "10.34.70.61";
   device.core.network.static.defaultGateway.interface = "eno2";
   device.core.network.static.nameservers = [
+    "127.0.0.1"
+    "10.34.70.20"
     "10.34.70.61"
     "100.100.100.100"
   ];

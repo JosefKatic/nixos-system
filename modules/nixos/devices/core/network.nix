@@ -2,12 +2,10 @@
   config,
   lib,
   pkgs,
-  options,
   ...
 }:
 let
   cfg = config.device.core;
-  hasOptinPersistence = config.environment.persistence ? "/persist";
 in
 {
   options.device.core = {
@@ -53,10 +51,10 @@ in
       domain = cfg.network.domain;
       firewall = {
         enable = true;
-        trustedInterfaces = [ "tailscale0" ];
+        trustedInterfaces = [ "wt0" ];
         checkReversePath = "loose";
         allowedUDPPorts = [
-          config.services.tailscale.port
+          config.services.netbird.clients.default.port
         ];
       };
       networkmanager = lib.mkIf cfg.network.services.enableNetworkManager {
@@ -75,11 +73,6 @@ in
         };
     systemd.network.wait-online.enable = lib.mkIf cfg.network.services.enableNetworkManager false;
     services = {
-      tailscale = {
-        enable = true;
-        extraUpFlags = [ "--login-server https://vpn.joka00.dev" ];
-        useRoutingFeatures = if config.device.type == "server" then "server" else "client";
-      };
       avahi = {
         enable = cfg.network.services.enableAvahi;
         nssmdns4 = true;

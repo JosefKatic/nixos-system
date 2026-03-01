@@ -16,8 +16,6 @@ in
       teamspeak6 = {
         enable = true;
         openFirewall = true;
-        defaultVoicePort = 29102;
-        fileTransferPort = 39102;
       };
     };
 

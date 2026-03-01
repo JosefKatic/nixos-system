@@ -7,6 +7,7 @@
     ./homelab
     ./hosting
     ./mattermost
+    ./netbird
     ./sure
   ];
 }

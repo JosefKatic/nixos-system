@@ -155,7 +155,6 @@ in
                 rule = "Host(`auth.joka00.dev`)";
                 service = "authelia";
                 tls = {
-                  certResolver = "cloudflare";
                   domains = [
                     {
                       main = "auth.joka00.dev";

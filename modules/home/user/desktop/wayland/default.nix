@@ -1,6 +1,7 @@
 {
   imports = [
     ./hyprland
+    ./shell
     ./waybar
   ];
 }
