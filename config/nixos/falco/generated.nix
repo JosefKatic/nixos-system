@@ -26,6 +26,7 @@
   device.server.teamspeak.enable = false;
   device.server.services.fail2ban.enable = true;
   device.server.services.headscale.enable = false;
+  device.server.services.netbird.client.enable = true;
   device.server.services.hosting.website.enable = true;
   device.utils.kdeconnect.enable = false;
   device.utils.virtualisation.docker.enable = false;

@@ -26,6 +26,8 @@
   device.server.proxy.traefik.enable = true;
   device.server.services.fail2ban.enable = false;
   device.server.services.headscale.enable = false;
+  device.server.services.netbird.client.enable = true;
+  device.server.services.netbird.client.ui.enable = true;
   device.server.services.hosting.website.enable = false;
   device.server.teamspeak.enable = false;
   device.utils.kdeconnect.enable = true;
