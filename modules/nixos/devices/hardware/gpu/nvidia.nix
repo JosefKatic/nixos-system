@@ -31,7 +31,11 @@ in
         modesetting.enable = true;
         open = true;
         nvidiaSettings = true;
-        package = pkgs.linuxKernel.packages.${config.device.core.kernel}.nvidia_x11;
+        package =
+          if config.device.core.kernel == "default" then
+            pkgs.linuxPackages.nvidia_x11
+          else
+            pkgs."linuxPackages_${config.device.core.kernel}".nvidia_x11;
       };
     };
   };
