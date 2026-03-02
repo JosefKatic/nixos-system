@@ -25,10 +25,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = [
+      pkgs.inputs.self.wl-ocr
+    ];
     wayland.windowManager.hyprland.settings =
       let
         grimblast = "${pkgs.grimblast}/bin/grimblast";
-        playerctl = "${pkgs.playerctl}/bin/playerctl";
         brillo = "${pkgs.brillo}/bin/brillo";
         wpctl = "${pkgs.wireplumber}/bin/wpctl";
         screenshotarea = "hyprctl keyword animation 'fadeOut,0,0,default'; ${grimblast} --notify copysave area; hyprctl keyword animation 'fadeOut,1,4,default'";
@@ -86,11 +88,11 @@ in
             "$mod, Q, exec,uwsm-app -- kitty"
             "$mod, B, exec,uwsm-app -- ${config.user.desktop.programs.browsers.default}"
             # logout menu
-            "$mod, Escape, exec, ${pkgs.wlogout} -p layer-shell"
+            "$mod, Escape, global, caelestia:session"
             # lock screen
             "$mod, backspace, exec, loginctl lock-session"
             # select area to perform OCR on
-            "$mod, O, exec, ${runOnce "wl-ocr"}"
+            "$mod, =, exec, ${runOnce "wl-ocr"}"
 
             # move focus
             "$mod, left, movefocus, l"
@@ -100,8 +102,8 @@ in
 
             # screenshot
             # stop animations while screenshotting; makes black border go away
-            ", Print, exec, ${screenshotarea}"
-            "$mod SHIFT, R, exec, ${screenshotarea}"
+            ", Print, global, caelestia:screenshotFreezeClip"
+            "$mod SHIFT, R, global, caelestia:screenshotFreezeClip"
 
             "CTRL, Print, exec, ${grimblast} --notify --cursor copysave output"
             "$mod SHIFT CTRL, R, exec, ${grimblast} --notify --cursor copysave output"
@@ -126,9 +128,9 @@ in
 
         bindl = [
           # media controls
-          ", XF86AudioPlay, exec, ${playerctl} play-pause"
-          ", XF86AudioPrev, exec,  ${playerctl} previous"
-          ", XF86AudioNext, exec,  ${playerctl} next"
+          ", XF86AudioPlay, global, caelestia:mediaToggle"
+          ", XF86AudioPrev, global, caelestia:mediaPrev"
+          ", XF86AudioNext, global, caelestia:mediaNext"
 
           # volume
           ", XF86AudioMute, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -141,8 +143,8 @@ in
           ", XF86AudioLowerVolume, exec, ${wpctl} set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 6%-"
 
           # backlight
-          ", XF86MonBrightnessUp, exec, ${brillo} -q -u 300000 -A 5"
-          ", XF86MonBrightnessDown, exec, ${brillo} -q -u 300000 -U 5"
+          ", XF86MonBrightnessUp, global, caelestia:brightnessUp"
+          ", XF86MonBrightnessDown, global, caelestia:brightnessDown"
         ];
       };
   };

@@ -5,8 +5,8 @@
   ...
 }:
 let
-  inherit (config.programs.hyprland.settings.general) gaps_in gaps_out border_size;
-  inherit (config.programs.hyprland.settings.decoration) rounding;
+  inherit (config.wayland.windowManager.hyprland.settings.general) gaps_in gaps_out border_size;
+  inherit (config.wayland.windowManager.hyprland.settings.decoration) rounding;
   inherit (builtins) concatStringsSep;
   inherit (lib.lists) flatten;
 
