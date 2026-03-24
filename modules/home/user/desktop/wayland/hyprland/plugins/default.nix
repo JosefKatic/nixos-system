@@ -1,3 +1,6 @@
 {
-  imports = [ ./hyprsplit ];
+  imports = [
+    ./hyprsplit.nix
+    ./hyprexpo.nix
+  ];
 }

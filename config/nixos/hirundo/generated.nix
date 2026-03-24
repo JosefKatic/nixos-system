@@ -19,6 +19,7 @@
   device.desktop.gamemode.enable = true;
   device.desktop.wayland.displayManager.gdm.enable = true;
   device.desktop.wayland.windowManager.hyprland.enable = true;
+  device.desktop.wayland.windowManager.niri.enable = true;
   device.server.cache.enable = false;
   device.server.databases.mysql.enable = false;
   device.server.databases.postgresql.enable = false;

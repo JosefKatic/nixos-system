@@ -38,11 +38,12 @@ in
         }
 
         box.main {
-          background: #131313;
-          border: 2px solid #ffffff;
+          background: #${colors.base.default};
+          border: 2px solid #${colors.primary.default};
           border-radius: 4px;
           margin: 8px;
           padding: 16px 16px;
+          color: #${colors.on_background.default};
         }
 
         .matches {
@@ -87,8 +88,8 @@ in
 
         .match:selected,
         .match:hover {
-          background: #ffffff;
-          color: #1b1b1b;
+          background: #${colors.primary.default};
+          color: #${colors.on_primary.default};
         }
 
         list > .plugin {

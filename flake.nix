@@ -32,6 +32,11 @@
       flake = false;
     };
 
+    nixpkgs-patch-materialyou = {
+      url = "https://github.com/NixOS/nixpkgs/pull/495481.diff";
+      flake = false;
+    };
+
     hardware.url = "github:nixos/nixos-hardware";
     sops-nix = {
       url = "github:mic92/sops-nix";
@@ -61,6 +66,11 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
 
+    nix4nvchad = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     matugen = {
       url = "github:InioX/Matugen";
     };
@@ -78,6 +88,13 @@
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.caelestia-cli.follows = "caelestia-cli";
+    };
+
+    caelestia-cli = {
+      url = "github:caelestia-dots/cli";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.caelestia-shell.follows = "caelestia-shell";
     };
 
     # NUR

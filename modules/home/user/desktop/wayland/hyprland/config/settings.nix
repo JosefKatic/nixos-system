@@ -4,27 +4,39 @@
   ...
 }:
 let
-  inherit (config.theme.colorscheme) colors mode;
   cfg = config.user.desktop.wayland.hyprland;
 in
 {
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland.settings =
       let
-        active = "0xaa${lib.removePrefix "#" colors.primary.default}";
-        inactive = "0xaa${lib.removePrefix "#" colors.surface_bright.default}";
+        active = "rgb($primary)";
+        inactive = "rgb($surfaceBright)";
         pointer = config.home.pointerCursor;
       in
       {
-        "$mod" = cfg.settings.mod;
-        env = [
-          "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+        "$hypr" = "~/.config/hypr";
+        "$hl" = "$hypr/hyprland";
+        "$cConf" = "~/.config/caelestia";
+        exec = [
+          "cp -L --no-preserve=mode --update=none $hypr/scheme/default.conf $hypr/scheme/current.conf"
+          "mkdir -p $cConf && touch -a $cConf/hypr-vars.conf"
+          "mkdir -p $cConf && touch -a $cConf/hypr-user.conf"
         ];
-
         exec-once = [
           # set cursor for HL itself
           "hyprctl setcursor ${pointer.name} ${toString pointer.size}"
-          "systemctl --user start clight"
+          "caelestia-shell -d"
+        ];
+        source = [
+          "~/.config/hypr/scheme/current.conf"
+          "$hypr/scheme/current.conf"
+          "$cConf/hypr-vars.conf"
+          "$cConf/hypr-user.conf"
+        ];
+        "$mod" = cfg.settings.mod;
+        env = [
+          "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
         ];
 
         general = {
@@ -110,6 +122,7 @@ in
         };
 
         misc = {
+          middle_click_paste = false;
           # disable auto polling for config file changes
           disable_autoreload = true;
 

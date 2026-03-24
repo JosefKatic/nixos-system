@@ -5,8 +5,10 @@
     ./cli
     ./git
     ./gpg
+    ./neovim
     ./nix
     ./starship
+    ./tmux
     ./xdg
   ];
 }

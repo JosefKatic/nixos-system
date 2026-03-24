@@ -27,27 +27,14 @@ in
 
     gtk = {
       enable = true;
-      font = {
-        name = "Fira Sans";
-        package = pkgs.fira;
-        size = 12;
-      };
-      theme = {
-        name = "materia-theme";
-        package = pkgs.materia-theme;
-      };
-      iconTheme = {
-        name = "Papirus";
-        package = pkgs.papirus-icon-theme;
-      };
     };
 
     services.xsettingsd = {
       enable = true;
-      settings = {
-        "Net/ThemeName" = "${config.gtk.theme.name}";
-        "Net/IconThemeName" = "${config.gtk.iconTheme.name}";
-      };
+      # settings = {
+      # "Net/ThemeName" = "${config.gtk.theme.name}";
+      # "Net/IconThemeName" = "${config.gtk.iconTheme.name}";
+      # };
     };
 
     home.packages = with pkgs; [

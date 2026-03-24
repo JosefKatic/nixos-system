@@ -106,6 +106,9 @@
         # nerdfonts
         nerd-fonts.iosevka
         nerd-fonts.fira-code
+
+        thunar
+        ranger
       ];
 
       persistence = {

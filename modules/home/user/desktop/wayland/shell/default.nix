@@ -1,4 +1,15 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  logoFile = pkgs.fetchurl {
+    url = "https://joka00.dev/assets/logo__dark.svg";
+    sha256 = "1xd5hfxlh0m5687mfxndyv18a2k6aq7njna4n5smn7f7ynal1i28";
+  };
+in
 {
   options.user.desktop.wayland.shell = {
     enable = lib.mkEnableOption "Enable Wayland desktop environment";
@@ -7,10 +18,39 @@
     programs.caelestia = {
       enable = true;
       systemd = {
-        enable = true; # if you prefer starting from your compositor
-        target = "graphical-session.target";
-        environment = [ ];
+        enable = false;
       };
+      settings = {
+        general = {
+          logo = logoFile;
+          apps = {
+            audio = [ "pwvucontrol" ];
+            browsers = [ "zen" ];
+            terminal = [ "kitty" ];
+            explorer = [
+              "thunar"
+              "ranger"
+            ];
+          };
+        };
+        bar = {
+          status = {
+            showAudio = true;
+            showBattery = true;
+          };
+          tray = {
+            compact = true;
+          };
+          workspaces.label = "";
+        };
+        osd.enableMicrophone = true;
+        services = {
+          useFahrenheit = false;
+          useTwelveHourClock = true;
+        };
+        utilities.toasts.nowPlaying = true;
+      };
+
       cli = {
         enable = true; # Also add caelestia-cli to path
         settings = {

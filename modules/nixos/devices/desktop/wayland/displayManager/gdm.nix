@@ -25,9 +25,6 @@ in
     services.xserver.enable = true;
     services.displayManager.gdm = {
       enable = true;
-      settings = {
-        greeter.IncludeAll = false;
-      };
     };
 
     programs.dconf.profiles.gdm.databases = [

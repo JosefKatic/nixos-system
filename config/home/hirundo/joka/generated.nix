@@ -18,11 +18,12 @@
   user.desktop.programs.productivity.proton.vpn.enable = true;
   user.desktop.programs.productivity.zathura.enable = true;
   user.desktop.services.kdeconnect.enable = true;
-  user.desktop.services.mako.enable = true;
+  user.desktop.services.mako.enable = false;
   user.desktop.services.polkit_agent.enable = true;
   user.desktop.services.rnnoise.enable = true;
   user.desktop.wayland.hyprland.enable = true;
   user.desktop.wayland.hyprland.settings.mod = "SUPER";
+  user.desktop.wayland.hyprland.plugins.hyprexpo.enable = true;
   user.desktop.wayland.hyprland.plugins.hyprsplit.enable = true;
   user.desktop.wayland.hyprland.plugins.hyprsplit.numberOfWorkspaces = 10;
   user.desktop.wayland.waybar.enable = false;
@@ -32,5 +33,5 @@
   user.services.system.udiskie.enable = true;
   user.terminal.shell.fish.enable = true;
   user.terminal.shell.bash.enable = true;
-  user.terminal.shell.blesh.enable = true;
+  user.terminal.shell.blesh.enable = false;
 }

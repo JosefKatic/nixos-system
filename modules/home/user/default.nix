@@ -12,6 +12,7 @@
     inputs.caelestia-shell.homeManagerModules.default
     inputs.matugen.nixosModules.default
     inputs.nix-index-db.homeModules.nix-index
+    inputs.nix4nvchad.homeManagerModules.default
     inputs.nur.modules.homeManager.default
     inputs.sops-nix.homeManagerModules.sops
   ];

@@ -100,16 +100,11 @@ in
             "$mod, up, movefocus, u"
             "$mod, down, movefocus, d"
 
-            # screenshot
-            # stop animations while screenshotting; makes black border go away
-            ", Print, global, caelestia:screenshotFreezeClip"
-            "$mod SHIFT, R, global, caelestia:screenshotFreezeClip"
+            ", Print, global, caelestia:screenshotFreeze"
+            "$mod SHIFT, R, global, caelestia:screenshotFreeze"
 
-            "CTRL, Print, exec, ${grimblast} --notify --cursor copysave output"
-            "$mod SHIFT CTRL, R, exec, ${grimblast} --notify --cursor copysave output"
-
-            "ALT, Print, exec, ${grimblast} --notify --cursor copysave screen"
-            "$mod SHIFT ALT, R, exec, ${grimblast} --notify --cursor copysave screen"
+            "CTRL, Print, global, caelestia:screenshotFreezeClip"
+            "$mod SHIFT CTRL, R, global, caelestia:screenshotFreezeClip"
 
             # cycle workspaces
             "$mod, bracketleft, workspace, m-1"
@@ -123,7 +118,7 @@ in
 
         bindr = [
           # launcher
-          "$mod, A, global, caelestia:launcher"
+          "SUPER, A, global, caelestia:launcher"
         ];
 
         bindl = [

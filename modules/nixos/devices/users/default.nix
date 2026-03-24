@@ -46,6 +46,7 @@ in
         "i2c"
         "adbusers"
         "dialout"
+
       ]
       ++ ifTheyExist [
         "minecraft"
