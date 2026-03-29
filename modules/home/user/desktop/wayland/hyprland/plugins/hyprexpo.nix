@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.user.desktop.wayland.hyprland.plugins.hyprsplit;
+  cfg = config.user.desktop.wayland.hyprland.plugins.hyprexpo;
 in
 {
   options.user.desktop.wayland.hyprland.plugins.hyprexpo = {

@@ -1,0 +1,2093 @@
+diff --git a/maintainers/maintainer-list.nix b/maintainers/maintainer-list.nix
+index 79912e3c2ab9..a04d61b302c0 100644
+--- a/maintainers/maintainer-list.nix
++++ b/maintainers/maintainer-list.nix
+@@ -24895,6 +24895,12 @@
+     github = "shunueda";
+     githubId = 62182668;
+   };
++  shuuri-labs = {
++    name = "Ashley Mensah";
++    email = "ashley@netbird.io";
++    github = "shuuri-labs";
++    githubId = 61762328;
++  };
+   shved = {
+     name = "Yury Shvedov";
+     email = "mestofel13@gmail.com";
+diff --git a/nixos/doc/manual/redirects.json b/nixos/doc/manual/redirects.json
+index 7bf88472148e..d4bc514e358a 100644
+--- a/nixos/doc/manual/redirects.json
++++ b/nixos/doc/manual/redirects.json
+@@ -1199,6 +1199,54 @@
+   "module-services-netbird-customization": [
+     "index.html#module-services-netbird-customization"
+   ],
++  "module-services-netbird-dns": [
++    "index.html#module-services-netbird-dns"
++  ],
++  "module-services-netbird-routing": [
++    "index.html#module-services-netbird-routing"
++  ],
++  "module-services-netbird-security": [
++    "index.html#module-services-netbird-security"
++  ],
++  "module-services-netbird-rosenpass": [
++    "index.html#module-services-netbird-rosenpass"
++  ],
++  "module-services-netbird-ssh": [
++    "index.html#module-services-netbird-ssh"
++  ],
++  "module-services-netbird-connection": [
++    "index.html#module-services-netbird-connection"
++  ],
++  "module-services-netbird-selfhosted": [
++    "index.html#module-services-netbird-selfhosted"
++  ],
++  "module-services-netbird-advanced": [
++    "index.html#module-services-netbird-advanced"
++  ],
++  "module-services-netbird-server-quickstart-coturn": [
++    "index.html#module-services-netbird-server-quickstart-coturn"
++  ],
++  "module-services-netbird-server-quickstart-relay": [
++    "index.html#module-services-netbird-server-quickstart-relay"
++  ],
++  "module-services-netbird-server-relay-vs-coturn": [
++    "index.html#module-services-netbird-server-relay-vs-coturn"
++  ],
++  "module-services-netbird-server-embedded-idp": [
++    "index.html#module-services-netbird-server-embedded-idp"
++  ],
++  "module-services-netbird-server-database": [
++    "index.html#module-services-netbird-server-database"
++  ],
++  "module-services-netbird-server-database-postgres": [
++    "index.html#module-services-netbird-server-database-postgres"
++  ],
++  "module-services-netbird-server-relay-config": [
++    "index.html#module-services-netbird-server-relay-config"
++  ],
++  "module-services-netbird-server-complete-example": [
++    "index.html#module-services-netbird-server-complete-example"
++  ],
+   "module-services-mosquitto": [
+     "index.html#module-services-mosquitto"
+   ],
+diff --git a/nixos/modules/services/networking/netbird.md b/nixos/modules/services/networking/netbird.md
+index a1aab94473a3..b4f1ac118ca8 100644
+--- a/nixos/modules/services/networking/netbird.md
++++ b/nixos/modules/services/networking/netbird.md
+@@ -89,3 +89,122 @@ See the option description for more information.
+ [environment](#opt-services.netbird.clients._name_.environment) allows you to pass additional configurations
+ through environment variables, but special care needs to be taken for overriding config location and
+ daemon address due [hardened](#opt-services.netbird.clients._name_.hardened) option.
++
++## DNS Configuration {#module-services-netbird-dns}
++
++NetBird provides DNS features for peer name resolution. You can customize or disable these:
++
++```nix
++{
++  services.netbird.clients.work = {
++    port = 51820;
++    dns.disable = true; # Completely disable NetBird DNS
++    dns.extraLabels = [ "myserver=10.0.0.5" ]; # Extra DNS labels
++    dns.routeInterval = 5000; # DNS route update interval (ms)
++  };
++}
++```
++
++## Routing and Firewall Controls {#module-services-netbird-routing}
++
++Fine-grained control over routing and firewall behavior:
++
++```nix
++{
++  services.netbird.clients.restricted = {
++    port = 51820;
++    routing.disableClientRoutes = true; # Don't accept routes from peers
++    routing.disableServerRoutes = true; # Don't advertise routes
++    routing.blockLanAccess = true; # Block LAN access from NetBird
++    routing.blockInbound = true; # Block all inbound connections
++    firewall.disableNetbird = true; # Disable NetBird's built-in firewall
++  };
++}
++```
++
++## Security Features {#module-services-netbird-security}
++
++### Rosenpass (Post-Quantum Cryptography) {#module-services-netbird-rosenpass}
++
++Enable post-quantum key exchange for enhanced security:
++
++```nix
++{
++  services.netbird.clients.secure = {
++    port = 51820;
++    rosenpass.enable = true;
++    rosenpass.permissive = true; # Allow connections with non-Rosenpass peers
++  };
++}
++```
++
++See [the NetBird docs](https://docs.netbird.io/how-to/enable-post-quantum-cryptography) for more information.
++
++### SSH Server {#module-services-netbird-ssh}
++
++NetBird includes a built-in SSH server for remote access:
++
++```nix
++{
++  services.netbird.clients.withSsh = {
++    port = 51820;
++    ssh.enable = true;
++    ssh.permitRoot = false;
++    ssh.sftp.enable = true;
++    ssh.portForwarding.local = true;
++    ssh.portForwarding.remote = false;
++  };
++}
++```
++
++## Connection Management {#module-services-netbird-connection}
++
++Configure connection behavior:
++
++```nix
++{
++  services.netbird.clients.lazy = {
++    port = 51820;
++    connection.lazy = true; # Connect only when traffic is detected
++    connection.networkMonitor = true; # Enable network monitoring
++    hostname = "my-custom-hostname"; # Custom peer hostname
++  };
++}
++```
++
++## Self-Hosted Deployments {#module-services-netbird-selfhosted}
++
++For self-hosted NetBird deployments, configure custom server URLs:
++
++```nix
++{
++  services.netbird.clients.selfhosted = {
++    port = 51820;
++    server.managementUrl = "https://management.example.com:443";
++    server.adminUrl = "https://admin.example.com:443";
++  };
++}
++```
++
++## Advanced Configuration {#module-services-netbird-advanced}
++
++Additional options for specific use cases:
++
++```nix
++{
++  services.netbird.clients.advanced = {
++    port = 51820;
++    mtu = 1280; # Custom MTU
++    externalIpMap = "192.168.1.100/32->203.0.113.50/32"; # NAT traversal
++    interfaceBlacklist = [
++      "docker0"
++      "br-*"
++    ]; # Exclude interfaces
++    debug.anonymizeLogs = true; # Anonymize logs
++    extraEnvironment = {
++      # Additional env vars
++      MY_CUSTOM_VAR = "value";
++    };
++  };
++}
++```
+diff --git a/nixos/modules/services/networking/netbird.nix b/nixos/modules/services/networking/netbird.nix
+index a718daaf9514..9442845e375b 100644
+--- a/nixos/modules/services/networking/netbird.nix
++++ b/nixos/modules/services/networking/netbird.nix
+@@ -42,6 +42,8 @@ let
+     attrsOf
+     bool
+     enum
++    int
++    ints
+     listOf
+     nullOr
+     package
+@@ -180,6 +182,190 @@ in
+                 '';
+               };
+ 
++              dns = {
++                disable = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Completely disable NetBird DNS features.";
++                };
++                extraLabels = mkOption {
++                  type = listOf str;
++                  default = [ ];
++                  example = [ "myserver=10.0.0.5" ];
++                  description = "Extra DNS labels for peer resolution (format: hostname=ip).";
++                };
++                routeInterval = mkOption {
++                  type = nullOr ints.positive;
++                  default = null;
++                  description = "DNS route update interval in milliseconds.";
++                };
++              };
++
++              firewall.disableNetbird = mkOption {
++                type = bool;
++                default = false;
++                description = "Disable NetBird's built-in firewall rules.";
++              };
++
++              routing = {
++                disableClientRoutes = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Don't accept routes advertised by peers.";
++                };
++                disableServerRoutes = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Don't advertise routes to peers.";
++                };
++                blockLanAccess = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Block access to local LAN from NetBird network.";
++                };
++                blockInbound = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Block all inbound connections from NetBird peers.";
++                };
++              };
++
++              externalIpMap = mkOption {
++                type = nullOr str;
++                default = null;
++                example = "192.168.1.100/32->203.0.113.50/32";
++                description = "Map external IPs for NAT traversal.";
++              };
++
++              mtu = mkOption {
++                type = nullOr ints.positive;
++                default = null;
++                example = 1280;
++                description = "Custom MTU for the WireGuard interface.";
++              };
++
++              interfaceBlacklist = mkOption {
++                type = listOf str;
++                default = [ ];
++                example = [
++                  "docker0"
++                  "br-*"
++                ];
++                description = "Network interfaces to exclude from routing.";
++              };
++
++              rosenpass = {
++                enable = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Enable Rosenpass post-quantum key exchange.";
++                };
++                permissive = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Allow connections with peers that don't support Rosenpass.";
++                };
++              };
++
++              ssh = {
++                enable = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Enable NetBird's built-in SSH server.";
++                };
++                permitRoot = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Allow root SSH access via NetBird.";
++                };
++                sftp.enable = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Enable SFTP subsystem.";
++                };
++                portForwarding = {
++                  local = mkOption {
++                    type = bool;
++                    default = false;
++                    description = "Enable local port forwarding.";
++                  };
++                  remote = mkOption {
++                    type = bool;
++                    default = false;
++                    description = "Enable remote port forwarding.";
++                  };
++                };
++                disableAuth = mkOption {
++                  type = bool;
++                  default = false;
++                  description = ''
++                    Disable SSH authentication.
++
++                    WARNING: This is a security risk. Only enable if you understand the implications.
++                  '';
++                };
++                jwtCacheTtl = mkOption {
++                  type = nullOr ints.positive;
++                  default = null;
++                  description = "JWT cache TTL in seconds.";
++                };
++              };
++
++              connection = {
++                lazy = mkOption {
++                  type = bool;
++                  default = false;
++                  description = "Connect only when traffic is detected.";
++                };
++                networkMonitor = mkOption {
++                  type = bool;
++                  default = true;
++                  description = "Enable network monitoring.";
++                };
++                preSharedKey = mkOption {
++                  type = nullOr path;
++                  default = null;
++                  description = "Path to WireGuard preshared key file.";
++                };
++              };
++
++              server = {
++                managementUrl = mkOption {
++                  type = nullOr str;
++                  default = null;
++                  example = "https://management.example.com:443";
++                  description = "Custom management server URL (self-hosted).";
++                };
++                adminUrl = mkOption {
++                  type = nullOr str;
++                  default = null;
++                  description = "Custom admin panel URL.";
++                };
++              };
++
++              hostname = mkOption {
++                type = nullOr str;
++                default = null;
++                description = "Custom hostname for this peer.";
++              };
++
++              debug.anonymizeLogs = mkOption {
++                type = bool;
++                default = false;
++                description = "Anonymize sensitive information in logs.";
++              };
++
++              extraEnvironment = mkOption {
++                type = attrsOf str;
++                default = { };
++                description = ''
++                  Additional environment variables to pass to the NetBird service.
++
++                  These are merged with the computed environment variables, with
++                  values from this option taking precedence on conflicts.
++                '';
++              };
++
+               interface = mkOption {
+                 type = str;
+                 default = "nb-${client.name}";
+@@ -208,6 +394,30 @@ in
+                   } // optionalAttrs (client.dns-resolver.address != null) {
+                     NB_DNS_RESOLVER_ADDRESS = "''${client.dns-resolver.address}:''${toString client.dns-resolver.port}";
+                   }
++                  // optionalAttrs client.dns.disable { NB_DISABLE_DNS = "true"; }
++                  // optionalAttrs (client.dns.extraLabels != []) { NB_EXTRA_DNS_LABELS = "..."; }
++                  // optionalAttrs (client.dns.routeInterval != null) { NB_DNS_ROUTER_INTERVAL = "..."; }
++                  // optionalAttrs client.firewall.disableNetbird { NB_DISABLE_FIREWALL = "true"; }
++                  // optionalAttrs client.routing.disableClientRoutes { NB_DISABLE_CLIENT_ROUTES = "true"; }
++                  // optionalAttrs client.routing.disableServerRoutes { NB_DISABLE_SERVER_ROUTES = "true"; }
++                  // optionalAttrs client.routing.blockLanAccess { NB_BLOCK_LAN_ACCESS = "true"; }
++                  // optionalAttrs client.routing.blockInbound { NB_BLOCK_INBOUND = "true"; }
++                  // optionalAttrs (client.externalIpMap != null) { NB_EXTERNAL_IP_MAP = "..."; }
++                  // optionalAttrs (client.interfaceBlacklist != []) { NB_INTERFACE_BLACKLIST = "..."; }
++                  // optionalAttrs client.rosenpass.enable { NB_ENABLE_ROSENPASS = "true"; }
++                  // optionalAttrs client.rosenpass.permissive { NB_ROSENPASS_PERMISSIVE = "true"; }
++                  // optionalAttrs client.ssh.enable { NB_ALLOW_SERVER_SSH = "true"; }
++                  // optionalAttrs client.ssh.permitRoot { NB_SSH_ALLOW_ROOT = "true"; }
++                  // optionalAttrs client.ssh.sftp.enable { NB_SSH_ALLOW_SFTP = "true"; }
++                  // optionalAttrs client.ssh.portForwarding.local { NB_SSH_ALLOW_LOCAL_PORT_FORWARDING = "true"; }
++                  // optionalAttrs client.ssh.portForwarding.remote { NB_SSH_ALLOW_REMOTE_PORT_FORWARDING = "true"; }
++                  // optionalAttrs client.ssh.disableAuth { NB_DISABLE_SSH_AUTH = "true"; }
++                  // optionalAttrs (client.ssh.jwtCacheTtl != null) { NB_SSH_JWT_CACHE_TTL = "..."; }
++                  // optionalAttrs client.connection.lazy { NB_ENABLE_LAZY_CONNECTION = "true"; }
++                  // optionalAttrs (!client.connection.networkMonitor) { NB_DISABLE_NETWORK_MONITOR = "true"; }
++                  // optionalAttrs (client.hostname != null) { NB_HOSTNAME = "..."; }
++                  // optionalAttrs client.debug.anonymizeLogs { NB_ANONYMIZE = "true"; }
++                  // client.extraEnvironment
+                 '';
+                 description = ''
+                   Environment for the netbird service, used to pass configuration options.
+@@ -275,10 +485,7 @@ in
+                   - `CAP_NET_RAW`, `CAP_NET_ADMIN` and `CAP_BPF` still give unlimited network manipulation possibilites,
+                   - older kernels don't have `CAP_BPF` and use `CAP_SYS_ADMIN` instead,
+ 
+-                  Known security features that are not (yet) integrated into the module:
+-                  - 2024-02-14: `rosenpass` is an experimental feature configurable solely
+-                    through `--enable-rosenpass` flag on the `netbird up` command,
+-                    see [the docs](https://docs.netbird.io/how-to/enable-post-quantum-cryptography)
++                  For post-quantum cryptography, see the [](#opt-services.netbird.clients._name_.rosenpass.enable) option.
+                 '';
+               };
+ 
+@@ -357,6 +564,9 @@ in
+                   } // optionalAttrs (client.dns-resolver.address != null) {
+                     CustomDNSAddress = "''${client.dns-resolver.address}:''${toString client.dns-resolver.port}";
+                   }
++                  // optionalAttrs (client.mtu != null) { Mtu = client.mtu; }
++                  // optionalAttrs (client.server.managementUrl != null) { ManagementURL = client.server.managementUrl; }
++                  // optionalAttrs (client.server.adminUrl != null) { AdminURL = client.server.adminUrl; }
+                 '';
+                 description = ''
+                   Additional configuration that exists before the first start and
+@@ -447,7 +657,49 @@ in
+             }
+             // optionalAttrs (client.dns-resolver.address != null) {
+               NB_DNS_RESOLVER_ADDRESS = "${client.dns-resolver.address}:${toString client.dns-resolver.port}";
+-            };
++            }
++            # DNS options
++            // optionalAttrs client.dns.disable { NB_DISABLE_DNS = "true"; }
++            // optionalAttrs (client.dns.extraLabels != [ ]) {
++              NB_EXTRA_DNS_LABELS = concatStringsSep "," client.dns.extraLabels;
++            }
++            // optionalAttrs (client.dns.routeInterval != null) {
++              NB_DNS_ROUTER_INTERVAL = toString client.dns.routeInterval;
++            }
++            # Firewall options
++            // optionalAttrs client.firewall.disableNetbird { NB_DISABLE_FIREWALL = "true"; }
++            # Routing options
++            // optionalAttrs client.routing.disableClientRoutes { NB_DISABLE_CLIENT_ROUTES = "true"; }
++            // optionalAttrs client.routing.disableServerRoutes { NB_DISABLE_SERVER_ROUTES = "true"; }
++            // optionalAttrs client.routing.blockLanAccess { NB_BLOCK_LAN_ACCESS = "true"; }
++            // optionalAttrs client.routing.blockInbound { NB_BLOCK_INBOUND = "true"; }
++            # NAT traversal
++            // optionalAttrs (client.externalIpMap != null) { NB_EXTERNAL_IP_MAP = client.externalIpMap; }
++            // optionalAttrs (client.interfaceBlacklist != [ ]) {
++              NB_INTERFACE_BLACKLIST = concatStringsSep "," client.interfaceBlacklist;
++            }
++            # Rosenpass (post-quantum cryptography)
++            // optionalAttrs client.rosenpass.enable { NB_ENABLE_ROSENPASS = "true"; }
++            // optionalAttrs client.rosenpass.permissive { NB_ROSENPASS_PERMISSIVE = "true"; }
++            # SSH options
++            // optionalAttrs client.ssh.enable { NB_ALLOW_SERVER_SSH = "true"; }
++            // optionalAttrs client.ssh.permitRoot { NB_SSH_ALLOW_ROOT = "true"; }
++            // optionalAttrs client.ssh.sftp.enable { NB_SSH_ALLOW_SFTP = "true"; }
++            // optionalAttrs client.ssh.portForwarding.local { NB_SSH_ALLOW_LOCAL_PORT_FORWARDING = "true"; }
++            // optionalAttrs client.ssh.portForwarding.remote { NB_SSH_ALLOW_REMOTE_PORT_FORWARDING = "true"; }
++            // optionalAttrs client.ssh.disableAuth { NB_DISABLE_SSH_AUTH = "true"; }
++            // optionalAttrs (client.ssh.jwtCacheTtl != null) {
++              NB_SSH_JWT_CACHE_TTL = toString client.ssh.jwtCacheTtl;
++            }
++            # Connection options
++            // optionalAttrs client.connection.lazy { NB_ENABLE_LAZY_CONNECTION = "true"; }
++            // optionalAttrs (!client.connection.networkMonitor) { NB_DISABLE_NETWORK_MONITOR = "true"; }
++            # Hostname
++            // optionalAttrs (client.hostname != null) { NB_HOSTNAME = client.hostname; }
++            # Debug options
++            // optionalAttrs client.debug.anonymizeLogs { NB_ANONYMIZE = "true"; }
++            # User extra environment (merged last, can override)
++            // client.extraEnvironment;
+ 
+             config.config = {
+               DisableAutoConnect = !client.autoStart;
+@@ -456,7 +708,14 @@ in
+             }
+             // optionalAttrs (client.dns-resolver.address != null) {
+               CustomDNSAddress = "${client.dns-resolver.address}:${toString client.dns-resolver.port}";
+-            };
++            }
++            # MTU setting
++            // optionalAttrs (client.mtu != null) { Mtu = client.mtu; }
++            # Server URLs for self-hosted deployments
++            // optionalAttrs (client.server.managementUrl != null) {
++              ManagementURL = client.server.managementUrl;
++            }
++            // optionalAttrs (client.server.adminUrl != null) { AdminURL = client.server.adminUrl; };
+           }
+         )
+       );
+diff --git a/nixos/modules/services/networking/netbird/management.nix b/nixos/modules/services/networking/netbird/management.nix
+index 8d65e2e20aa6..db35678b2d98 100644
+--- a/nixos/modules/services/networking/netbird/management.nix
++++ b/nixos/modules/services/networking/netbird/management.nix
+@@ -17,6 +17,8 @@ let
+     mkOption
+     mkPackageOption
+     optional
++    optionals
++    optionalAttrs
+     recursiveUpdate
+     ;
+ 
+@@ -24,6 +26,8 @@ let
+     bool
+     enum
+     listOf
++    nullOr
++    path
+     port
+     str
+     ;
+@@ -59,6 +63,12 @@ let
+       TimeBasedCredentials = false;
+     };
+ 
++    Relay = {
++      Addresses = cfg.relayAddresses;
++      CredentialsTTL = "24h";
++      Secret = if cfg.relaySecretFile != null then { _secret = cfg.relaySecretFile; } else "";
++    };
++
+     Signal = {
+       Proto = "https";
+       URI = "${cfg.domain}:443";
+@@ -75,7 +85,17 @@ let
+     Datadir = "${stateDir}/data";
+     DataStoreEncryptionKey = "very-insecure-key";
+     StoreConfig = {
+-      Engine = "sqlite";
++      Engine = cfg.store.engine;
++    }
++    // optionalAttrs (cfg.store.engine == "postgres" && cfg.store.postgres.dsnFile != null) {
++      DataSourcePath = {
++        _secret = cfg.store.postgres.dsnFile;
++      };
++    }
++    // optionalAttrs (cfg.store.engine == "mysql" && cfg.store.mysql.dsnFile != null) {
++      DataSourcePath = {
++        _secret = cfg.store.mysql.dsnFile;
++      };
+     };
+ 
+     HttpConfig = {
+@@ -84,22 +104,39 @@ let
+       OIDCConfigEndpoint = cfg.oidcConfigEndpoint;
+     };
+ 
+-    IdpManagerConfig = {
+-      ManagerType = "none";
+-      ClientConfig = {
+-        Issuer = "";
+-        TokenEndpoint = "";
+-        ClientID = "netbird";
+-        ClientSecret = "";
+-        GrantType = "client_credentials";
+-      };
+-
+-      ExtraConfig = { };
+-      Auth0ClientCredentials = null;
+-      AzureClientCredentials = null;
+-      KeycloakClientCredentials = null;
+-      ZitadelClientCredentials = null;
+-    };
++    IdpManagerConfig =
++      if cfg.idp.embedded.enable then
++        {
++          ManagerType = "integrated";
++          ClientConfig = {
++            Issuer = "https://${cfg.domain}/oauth2";
++            TokenEndpoint = "";
++            ClientID = "netbird";
++            ClientSecret = "";
++            GrantType = "client_credentials";
++          };
++          ExtraConfig = { };
++          Auth0ClientCredentials = null;
++          AzureClientCredentials = null;
++          KeycloakClientCredentials = null;
++          ZitadelClientCredentials = null;
++        }
++      else
++        {
++          ManagerType = "none";
++          ClientConfig = {
++            Issuer = "";
++            TokenEndpoint = "";
++            ClientID = "netbird";
++            ClientSecret = "";
++            GrantType = "client_credentials";
++          };
++          ExtraConfig = { };
++          Auth0ClientCredentials = null;
++          AzureClientCredentials = null;
++          KeycloakClientCredentials = null;
++          ZitadelClientCredentials = null;
++        };
+ 
+     DeviceAuthorizationFlow = {
+       Provider = "none";
+@@ -126,6 +163,28 @@ let
+         UseIDToken = false;
+       };
+     };
++  }
++  // optionalAttrs cfg.idp.embedded.enable {
++    ProviderConfig = {
++      Issuer = "https://${cfg.domain}/oauth2";
++      Storage = {
++        Type = "sqlite3";
++        File = "${stateDir}/idp.db";
++      };
++      DashboardRedirectURIs = [
++        "https://${cfg.domain}/nb-auth"
++        "https://${cfg.domain}/nb-silent-auth"
++      ];
++      CLIRedirectURIs = [
++        "http://localhost:53000/"
++        "http://localhost:54000/"
++      ];
++      Owner = {
++        Email = "";
++        Password = "";
++        Username = "";
++      };
++    };
+   };
+ 
+   managementConfig = recursiveUpdate defaultSettings cfg.settings;
+@@ -136,6 +195,33 @@ let
+ in
+ 
+ {
++  imports = [
++    (lib.mkRenamedOptionModule
++      [
++        "services"
++        "netbird"
++        "server"
++        "management"
++        "singleAccountModeDomain"
++      ]
++      [
++        "services"
++        "netbird"
++        "server"
++        "management"
++        "singleAccountMode"
++        "domain"
++      ]
++    )
++    (lib.mkRemovedOptionModule [
++      "services"
++      "netbird"
++      "server"
++      "management"
++      "disableSingleAccountMode"
++    ] "Use services.netbird.server.management.singleAccountMode.enable = false instead.")
++  ];
++
+   options.services.netbird.server.management = {
+     enable = mkEnableOption "Netbird Management Service";
+ 
+@@ -165,14 +251,24 @@ in
+       description = "Domain used for peer resolution.";
+     };
+ 
+-    singleAccountModeDomain = mkOption {
+-      type = str;
+-      default = "netbird.selfhosted";
+-      description = ''
+-        Enables single account mode.
+-        This means that all the users will be under the same account grouped by the specified domain.
+-        If the installation has more than one account, the property is ineffective.
+-      '';
++    singleAccountMode = {
++      enable = mkOption {
++        type = bool;
++        default = true;
++        description = ''
++          Enable single account mode where all users are grouped under a single account.
++          If the installation already has more than one account, this setting is ineffective.
++        '';
++      };
++
++      domain = mkOption {
++        type = str;
++        default = "netbird.selfhosted";
++        description = ''
++          Domain used to group users in single account mode.
++          Only used when `singleAccountMode.enable` is true.
++        '';
++      };
+     };
+ 
+     disableAnonymousMetrics = mkOption {
+@@ -181,15 +277,6 @@ in
+       description = "Disables push of anonymous usage metrics to NetBird.";
+     };
+ 
+-    disableSingleAccountMode = mkOption {
+-      type = bool;
+-      default = false;
+-      description = ''
+-        If set to true, disables single account mode.
+-        The `singleAccountModeDomain` property will be ignored and every new user will have a separate NetBird account.
+-      '';
+-    };
+-
+     port = mkOption {
+       type = port;
+       default = 8011;
+@@ -212,10 +299,105 @@ in
+ 
+     oidcConfigEndpoint = mkOption {
+       type = str;
+-      description = "The oidc discovery endpoint.";
++      default = "";
++      description = "The oidc discovery endpoint. Not required when using embedded IDP.";
+       example = "https://example.eu.auth0.com/.well-known/openid-configuration";
+     };
+ 
++    # Relay configuration
++    relayAddresses = mkOption {
++      type = listOf str;
++      default = [ ];
++      description = ''
++        List of relay server addresses to advertise to clients.
++      '';
++      example = [ "rels://relay.example.com:443" ];
++    };
++
++    relaySecretFile = mkOption {
++      type = nullOr path;
++      default = null;
++      description = ''
++        Path to file containing the shared secret for relay authentication.
++        This must match the auth-secret configured on the relay server.
++      '';
++    };
++
++    # TLS configuration
++    tls = {
++      enable = mkEnableOption "TLS for the management server";
++
++      letsencrypt = {
++        domain = mkOption {
++          type = nullOr str;
++          default = null;
++          description = ''
++            Domain for automatic Let's Encrypt certificate.
++            When set, the management server will automatically obtain and renew certificates.
++          '';
++        };
++      };
++
++      certFile = mkOption {
++        type = nullOr path;
++        default = null;
++        description = "Path to the TLS certificate file.";
++      };
++
++      certKey = mkOption {
++        type = nullOr path;
++        default = null;
++        description = "Path to the TLS certificate key file.";
++      };
++    };
++
++    # Embedded IDP
++    idp.embedded.enable = mkEnableOption ''
++      the embedded identity provider.
++      When enabled, sets IdpManagerConfig.ManagerType to "integrated" and provides
++      default ProviderConfig values derived from the domain.
++      Customize the embedded IDP via the `settings` freeform option
++      (e.g. `settings.ProviderConfig.Owner.Email = "admin@example.com"`)
++    '';
++
++    # Database backend configuration
++    store = {
++      engine = mkOption {
++        type = enum [
++          "sqlite"
++          "postgres"
++          "mysql"
++        ];
++        default = "sqlite";
++        description = ''
++          Database engine for the management server.
++          Use postgres or mysql for larger deployments.
++        '';
++      };
++
++      postgres = {
++        dsnFile = mkOption {
++          type = nullOr path;
++          default = null;
++          description = ''
++            Path to file containing the PostgreSQL connection DSN.
++            Example content: postgres://user:password@localhost:5432/netbird?sslmode=disable
++          '';
++        };
++      };
++
++      mysql = {
++        dsnFile = mkOption {
++          type = nullOr path;
++          default = null;
++          description = ''
++            Path to file containing the MySQL connection DSN.
++            Example content: user:password@tcp(localhost:3306)/netbird
++          '';
++        };
++      };
++    };
++
+     settings = mkOption {
+       inherit (settingsFormat) type;
+ 
+@@ -245,6 +427,12 @@ in
+             TimeBasedCredentials = false;
+           };
+ 
++          Relay = {
++            Addresses = cfg.relayAddresses;
++            CredentialsTTL = "24h";
++            Secret = "";
++          };
++
+           Signal = {
+             Proto = "https";
+             URI = "''${cfg.domain}:443";
+@@ -259,7 +447,7 @@ in
+           };
+ 
+           Datadir = "''${stateDir}/data";
+-          DataStoreEncryptionKey = "genEVP6j/Yp2EeVujm0zgqXrRos29dQkpvX0hHdEUlQ=";
++          DataStoreEncryptionKey = "very-insecure-key";
+           StoreConfig = { Engine = "sqlite"; };
+ 
+           HttpConfig = {
+@@ -293,7 +481,7 @@ in
+               ClientID = "netbird";
+               TokenEndpoint = null;
+               DeviceAuthEndpoint = "";
+-              Scope = "openid profile email offline_access api";
++              Scope = "openid profile email";
+               UseIDToken = false;
+             };
+           };
+@@ -305,8 +493,8 @@ in
+               ClientSecret = "";
+               AuthorizationEndpoint = "";
+               TokenEndpoint = "";
+-              Scope = "openid profile email offline_access api";
+-              RedirectURLs = "http://localhost:53000";
++              Scope = "openid profile email";
++              RedirectURLs = [ "http://localhost:53000" ];
+               UseIDToken = false;
+             };
+           };
+@@ -354,7 +542,7 @@ in
+         [
+           {
+             check = builtins.isString managementConfig.TURNConfig.Secret;
+-            name = "The TURNConfig.secret";
++            name = "The TURNConfig.Secret";
+           }
+           {
+             check = builtins.isString managementConfig.DataStoreEncryptionKey;
+@@ -362,7 +550,14 @@ in
+           }
+           {
+             check = any (T: (T ? Password) && builtins.isString T.Password) managementConfig.TURNConfig.Turns;
+-            name = "A Turn configuration's password";
++            name = "A TURNConfig.Turns password";
++          }
++          {
++            check =
++              cfg.relayAddresses != [ ]
++              && managementConfig ? Relay
++              && builtins.isString (managementConfig.Relay.Secret or "");
++            name = "The Relay.Secret";
+           }
+         ];
+ 
+@@ -371,6 +566,32 @@ in
+         assertion = cfg.port != cfg.metricsPort;
+         message = "The primary listen port cannot be the same as the listen port for the metrics endpoint";
+       }
++      {
++        assertion =
++          cfg.tls.enable
++          -> (cfg.tls.letsencrypt.domain != null || (cfg.tls.certFile != null && cfg.tls.certKey != null));
++        message = "When TLS is enabled, either letsencrypt.domain or both certFile and certKey must be set";
++      }
++      {
++        assertion = cfg.tls.certFile != null -> cfg.tls.certKey != null;
++        message = "certKey must be set when certFile is set";
++      }
++      {
++        assertion = cfg.tls.certKey != null -> cfg.tls.certFile != null;
++        message = "certFile must be set when certKey is set";
++      }
++      {
++        assertion = cfg.store.engine == "postgres" -> cfg.store.postgres.dsnFile != null;
++        message = "store.postgres.dsnFile must be set when using postgres engine";
++      }
++      {
++        assertion = cfg.store.engine == "mysql" -> cfg.store.mysql.dsnFile != null;
++        message = "store.mysql.dsnFile must be set when using mysql engine";
++      }
++      {
++        assertion = !cfg.idp.embedded.enable || cfg.oidcConfigEndpoint == "";
++        message = "oidcConfigEndpoint should not be set when using embedded IDP";
++      }
+     ];
+ 
+     systemd.services.netbird-management = {
+@@ -388,35 +609,44 @@ in
+           [
+             (getExe' cfg.package "netbird-mgmt")
+             "management"
+-            # Config file
+             "--config"
+             "${stateDir}/management.json"
+-            # Data directory
+             "--datadir"
+             "${stateDir}/data"
+-            # DNS domain
+             "--dns-domain"
+             cfg.dnsDomain
+-            # Port to listen on
+             "--port"
+             cfg.port
+-            # Port the internal prometheus server listens on
+             "--metrics-port"
+             cfg.metricsPort
+-            # Log to stdout
+             "--log-file"
+             "console"
+-            # Log level
+             "--log-level"
+             cfg.logLevel
+-            #
+             "--idp-sign-key-refresh-enabled"
+-            # Domain for internal resolution
++          ]
++          # Single account mode
++          ++ optionals cfg.singleAccountMode.enable [
+             "--single-account-mode-domain"
+-            cfg.singleAccountModeDomain
++            cfg.singleAccountMode.domain
+           ]
++          ++ (optional (!cfg.singleAccountMode.enable) "--disable-single-account-mode")
+           ++ (optional cfg.disableAnonymousMetrics "--disable-anonymous-metrics")
+-          ++ (optional cfg.disableSingleAccountMode "--disable-single-account-mode")
++          # Always disable GeoLite updates for self-hosted (privacy default)
++          ++ [ "--disable-geolite-update" ]
++          # TLS options
++          ++ optionals (cfg.tls.letsencrypt.domain != null) [
++            "--letsencrypt-domain"
++            cfg.tls.letsencrypt.domain
++          ]
++          ++ optionals (cfg.tls.certFile != null) [
++            "--cert-file"
++            cfg.tls.certFile
++          ]
++          ++ optionals (cfg.tls.certKey != null) [
++            "--cert-key"
++            cfg.tls.certKey
++          ]
+           ++ cfg.extraOptions
+         );
+         Restart = "always";
+@@ -442,7 +672,7 @@ in
+         ProtectKernelLogs = true;
+         ProtectKernelModules = true;
+         ProtectKernelTunables = true;
+-        ProtectSystem = true;
++        ProtectSystem = "strict";
+         RemoveIPC = true;
+         RestrictNamespaces = true;
+         RestrictRealtime = true;
+diff --git a/nixos/modules/services/networking/netbird/relay.nix b/nixos/modules/services/networking/netbird/relay.nix
+new file mode 100644
+index 000000000000..ff0a2ac08bd4
+--- /dev/null
++++ b/nixos/modules/services/networking/netbird/relay.nix
+@@ -0,0 +1,250 @@
++{
++  config,
++  lib,
++  pkgs,
++  utils,
++  ...
++}:
++
++let
++  inherit (lib)
++    concatStringsSep
++    getExe'
++    mkEnableOption
++    mkIf
++    mkMerge
++    mkOption
++    mkPackageOption
++    optionals
++    ;
++
++  inherit (lib.types)
++    bool
++    listOf
++    nullOr
++    enum
++    path
++    port
++    str
++    ;
++
++  inherit (utils) escapeSystemdExecArgs;
++
++  cfg = config.services.netbird.server.relay;
++  stateDir = "/var/lib/netbird-relay";
++in
++
++{
++  options.services.netbird.server.relay = {
++    enable = mkEnableOption "NetBird Relay Server";
++
++    package = mkPackageOption pkgs "netbird" { };
++
++    port = mkOption {
++      type = port;
++      default = 33080;
++      description = ''
++        Port the relay server listens on.
++        When behind nginx (enableNginx), this is the internal port that nginx proxies to.
++      '';
++    };
++
++    exposedAddress = mkOption {
++      type = str;
++      description = ''
++        The public URL where clients can reach this relay server.
++        This is advertised to clients via the management server.
++      '';
++      example = "rels://relay.example.com:443";
++    };
++
++    authSecretFile = mkOption {
++      type = path;
++      description = ''
++        Path to a file containing the relay authentication secret.
++        The file should contain only the raw secret value.
++        This must match the relaySecretFile configured in the management server.
++      '';
++    };
++
++    logLevel = mkOption {
++      type = enum [
++        "panic"
++        "fatal"
++        "error"
++        "warn"
++        "info"
++        "debug"
++        "trace"
++      ];
++      default = "info";
++      description = "Log level for the relay server.";
++    };
++
++    stun = {
++      enable = mkOption {
++        type = bool;
++        default = true;
++        description = ''
++          Enable the embedded STUN server.
++          This provides STUN functionality alongside the relay server.
++        '';
++      };
++
++      ports = mkOption {
++        type = listOf port;
++        default = [ 3478 ];
++        description = "UDP ports for the embedded STUN server.";
++      };
++    };
++
++    openFirewall = mkOption {
++      type = bool;
++      default = false;
++      description = ''
++        Whether to open the relay and STUN ports in the firewall.
++      '';
++    };
++
++    enableNginx = mkEnableOption "Nginx reverse-proxy for the relay server";
++
++    domain = mkOption {
++      type = nullOr str;
++      default = null;
++      description = "Domain name for nginx virtual host configuration.";
++    };
++
++    extraOptions = mkOption {
++      type = listOf str;
++      default = [ ];
++      description = ''
++        Additional command-line options passed to the relay server.
++        Use this for advanced settings like TLS configuration
++        (e.g. `["--tls-cert-file" "/path/to/cert" "--tls-key-file" "/path/to/key"]`).
++      '';
++    };
++  };
++
++  config = mkIf cfg.enable (mkMerge [
++    {
++      assertions = [
++        {
++          assertion = cfg.enableNginx -> cfg.domain != null;
++          message = "domain must be set when enableNginx is true";
++        }
++      ];
++
++      systemd.services.netbird-relay = {
++        description = "NetBird Relay Server";
++        documentation = [ "https://docs.netbird.io/" ];
++
++        after = [ "network.target" ];
++        wantedBy = [ "multi-user.target" ];
++        restartTriggers = [
++          cfg.port
++          cfg.logLevel
++          cfg.exposedAddress
++          cfg.stun.enable
++        ];
++
++        serviceConfig = {
++          # Secret handling: write EnvironmentFile in preStart from LoadCredential,
++          # then ExecStart reads it. This avoids exposing the secret in /proc
++          # and gives systemd proper process tracking (unlike a script wrapper).
++          LoadCredential = [ "auth-secret:${cfg.authSecretFile}" ];
++
++          ExecStart = escapeSystemdExecArgs (
++            [
++              (getExe' cfg.package "netbird-relay")
++              "--listen-address"
++              ":${toString cfg.port}"
++              "--exposed-address"
++              cfg.exposedAddress
++              "--log-level"
++              cfg.logLevel
++              "--log-file"
++              "console"
++            ]
++            ++ optionals cfg.stun.enable [
++              "--enable-stun"
++              "--stun-ports"
++              (concatStringsSep "," (map toString cfg.stun.ports))
++            ]
++            ++ cfg.extraOptions
++          );
++
++          Restart = "always";
++          RuntimeDirectory = "netbird-relay";
++          RuntimeDirectoryMode = "0750";
++          StateDirectory = "netbird-relay";
++          StateDirectoryMode = "0750";
++          WorkingDirectory = stateDir;
++          DynamicUser = true;
++
++          # hardening
++          LockPersonality = true;
++          MemoryDenyWriteExecute = true;
++          NoNewPrivileges = true;
++          PrivateMounts = true;
++          PrivateTmp = true;
++          ProtectClock = true;
++          ProtectControlGroups = true;
++          ProtectHome = true;
++          ProtectHostname = true;
++          ProtectKernelLogs = true;
++          ProtectKernelModules = true;
++          ProtectKernelTunables = true;
++          ProtectSystem = "strict";
++          RemoveIPC = true;
++          RestrictNamespaces = true;
++          RestrictRealtime = true;
++          RestrictSUIDSGID = true;
++
++          # Relay may need to bind to privileged ports when not behind nginx
++          AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
++          CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
++        };
++
++        # Inject the auth secret via EnvironmentFile.
++        # LoadCredential makes the file available at $CREDENTIALS_DIRECTORY/auth-secret,
++        # then preStart writes an EnvironmentFile that ExecStart picks up.
++        # The relay binary reads NB_AUTH_SECRET from the environment via setFlagsFromEnvVars().
++        preStart = ''
++          umask 077
++          echo "NB_AUTH_SECRET=$(< "$CREDENTIALS_DIRECTORY/auth-secret")" > "$RUNTIME_DIRECTORY/env"
++        '';
++
++        stopIfChanged = false;
++      };
++
++      systemd.services.netbird-relay.serviceConfig.EnvironmentFile = "/run/netbird-relay/env";
++    }
++
++    (mkIf cfg.openFirewall {
++      networking.firewall = {
++        allowedTCPPorts = [ cfg.port ];
++        allowedUDPPorts = mkIf cfg.stun.enable cfg.stun.ports;
++      };
++    })
++
++    (mkIf cfg.enableNginx {
++      services.nginx = {
++        enable = true;
++
++        virtualHosts.${cfg.domain} = {
++          locations."/relay".extraConfig = ''
++            proxy_pass http://127.0.0.1:${toString cfg.port};
++            proxy_http_version 1.1;
++            proxy_set_header Upgrade $http_upgrade;
++            proxy_set_header Connection "upgrade";
++            proxy_set_header Host $host;
++            proxy_set_header X-Real-IP $remote_addr;
++            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++            proxy_set_header X-Forwarded-Proto $scheme;
++            proxy_read_timeout 86400;
++          '';
++        };
++      };
++    })
++  ]);
++}
+diff --git a/nixos/modules/services/networking/netbird/server.md b/nixos/modules/services/networking/netbird/server.md
+index 1de251b80109..a7efc9233e50 100644
+--- a/nixos/modules/services/networking/netbird/server.md
++++ b/nixos/modules/services/networking/netbird/server.md
+@@ -4,9 +4,11 @@ NetBird is a VPN built on top of WireGuard® making it easy to create secure pri
+ 
+ ## Quickstart {#module-services-netbird-server-quickstart}
+ 
+-To fully setup Netbird as a self-hosted server, we need both a Coturn server and an identity provider, the list of supported SSOs and their setup are available [on Netbird's documentation](https://docs.netbird.io/selfhosted/selfhosted-guide#step-3-configure-identity-provider-idp).
++To fully setup Netbird as a self-hosted server, you need an identity provider (or use the embedded IDP) and either a Coturn server or the modern relay server. The list of supported SSOs and their setup are available [on Netbird's documentation](https://docs.netbird.io/selfhosted/selfhosted-guide#step-3-configure-identity-provider-idp).
+ 
+-There are quite a few settings that need to be passed to Netbird for it to function, and a minimal config looks like :
++### Minimal Configuration with Coturn {#module-services-netbird-server-quickstart-coturn}
++
++This is the traditional setup using Coturn as the TURN server:
+ 
+ ```nix
+ {
+@@ -19,7 +21,6 @@ There are quite a few settings that need to be passed to Netbird for it to funct
+ 
+     coturn = {
+       enable = true;
+-
+       passwordFile = "/path/to/a/secret/password";
+     };
+ 
+@@ -42,3 +43,172 @@ There are quite a few settings that need to be passed to Netbird for it to funct
+   };
+ }
+ ```
++
++### Modern Setup with Relay Server {#module-services-netbird-server-quickstart-relay}
++
++NetBird v0.28+ introduced a modern relay server that replaces Coturn with better performance and simpler configuration. The relay server includes an embedded STUN server.
++
++```nix
++{
++  services.netbird.server = {
++    enable = true;
++
++    domain = "netbird.example.selfhosted";
++
++    enableNginx = true;
++
++    # Use the modern relay instead of Coturn
++    useRelay = true;
++    relayAuthSecretFile = "/run/secrets/relay-auth";
++
++    management = {
++      oidcConfigEndpoint = "https://sso.example.selfhosted/oauth2/openid/netbird/.well-known/openid-configuration";
++    };
++  };
++}
++```
++
++## Relay vs Coturn {#module-services-netbird-server-relay-vs-coturn}
++
++| Feature | Relay Server | Coturn |
++|---------|--------------|--------|
++| Protocol | WebSocket/HTTP(S) | TURN (UDP/TCP) |
++| Firewall | Single port (443) | Multiple ports + UDP range |
++| Setup | Simple | More complex |
++| Embedded STUN | Yes | No (separate config) |
++| Performance | Optimized for NetBird | General-purpose |
++
++**Recommendation:** Use the relay server for new deployments. Only use Coturn if you have specific requirements for standard TURN protocol compatibility.
++
++## Embedded Identity Provider {#module-services-netbird-server-embedded-idp}
++
++NetBird supports an embedded identity provider for simplified deployments that don't require an external SSO. Enable it with `idp.embedded.enable`, then customize via the freeform `settings` option:
++
++```nix
++{
++  services.netbird.server.management = {
++    enable = true;
++    domain = "netbird.example.com";
++    turnDomain = "netbird.example.com";
++
++    idp.embedded.enable = true;
++
++    settings = {
++      ProviderConfig = {
++        Owner = {
++          Email = "admin@example.com";
++          Username = "admin";
++          # Generate with: htpasswd -bnBC 10 "" 'your-password' | tr -d ':\n'
++          Password._secret = "/run/secrets/admin-password-hash";
++        };
++      };
++    };
++  };
++}
++```
++
++## Database Backends {#module-services-netbird-server-database}
++
++By default, the management server uses SQLite. For larger deployments, PostgreSQL or MySQL is recommended.
++
++### PostgreSQL {#module-services-netbird-server-database-postgres}
++
++```nix
++{
++  services.netbird.server.management = {
++    store = {
++      engine = "postgres";
++      postgres.dsnFile = "/run/secrets/postgres-dsn";
++    };
++  };
++
++  # Example DSN file content:
++  # postgres://netbird:password@localhost:5432/netbird?sslmode=disable
++
++  services.postgresql = {
++    enable = true;
++    ensureDatabases = [ "netbird" ];
++    ensureUsers = [
++      {
++        name = "netbird";
++        ensureDBOwnership = true;
++      }
++    ];
++  };
++}
++```
++
++## Relay Server Configuration {#module-services-netbird-server-relay-config}
++
++The relay server can be configured independently. Advanced TLS settings (Let's Encrypt, custom certificates) can be passed via `extraOptions`:
++
++```nix
++{
++  services.netbird.server.relay = {
++    enable = true;
++    exposedAddress = "rels://relay.example.com:443";
++    authSecretFile = "/run/secrets/relay-auth";
++
++    stun = {
++      enable = true;
++      ports = [ 3478 ];
++    };
++
++    openFirewall = true;
++
++    # For direct TLS (without nginx reverse proxy):
++    extraOptions = [
++      "--tls-cert-file"
++      "/path/to/cert.pem"
++      "--tls-key-file"
++      "/path/to/key.pem"
++    ];
++  };
++}
++```
++
++## Complete Self-Hosted Example {#module-services-netbird-server-complete-example}
++
++Here's a complete example using the modern relay server with an external identity provider:
++
++```nix
++{ config, ... }:
++
++{
++  services.netbird.server = {
++    enable = true;
++    domain = "netbird.example.com";
++    enableNginx = true;
++
++    useRelay = true;
++    relayAuthSecretFile = "/run/secrets/netbird/relay-auth";
++
++    management = {
++      oidcConfigEndpoint = "https://auth.example.com/.well-known/openid-configuration";
++
++      settings = {
++        DataStoreEncryptionKey._secret = "/run/secrets/netbird/encryption-key";
++      };
++    };
++
++    dashboard.settings = {
++      AUTH_AUTHORITY = "https://auth.example.com";
++      AUTH_CLIENT_ID = "netbird-dashboard";
++    };
++  };
++
++  # Configure Nginx with ACME
++  services.nginx.virtualHosts."netbird.example.com" = {
++    enableACME = true;
++    forceSSL = true;
++  };
++
++  security.acme = {
++    acceptTerms = true;
++    defaults.email = "admin@example.com";
++  };
++
++  # Open firewall for STUN (relay handles the rest via nginx)
++  networking.firewall.allowedUDPPorts = [ 3478 ];
++}
++```
+diff --git a/nixos/modules/services/networking/netbird/server.nix b/nixos/modules/services/networking/netbird/server.nix
+index aa3127f1d67b..a3cf951bf3ff 100644
+--- a/nixos/modules/services/networking/netbird/server.nix
++++ b/nixos/modules/services/networking/netbird/server.nix
+@@ -9,14 +9,18 @@ let
+     optionalAttrs
+     ;
+ 
+-  inherit (lib.types) str;
++  inherit (lib.types)
++    nullOr
++    path
++    str
++    ;
+ 
+   cfg = config.services.netbird.server;
+ in
+ 
+ {
+   meta = {
+-    maintainers = with lib.maintainers; [ patrickdag ];
++    maintainers = with lib.maintainers; [ shuuri-labs ];
+     doc = ./server.md;
+   };
+ 
+@@ -25,6 +29,7 @@ in
+     ./coturn.nix
+     ./dashboard.nix
+     ./management.nix
++    ./relay.nix
+     ./signal.nix
+   ];
+ 
+@@ -37,22 +42,51 @@ in
+       type = str;
+       description = "The domain under which the netbird server runs.";
+     };
++
++    useRelay = mkOption {
++      type = lib.types.bool;
++      default = false;
++      description = ''
++        Use the modern relay server instead of (or in addition to) Coturn.
++        When enabled, the relay server will be configured automatically.
++      '';
++    };
++
++    relayAuthSecretFile = mkOption {
++      type = nullOr path;
++      default = null;
++      description = ''
++        Path to the shared authentication secret for the relay server.
++        This secret must be provided when useRelay is enabled.
++        It will be used by both the relay server and management server.
++      '';
++    };
+   };
+ 
+   config = mkIf cfg.enable {
++    assertions = [
++      {
++        assertion = cfg.useRelay -> cfg.relayAuthSecretFile != null;
++        message = "relayAuthSecretFile must be set when useRelay is enabled";
++      }
++    ];
++
+     services.netbird.server = {
+       dashboard = {
+         domain = mkDefault cfg.domain;
+         enable = mkDefault cfg.enable;
+         enableNginx = mkDefault cfg.enableNginx;
+ 
+-        managementServer = "https://${cfg.domain}";
++        managementServer = mkDefault "https://${cfg.domain}";
+       };
+ 
+       management = {
+         domain = mkDefault cfg.domain;
+         enable = mkDefault cfg.enable;
+         enableNginx = mkDefault cfg.enableNginx;
++        # When using relay without coturn, turnDomain still needs a value.
++        # Default to the server domain so the management config evaluates.
++        turnDomain = mkDefault cfg.domain;
+       }
+       // (optionalAttrs cfg.coturn.enable rec {
+         turnDomain = cfg.domain;
+@@ -72,6 +106,10 @@ in
+             }
+           ];
+         };
++      })
++      // (optionalAttrs cfg.useRelay {
++        relayAddresses = mkDefault [ "rels://${cfg.domain}:443" ];
++        relaySecretFile = mkDefault cfg.relayAuthSecretFile;
+       });
+ 
+       signal = {
+@@ -80,6 +118,14 @@ in
+         enableNginx = mkDefault cfg.enableNginx;
+       };
+ 
++      relay = mkIf cfg.useRelay {
++        enable = mkDefault true;
++        domain = mkDefault cfg.domain;
++        enableNginx = mkDefault cfg.enableNginx;
++        exposedAddress = mkDefault "rels://${cfg.domain}:443";
++        authSecretFile = mkDefault cfg.relayAuthSecretFile;
++      };
++
+       coturn = {
+         domain = mkDefault cfg.domain;
+       };
+diff --git a/nixos/modules/services/networking/netbird/signal.nix b/nixos/modules/services/networking/netbird/signal.nix
+index 7063696f28ab..f0d85257ba2b 100644
+--- a/nixos/modules/services/networking/netbird/signal.nix
++++ b/nixos/modules/services/networking/netbird/signal.nix
+@@ -13,11 +13,15 @@ let
+     mkIf
+     mkPackageOption
+     mkOption
++    optionals
+     ;
+ 
+   inherit (lib.types)
++    bool
+     listOf
+     enum
++    nullOr
++    path
+     port
+     str
+     ;
+@@ -25,6 +29,7 @@ let
+   inherit (utils) escapeSystemdExecArgs;
+ 
+   cfg = config.services.netbird.server.signal;
++  stateDir = "/var/lib/netbird-signal";
+ in
+ 
+ {
+@@ -52,6 +57,41 @@ in
+       description = "Internal port of the metrics server.";
+     };
+ 
++    tls = {
++      enable = mkEnableOption "TLS for the signal server";
++
++      letsencrypt = {
++        domain = mkOption {
++          type = nullOr str;
++          default = null;
++          description = ''
++            Domain for automatic Let's Encrypt certificate.
++            When set, the signal server will automatically obtain and renew certificates.
++          '';
++        };
++      };
++
++      certFile = mkOption {
++        type = nullOr path;
++        default = null;
++        description = "Path to the TLS certificate file.";
++      };
++
++      certKey = mkOption {
++        type = nullOr path;
++        default = null;
++        description = "Path to the TLS certificate key file.";
++      };
++    };
++
++    openFirewall = mkOption {
++      type = bool;
++      default = false;
++      description = ''
++        Whether to open the signal server port in the firewall.
++      '';
++    };
++
+     extraOptions = mkOption {
+       type = listOf str;
+       default = [ ];
+@@ -79,11 +119,32 @@ in
+         assertion = cfg.port != cfg.metricsPort;
+         message = "The primary listen port cannot be the same as the listen port for the metrics endpoint";
+       }
++      {
++        assertion =
++          cfg.tls.enable
++          -> (cfg.tls.letsencrypt.domain != null || (cfg.tls.certFile != null && cfg.tls.certKey != null));
++        message = "When TLS is enabled, either letsencrypt.domain or both certFile and certKey must be set";
++      }
++      {
++        assertion = cfg.tls.certFile != null -> cfg.tls.certKey != null;
++        message = "certKey must be set when certFile is set";
++      }
++      {
++        assertion = cfg.tls.certKey != null -> cfg.tls.certFile != null;
++        message = "certFile must be set when certKey is set";
++      }
+     ];
+ 
+     systemd.services.netbird-signal = {
++      description = "The signal server for Netbird, a wireguard VPN";
++      documentation = [ "https://netbird.io/docs/" ];
++
+       after = [ "network.target" ];
+       wantedBy = [ "multi-user.target" ];
++      restartTriggers = [
++        cfg.port
++        cfg.logLevel
++      ];
+ 
+       serviceConfig = {
+         ExecStart = escapeSystemdExecArgs (
+@@ -103,13 +164,28 @@ in
+             "--log-level"
+             cfg.logLevel
+           ]
++          # TLS options
++          ++ optionals (cfg.tls.letsencrypt.domain != null) [
++            "--letsencrypt-domain"
++            cfg.tls.letsencrypt.domain
++          ]
++          ++ optionals (cfg.tls.certFile != null) [
++            "--cert-file"
++            cfg.tls.certFile
++          ]
++          ++ optionals (cfg.tls.certKey != null) [
++            "--cert-key"
++            cfg.tls.certKey
++          ]
+           ++ cfg.extraOptions
+         );
+ 
+         Restart = "always";
+-        RuntimeDirectory = "netbird-mgmt";
+-        StateDirectory = "netbird-mgmt";
+-        WorkingDirectory = "/var/lib/netbird-mgmt";
++        RuntimeDirectory = "netbird-signal";
++        RuntimeDirectoryMode = "0750";
++        StateDirectory = "netbird-signal";
++        StateDirectoryMode = "0750";
++        WorkingDirectory = stateDir;
+ 
+         # hardening
+         LockPersonality = true;
+@@ -124,7 +200,7 @@ in
+         ProtectKernelLogs = true;
+         ProtectKernelModules = true;
+         ProtectKernelTunables = true;
+-        ProtectSystem = true;
++        ProtectSystem = "strict";
+         RemoveIPC = true;
+         RestrictNamespaces = true;
+         RestrictRealtime = true;
+@@ -134,6 +210,10 @@ in
+       stopIfChanged = false;
+     };
+ 
++    networking.firewall = mkIf cfg.openFirewall {
++      allowedTCPPorts = [ cfg.port ];
++    };
++
+     services.nginx = mkIf cfg.enableNginx {
+       enable = true;
+ 
+diff --git a/nixos/tests/all-tests.nix b/nixos/tests/all-tests.nix
+index f87c443884c9..e1c94ac9bf5e 100644
+--- a/nixos/tests/all-tests.nix
++++ b/nixos/tests/all-tests.nix
+@@ -1050,7 +1050,7 @@ in
+   nebula.connectivity = runTest ./nebula/connectivity.nix;
+   nebula.reload = runTest ./nebula/reload.nix;
+   neo4j = runTest ./neo4j.nix;
+-  netbird = runTest ./netbird.nix;
++  netbird = import ./netbird { inherit runTest; };
+   netbox-upgrade = runTest ./web-apps/netbox-upgrade.nix;
+   netbox_4_4 = handleTest ./web-apps/netbox/default.nix { netbox = pkgs.netbox_4_4; };
+   netbox_4_5 = handleTest ./web-apps/netbox/default.nix { netbox = pkgs.netbox_4_5; };
+diff --git a/nixos/tests/netbird.nix b/nixos/tests/netbird/client.nix
+similarity index 55%
+rename from nixos/tests/netbird.nix
+rename to nixos/tests/netbird/client.nix
+index 2dae10e77017..3dc271738d10 100644
+--- a/nixos/tests/netbird.nix
++++ b/nixos/tests/netbird/client.nix
+@@ -7,13 +7,39 @@
+   ];
+ 
+   nodes = {
+-    node = {
+-      services.netbird = {
+-        enable = true;
+-        clients.custom.port = 51819;
+-        ui.enable = true;
++    node =
++      { ... }:
++      {
++        services.netbird.enable = true;
++        services.netbird.clients.custom.port = 51819;
++ 
++        # Test advanced options
++        services.netbird.clients.advanced = {
++          port = 51830;
++          dns.disable = true;
++          routing.blockLanAccess = true;
++          mtu = 1280;
++          debug.anonymizeLogs = true;
++        };
++
++        # Test SSH and security options
++        services.netbird.clients.withSsh = {
++          port = 51831;
++          ssh.enable = true;
++          ssh.sftp.enable = true;
++          rosenpass.enable = true;
++          rosenpass.permissive = true;
++        };
++
++        # Test connection and server options
++        services.netbird.clients.selfhosted = {
++          port = 51832;
++          connection.lazy = true;
++          connection.networkMonitor = false;
++          server.managementUrl = "https://management.example.com:443";
++          hostname = "test-peer";
++        };
+       };
+-    };
+   };
+ 
+   /*
+@@ -79,7 +105,7 @@
+           retry(check_success, retries)
+           return output
+ 
+-    instances = ["netbird", "netbird-custom"]
++    instances = ["netbird", "netbird-custom", "netbird-advanced", "netbird-withSsh", "netbird-selfhosted"]
+ 
+     for name in instances:
+       node.wait_for_unit(f"{name}.service")
+@@ -87,6 +113,27 @@
+ 
+     for name in instances:
+       wait_until_rcode(node, f"{name} status |& grep -C20 Disconnected", 0, retries=5)
++
++    # Verify environment variables are set correctly for advanced client
++    node.succeed("systemctl show netbird-advanced.service --property=Environment | grep -q NB_DISABLE_DNS=true")
++    node.succeed("systemctl show netbird-advanced.service --property=Environment | grep -q NB_BLOCK_LAN_ACCESS=true")
++    node.succeed("systemctl show netbird-advanced.service --property=Environment | grep -q NB_ANONYMIZE=true")
++
++    # Verify environment variables for SSH client
++    node.succeed("systemctl show netbird-withSsh.service --property=Environment | grep -q NB_ALLOW_SERVER_SSH=true")
++    node.succeed("systemctl show netbird-withSsh.service --property=Environment | grep -q NB_SSH_ALLOW_SFTP=true")
++    node.succeed("systemctl show netbird-withSsh.service --property=Environment | grep -q NB_ENABLE_ROSENPASS=true")
++    node.succeed("systemctl show netbird-withSsh.service --property=Environment | grep -q NB_ROSENPASS_PERMISSIVE=true")
++
++    # Verify environment variables for selfhosted client
++    node.succeed("systemctl show netbird-selfhosted.service --property=Environment | grep -q NB_ENABLE_LAZY_CONNECTION=true")
++    node.succeed("systemctl show netbird-selfhosted.service --property=Environment | grep -q NB_DISABLE_NETWORK_MONITOR=true")
++    node.succeed("systemctl show netbird-selfhosted.service --property=Environment | grep -q NB_HOSTNAME=test-peer")
++
++    # Verify config.json contains MTU and ManagementURL
++    node.succeed("cat /etc/netbird-advanced/config.d/50-nixos.json | grep -q '\"Mtu\": 1280'")
++    node.succeed("cat /etc/netbird-selfhosted/config.d/50-nixos.json | grep -q 'ManagementURL'")
++    node.succeed("cat /etc/netbird-selfhosted/config.d/50-nixos.json | grep -q 'management.example.com'")
+   ''
+   # The status used to turn into `NeedsLogin`, but recently started crashing instead.
+   # leaving the snippets in here, in case some update goes back to the old behavior and can be tested again
+diff --git a/nixos/tests/netbird/default.nix b/nixos/tests/netbird/default.nix
+new file mode 100644
+index 000000000000..69d1631ba99f
+--- /dev/null
++++ b/nixos/tests/netbird/default.nix
+@@ -0,0 +1,8 @@
++{ runTest }:
++
++{
++  client = runTest ./client.nix;
++  server-signal = runTest ./server-signal.nix;
++  server-management = runTest ./server-management.nix;
++  server-relay = runTest ./server-relay.nix;
++}
+diff --git a/nixos/tests/netbird/server-management.nix b/nixos/tests/netbird/server-management.nix
+new file mode 100644
+index 000000000000..d2562b5d3aab
+--- /dev/null
++++ b/nixos/tests/netbird/server-management.nix
+@@ -0,0 +1,127 @@
++{
++  lib,
++  ...
++}:
++{
++  name = "netbird-server-management";
++
++  meta.maintainers = with lib.maintainers; [
++    shuuri-labs
++  ];
++
++  nodes = {
++    management = {
++      services.netbird.server.management = {
++        enable = true;
++        domain = "mgmt.test";
++        turnDomain = "turn.test";
++        port = 8011;
++        metricsPort = 9090;
++        logLevel = "DEBUG";
++        oidcConfigEndpoint = "https://idp.test/.well-known/openid-configuration";
++
++        settings = {
++          # Use a test encryption key
++          DataStoreEncryptionKey = "test-encryption-key-for-testing";
++        };
++      };
++    };
++
++    managementWithRelay = {
++      services.netbird.server.management = {
++        enable = true;
++        domain = "mgmt-relay.test";
++        turnDomain = "turn.test";
++        port = 8011;
++        metricsPort = 9090;
++        oidcConfigEndpoint = "https://idp.test/.well-known/openid-configuration";
++
++        # Configure relay
++        relayAddresses = [ "rels://relay.test:443" ];
++        relaySecretFile = "/run/secrets/relay-secret";
++
++        settings = {
++          DataStoreEncryptionKey = "test-encryption-key-for-testing";
++        };
++      };
++
++      # Create a test secret file
++      systemd.services.netbird-management.preStart = lib.mkBefore ''
++        mkdir -p /run/secrets
++        echo "test-relay-secret" > /run/secrets/relay-secret
++      '';
++    };
++
++    managementWithPostgres = {
++      services.netbird.server.management = {
++        enable = true;
++        domain = "mgmt-pg.test";
++        turnDomain = "turn.test";
++        port = 8011;
++        metricsPort = 9090;
++        oidcConfigEndpoint = "https://idp.test/.well-known/openid-configuration";
++
++        store = {
++          engine = "postgres";
++          postgres.dsnFile = "/run/secrets/postgres-dsn";
++        };
++
++        settings = {
++          DataStoreEncryptionKey = "test-encryption-key-for-testing";
++        };
++      };
++
++      services.postgresql = {
++        enable = true;
++        ensureDatabases = [ "netbird" ];
++        ensureUsers = [
++          {
++            name = "netbird";
++            ensureDBOwnership = true;
++          }
++        ];
++      };
++
++      systemd.services.netbird-management = {
++        after = [ "postgresql.service" ];
++        requires = [ "postgresql.service" ];
++        preStart = lib.mkBefore ''
++          mkdir -p /run/secrets
++          echo "postgres://netbird@localhost/netbird?sslmode=disable" > /run/secrets/postgres-dsn
++        '';
++      };
++    };
++  };
++
++  testScript = ''
++    start_all()
++
++    # Test basic management server
++    management.wait_for_unit("netbird-management.service")
++    management.wait_for_open_port(8011)
++    management.wait_for_open_port(9090)
++
++    # Verify state directory exists
++    management.succeed("test -d /var/lib/netbird-mgmt")
++    management.succeed("test -d /var/lib/netbird-mgmt/data")
++
++    # Verify config file was generated
++    management.succeed("test -f /var/lib/netbird-mgmt/management.json")
++
++    # Test management with relay configuration
++    managementWithRelay.wait_for_unit("netbird-management.service")
++    managementWithRelay.wait_for_open_port(8011)
++
++    # Verify relay config is in the generated config
++    managementWithRelay.succeed("grep -q 'Relay' /var/lib/netbird-mgmt/management.json")
++    managementWithRelay.succeed("grep -q 'rels://relay.test:443' /var/lib/netbird-mgmt/management.json")
++
++    # Test management with PostgreSQL
++    managementWithPostgres.wait_for_unit("postgresql.service")
++    managementWithPostgres.wait_for_unit("netbird-management.service")
++    managementWithPostgres.wait_for_open_port(8011)
++
++    # Verify postgres engine is in config
++    managementWithPostgres.succeed("grep -q 'postgres' /var/lib/netbird-mgmt/management.json")
++  '';
++}
+diff --git a/nixos/tests/netbird/server-relay.nix b/nixos/tests/netbird/server-relay.nix
+new file mode 100644
+index 000000000000..617cae38363f
+--- /dev/null
++++ b/nixos/tests/netbird/server-relay.nix
+@@ -0,0 +1,48 @@
++{
++  lib,
++  ...
++}:
++{
++  name = "netbird-server-relay";
++
++  meta.maintainers = with lib.maintainers; [
++    shuuri-labs
++  ];
++
++  nodes = {
++    relay =
++      { pkgs, ... }:
++      {
++        services.netbird.server.relay = {
++          enable = true;
++          port = 8443;
++          exposedAddress = "rels://relay.test:8443";
++          # pkgs.writeText is world-readable but acceptable for tests
++          authSecretFile = pkgs.writeText "relay-auth" "test-auth-secret";
++          logLevel = "debug";
++
++          stun = {
++            enable = true;
++            ports = [ 3478 ];
++          };
++
++          openFirewall = true;
++        };
++      };
++  };
++
++  testScript = ''
++    start_all()
++
++    # Test basic relay server
++    relay.wait_for_unit("netbird-relay.service")
++    relay.wait_for_open_port(8443)
++
++    # Verify state directory exists
++    relay.succeed("test -d /var/lib/netbird-relay")
++
++    # Verify firewall is configured (relay port and STUN)
++    relay.succeed("iptables -L INPUT -n | grep -q 8443")
++    relay.succeed("iptables -L INPUT -n | grep -q 3478")
++  '';
++}
+diff --git a/nixos/tests/netbird/server-signal.nix b/nixos/tests/netbird/server-signal.nix
+new file mode 100644
+index 000000000000..9291ae7a486a
+--- /dev/null
++++ b/nixos/tests/netbird/server-signal.nix
+@@ -0,0 +1,40 @@
++{
++  lib,
++  ...
++}:
++{
++  name = "netbird-server-signal";
++
++  meta.maintainers = with lib.maintainers; [
++    shuuri-labs
++  ];
++
++  nodes = {
++    signal = {
++      services.netbird.server.signal = {
++        enable = true;
++        domain = "signal.test";
++        port = 8012;
++        metricsPort = 9091;
++        logLevel = "DEBUG";
++      };
++    };
++  };
++
++  testScript = ''
++    start_all()
++
++    # Test basic signal server
++    signal.wait_for_unit("netbird-signal.service")
++
++    # Verify the service is running on the correct port
++    signal.wait_for_open_port(8012)
++    signal.wait_for_open_port(9091)
++
++    # Verify state directory is correct (not netbird-mgmt)
++    signal.succeed("test -d /var/lib/netbird-signal")
++
++    # Verify working directory is correct
++    signal.succeed("systemctl show netbird-signal -p WorkingDirectory | grep '/var/lib/netbird-signal'")
++  '';
++}

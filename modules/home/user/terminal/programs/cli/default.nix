@@ -25,6 +25,8 @@ in
     file
     jaq
     ripgrep
+
+    waypipe
   ];
 
   programs = {

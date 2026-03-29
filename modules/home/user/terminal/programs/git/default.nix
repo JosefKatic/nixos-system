@@ -15,6 +15,7 @@
   programs.git = {
     enable = true;
     signing = {
+      format = "openpgp";
       key = "0xBAD7648677C2B3C6";
       signer = "${config.programs.gpg.package}/bin/gpg2";
       signByDefault = true;

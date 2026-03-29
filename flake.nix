@@ -28,7 +28,11 @@
     nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
     # nixpkgs-patchrowdsec-module-rework.url = "github:TornaxO7/nixpkgs/crowdsec";
     nixpkgs-patch-netbird = {
-      url = "https://github.com/NixOS/nixpkgs/pull/487367.diff";
+      url = "path:./netbird.diff";
+      flake = false;
+    };
+    nixpkgs-patch-hyprsplit = {
+      url = "https://github.com/nixos/nixpkgs/pull/486486.diff";
       flake = false;
     };
 
@@ -40,10 +44,6 @@
     hardware.url = "github:nixos/nixos-hardware";
     sops-nix = {
       url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nh = {
-      url = "github:viperML/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hm = {
@@ -107,12 +107,11 @@
 
     # Server
     nix-minecraft.url = "github:Infinidoge/nix-minecraft";
-
     hydra = {
       url = "github:NixOS/hydra";
     };
     sure = {
-      url = "git+file:///home/joka/develop/sure";
+      url = "git+file:///home/joka/develop/ruby/sure";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -18,6 +18,13 @@
           nixd
           nixfmt
           nixfmt-tree
+          bun
+          nodejs
+          mcp-nixos
+          python314
+          uv
+          openspec
+          sqlite
         ];
         name = "config";
         DIRENV_LOG_FORMAT = "";

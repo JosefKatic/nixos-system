@@ -23,7 +23,7 @@
   user.desktop.services.rnnoise.enable = true;
   user.desktop.wayland.hyprland.enable = true;
   user.desktop.wayland.hyprland.settings.mod = "SUPER";
-  user.desktop.wayland.hyprland.plugins.hyprexpo.enable = true;
+  user.desktop.wayland.hyprland.plugins.hyprexpo.enable = false;
   user.desktop.wayland.hyprland.plugins.hyprsplit.enable = true;
   user.desktop.wayland.hyprland.plugins.hyprsplit.numberOfWorkspaces = 10;
   user.desktop.wayland.waybar.enable = false;

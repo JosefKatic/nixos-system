@@ -4,14 +4,6 @@
   lib,
   ...
 }:
-let
-  inherit (config.theme.colorscheme) colors;
-  hash = builtins.hashString "md5" (builtins.toJSON config.theme.colorscheme.type);
-  rendersvg = pkgs.runCommand "rendersvg" { } ''
-    mkdir -p $out/bin
-    ln -s ${pkgs.resvg}/bin/resvg $out/bin/rendersvg
-  '';
-in
 {
   options.user.desktop.gtk = {
     enable = lib.mkEnableOption "Enable GTK settings";
@@ -27,6 +19,7 @@ in
 
     gtk = {
       enable = true;
+      gtk4.theme = null;
     };
 
     services.xsettingsd = {
