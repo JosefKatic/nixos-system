@@ -18,7 +18,7 @@
             title = "Health | joka00.dev";
             header = "Health | joka00.dev";
             logo = "https://joka00.dev/assets/logo__dark.svg";
-            favicon = "https://joka00.dev/assets/logo__dark.svg";
+            favicon.default = "https://joka00.dev/assets/logo__dark.svg";
           };
           storage = {
             type = "sqlite";
