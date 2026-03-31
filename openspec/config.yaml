@@ -1,0 +1,35 @@
+schema: spec-driven
+
+context: |
+  Project: Modular NixOS system configuration using Nix Flakes and flake-parts.
+  Hosts: 5 total — alcedo (desktop), hirundo (laptop), falco/regulus/strix (servers).
+  Stack: Nix, NixOS, home-manager, SOPS+age (secrets), Hydra (CI), flake-parts.
+
+  Key inputs: nixpkgs (unstable, patched via nixpkgs-patcher), lanzaboote (Secure Boot),
+  impermanence, nix-gaming, nixcord, zen-browser, nix-minecraft, matugen, caelestia-shell.
+
+  Repo layout:
+  - config/nixos/<host>/  — per-host NixOS configs (default.nix, static.nix, generated.nix)
+  - config/home/<host>/<user>/  — per-user home-manager configs
+  - modules/nixos/devices/  — reusable NixOS modules (boot, core, desktop, hardware, server, users)
+  - modules/home/user/  — reusable home-manager modules (terminal, desktop, services, theme)
+  - secrets/  — SOPS-encrypted secrets, rules in .sops.yaml
+  - packages/  — custom packages
+  - overlays/  — nixpkgs overlays
+
+  Conventions:
+  - Use `nh os switch .` to deploy (preferred over nixos-rebuild)
+  - Run `nix fmt` before committing (pre-commit hook)
+  - Secrets: add path to .sops.yaml then `sops encrypt`
+  - Hardware-specific options go in static.nix (device type, CPU/GPU, storage)
+  - Theming uses matugen (Material You color generation) + nix-colors
+
+rules:
+  proposal:
+    - Keep proposals under 400 words
+    - Always include a "Non-goals" section
+    - Reference affected hosts and modules explicitly
+  tasks:
+    - Each task must be a self-contained Nix change (file edit + rebuild test)
+    - Specify which host(s) and module path(s) are affected
+    - Note if secrets need updating via SOPS
