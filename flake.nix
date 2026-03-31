@@ -111,7 +111,7 @@
       url = "github:NixOS/hydra";
     };
     sure = {
-      url = "git+file:///home/joka/develop/ruby/sure";
+      url = "github:JosefKatic/sure/processor-fixes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

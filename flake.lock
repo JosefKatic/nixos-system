@@ -1305,16 +1305,18 @@
         "ruby-nix": "ruby-nix"
       },
       "locked": {
-        "dirtyRev": "d47c3839e19ae0fe9342621b6f435e468b2c0233-dirty",
-        "dirtyShortRev": "d47c3839-dirty",
-        "lastModified": 1771370949,
-        "narHash": "sha256-sRnRDKpOW97peuYngof1oUEbDywKQxxgC6PIDSWuHmc=",
-        "type": "git",
-        "url": "file:///home/joka/develop/ruby/sure"
+        "lastModified": 1774974979,
+        "narHash": "sha256-PzsxRNHH5jYXqW5IhV98kN9onI38yL4OMT6CfMys7+I=",
+        "owner": "JosefKatic",
+        "repo": "sure",
+        "rev": "d9211bf9ce61a70be83050e8ae4895f3199dd7a9",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/joka/develop/ruby/sure"
+        "owner": "JosefKatic",
+        "ref": "processor-fixes",
+        "repo": "sure",
+        "type": "github"
       }
     },
     "systems": {
