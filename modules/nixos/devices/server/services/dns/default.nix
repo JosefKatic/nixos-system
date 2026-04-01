@@ -2,6 +2,7 @@
   config,
   lib,
   self,
+  pkgs,
   ...
 }:
 {
@@ -75,7 +76,14 @@
             disable_syslog = false;
             timestamp = true;
           };
+          dnssec = {
+            validation = "validate";
+            disabled_algorithms = [ "1" ];
+          };
           recursor = {
+            lua_config_file = pkgs.writeText "recursor-lua.conf" ''
+              addNTA("joka00.dev", "split-horizon zone, public DNSSEC belongs to Cloudflare")
+            '';
             forward_zones = [
               {
                 zone = "joka00.dev";

@@ -46,6 +46,7 @@ in
     environment.systemPackages = with pkgs; [
       openssl
       unixtools.net-tools
+      dig
     ];
     networking = {
       domain = cfg.network.domain;
