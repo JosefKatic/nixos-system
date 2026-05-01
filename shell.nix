@@ -10,7 +10,7 @@
         packages = with pkgs; [
           lixPackageSets.stable.lix
           git
-          nodePackages.prettier
+          prettier
           sops
           ssh-to-age
           gnupg
@@ -23,7 +23,6 @@
           mcp-nixos
           python314
           uv
-          openspec
           sqlite
         ];
         name = "config";

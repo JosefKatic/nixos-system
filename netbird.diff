@@ -1,8 +1,8 @@
 diff --git a/maintainers/maintainer-list.nix b/maintainers/maintainer-list.nix
-index 79912e3c2ab9..a04d61b302c0 100644
+index 7c9429a23904..18acf8f42a1e 100644
 --- a/maintainers/maintainer-list.nix
 +++ b/maintainers/maintainer-list.nix
-@@ -24895,6 +24895,12 @@
+@@ -25024,6 +25024,12 @@
      github = "shunueda";
      githubId = 62182668;
    };
@@ -16,10 +16,10 @@ index 79912e3c2ab9..a04d61b302c0 100644
      name = "Yury Shvedov";
      email = "mestofel13@gmail.com";
 diff --git a/nixos/doc/manual/redirects.json b/nixos/doc/manual/redirects.json
-index 7bf88472148e..d4bc514e358a 100644
+index feb535c2142c..0140dbb457a8 100644
 --- a/nixos/doc/manual/redirects.json
 +++ b/nixos/doc/manual/redirects.json
-@@ -1199,6 +1199,54 @@
+@@ -1202,6 +1202,54 @@
    "module-services-netbird-customization": [
      "index.html#module-services-netbird-customization"
    ],
@@ -202,7 +202,7 @@ index a1aab94473a3..b4f1ac118ca8 100644
 +}
 +```
 diff --git a/nixos/modules/services/networking/netbird.nix b/nixos/modules/services/networking/netbird.nix
-index a718daaf9514..9442845e375b 100644
+index 368e3d9013f1..fff252e90ae2 100644
 --- a/nixos/modules/services/networking/netbird.nix
 +++ b/nixos/modules/services/networking/netbird.nix
 @@ -42,6 +42,8 @@ let
@@ -1475,7 +1475,7 @@ index 1de251b80109..a7efc9233e50 100644
 +}
 +```
 diff --git a/nixos/modules/services/networking/netbird/server.nix b/nixos/modules/services/networking/netbird/server.nix
-index aa3127f1d67b..a3cf951bf3ff 100644
+index d5f6ebda2bb5..1db7fa64c5f5 100644
 --- a/nixos/modules/services/networking/netbird/server.nix
 +++ b/nixos/modules/services/networking/netbird/server.nix
 @@ -9,14 +9,18 @@ let
@@ -1742,10 +1742,10 @@ index 7063696f28ab..f0d85257ba2b 100644
        enable = true;
  
 diff --git a/nixos/tests/all-tests.nix b/nixos/tests/all-tests.nix
-index f87c443884c9..e1c94ac9bf5e 100644
+index 9a059c30563c..d3d4ab00b99f 100644
 --- a/nixos/tests/all-tests.nix
 +++ b/nixos/tests/all-tests.nix
-@@ -1050,7 +1050,7 @@ in
+@@ -1058,7 +1058,7 @@ in
    nebula.connectivity = runTest ./nebula/connectivity.nix;
    nebula.reload = runTest ./nebula/reload.nix;
    neo4j = runTest ./neo4j.nix;

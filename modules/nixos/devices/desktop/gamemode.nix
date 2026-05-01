@@ -9,7 +9,6 @@ let
   programs = lib.makeBinPath [
     config.programs.hyprland.package
     pkgs.coreutils
-    # pkgs.power-profiles-daemon
   ];
 
   startscript = pkgs.writeShellScript "gamemode-start" ''

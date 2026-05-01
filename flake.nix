@@ -5,10 +5,12 @@
     extra-substituters = [
       "https://hyprland.cachix.org"
       "https://nix-community.cachix.org"
+      "https://cache.numtide.com"
     ];
     extra-trusted-public-keys = [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
     ];
   };
   inputs = {
@@ -31,15 +33,6 @@
       url = "path:./netbird.diff";
       flake = false;
     };
-    nixpkgs-patch-hyprsplit = {
-      url = "https://github.com/nixos/nixpkgs/pull/486486.diff";
-      flake = false;
-    };
-
-    nixpkgs-patch-materialyou = {
-      url = "https://github.com/NixOS/nixpkgs/pull/495481.diff";
-      flake = false;
-    };
 
     hardware.url = "github:nixos/nixos-hardware";
     sops-nix = {
@@ -53,6 +46,7 @@
     nix-colors.url = "github:misterio77/nix-colors";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
 
@@ -114,6 +108,8 @@
       url = "github:JosefKatic/sure/processor-fixes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    codebase-mcp.url = "github:josephvoss/codebase-memory-mcp/push-pwvtvsvklvtz";
+    codebase-mcp.inputs.nixpkgs.follows = "nixpkgs";
   };
   outputs =
     {

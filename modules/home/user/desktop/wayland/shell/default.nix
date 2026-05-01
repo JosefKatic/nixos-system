@@ -55,6 +55,8 @@ in
         enable = true; # Also add caelestia-cli to path
         settings = {
           theme.enableGtk = true;
+          # Writes ~/.config/qtengine/caelestia.colors (+ config.json) from Matugen-driven scheme.
+          theme.enableQt = true;
         };
       };
     };

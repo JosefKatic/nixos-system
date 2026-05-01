@@ -1,0 +1,244 @@
+/*
+ * Caelestia user template — must live at ~/.config/caelestia/templates/userChrome.css
+ * (flat name; subfolders are not processed by caelestia-cli apply_user_templates).
+ * Rendered to ~/.local/state/caelestia/theme/userChrome.css on each scheme change.
+ * Zen profiles symlink to the rendered file (same pattern as Kitty + colors.conf).
+ */
+
+:root {
+  --c-accent: #{{primary.hex}} !important;
+  --c-text: #{{onSurface.hex}} !important;
+  --c-mantle: #{{mantle.hex}} !important;
+  --c-base: #{{surface.hex}} !important;
+  --c-surface0: #{{surfaceContainer.hex}} !important;
+  --c-surface1: #{{outlineVariant.hex}} !important;
+
+  /* Tab strip / top chrome: match sidebar (--lwt-sidebar-background → mantle), not surfaceContainer */
+  --zen-primary-color: var(--c-mantle) !important;
+  --zen-colors-primary: var(--c-accent) !important;
+  --zen-colors-secondary: var(--c-mantle) !important;
+  --zen-colors-tertiary: var(--c-mantle) !important;
+  --zen-colors-border: var(--c-surface1) !important;
+  --toolbarbutton-icon-fill: var(--c-accent) !important;
+  --toolbarbutton-icon-fill-attention: var(--c-accent) !important;
+  --toolbarbutton-icon-fill-attention-text-light: var(--c-text) !important;
+  --toolbarbutton-icon-fill-attention-text-dark: var(--c-base) !important;
+  --lwt-text-color: var(--c-text) !important;
+  --toolbar-field-color: color-mix(
+    in srgb,
+    var(--c-text),
+    transparent 15%
+  ) !important;
+  --toolbar-field-focus-color: color-mix(
+    in srgb,
+    var(--c-text),
+    transparent 10%
+  ) !important;
+  --arrowpanel-color: var(--c-text) !important;
+  --arrowpanel-background: var(--c-base) !important;
+  --arrowpanel-border-color: var(--c-surface1) !important;
+  --lwt-sidebar-text-color: var(--c-text) !important;
+  --lwt-sidebar-background-color: var(--c-mantle) !important;
+  --toolbar-bgcolor: var(--c-mantle) !important;
+  --newtab-background-color: var(--c-base) !important;
+  --zen-themed-toolbar-bg: var(--c-mantle) !important;
+  --zen-main-browser-background: var(--c-mantle) !important;
+  --urlbarView-highlight-color: var(--c-text) !important;
+  --in-content-primary-button-text-color: var(--c-text) !important;
+  --in-content-primary-button-background: var(--c-surface0) !important;
+  --in-content-primary-button-background-hover: var(--c-surface1) !important;
+}
+
+tooltip {
+  appearance: none !important;
+  background-color: var(--c-mantle) !important;
+  color: var(--c-text) !important;
+  border: 1px solid color-mix(in srgb, var(--c-accent), transparent 70%) !important;
+  border-radius: 8px !important;
+}
+
+#permissions-granted-icon {
+  color: var(--c-mantle) !important;
+}
+
+.sidebar-placesTree {
+  background-color: var(--c-base) !important;
+}
+
+#urlbar-background {
+  background-color: var(--c-mantle) !important;
+}
+
+#TabsToolbar {
+  background-color: var(--c-mantle) !important;
+}
+
+/* Navigator toolbox (nav bar + tab bar): same fill as sidebar */
+#navigator-toolbox,
+#nav-bar,
+#zen-sidebar-top-buttons,
+#zen-sidebar-splitter,
+#zen-appcontent-navbar-container {
+  background-color: var(--c-mantle) !important;
+  --toolbar-bgcolor: var(--c-mantle) !important;
+}
+
+.content-shortcuts {
+  background-color: var(--c-base) !important;
+  border-color: var(--c-accent) !important;
+}
+
+.urlbarView-url {
+  color: var(--c-accent) !important;
+}
+
+#zenEditBookmarkPanelFaviconContainer {
+  background: var(--c-mantle) !important;
+}
+
+toolbarbutton {
+  fill: var(--c-accent) !important;
+}
+
+toolbar .toolbarbutton-1 {
+  &:not([disabled]) {
+    &:is([open], [checked])
+      > :is(
+        .toolbarbutton-icon,
+        .toolbarbutton-text,
+        .toolbarbutton-badge-stack
+      ) {
+      fill: var(--c-mantle) !important;
+    }
+  }
+}
+
+#autoscroller {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+#urlbar-container {
+  background: var(--c-mantle) !important;
+}
+
+/* Center url bar text when not focused */
+#urlbar:not([focused]) .urlbar-input {
+  text-align: center !important;
+}
+
+@keyframes floating-urlbar-show {
+  0% {
+    opacity: 0;
+    scale: 0.8;
+  }
+
+  70% {
+    scale: 1.02;
+  }
+
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+#urlbar[breakout-extend] {
+  animation: 200ms floating-urlbar-show ease-out;
+}
+
+#commonDialog,
+.menupopup-arrowscrollbox {
+  border-radius: 10px !important;
+  border: 1px solid
+    color-mix(in srgb, var(--arrowpanel-border-color), transparent 70%) !important;
+  background: color-mix(
+    in srgb,
+    var(--arrowpanel-background),
+    transparent 15%
+  ) !important;
+  backdrop-filter: blur(25px) !important;
+}
+
+#commonDialog {
+  background: color-mix(
+    in srgb,
+    var(--zen-branding-bg),
+    transparent 15%
+  ) !important;
+}
+
+#urlbar[zen-floating-urlbar][breakout][breakout-extend] > #urlbar-background {
+  border: 1px solid
+    color-mix(in srgb, var(--zen-colors-border), transparent 70%) !important;
+  border-radius: 10px !important;
+  background: color-mix(in srgb, var(--c-mantle), transparent 15%) !important;
+  backdrop-filter: blur(25px) !important;
+}
+
+#urlbar[breakout-extend] .urlbar-input-container {
+  padding-top: 7px !important;
+  padding-bottom: 0px !important;
+}
+
+.urlbarView-body-inner {
+  border: none !important;
+}
+
+.search-one-offs {
+  border-top: none !important;
+  padding: 4px !important;
+  margin: 0px 0px 7px 0px !important;
+}
+
+.searchbar-engine-one-off-item {
+  border-radius: 8px !important;
+  margin-right: 3px !important;
+}
+
+#urlbar-anon-search-settings {
+  margin-right: 0px !important;
+}
+
+* {
+  border: 0px solid transparent;
+  outline: 0px solid transparent;
+}
+
+.tabbrowser-tab[pending] {
+  filter: grayscale(1);
+  opacity: 0.5;
+}
+
+:is(
+  .tab-background,
+  .toolbarbutton-icon,
+  .toolbarbutton-badge-stack,
+  .toolbarbutton-1,
+  .bookmark-item,
+  .PanelUI-zen-profiles-item,
+  .download-state,
+  .urlbarView-row,
+  .urlbarView-action,
+  .searchbar-engine-one-off-item,
+  #urlbar-search-mode-indicator,
+  #tracking-protection-icon-container,
+  #page-action-buttons > *,
+  #identity-box > *,
+  toolbarbutton,
+  toolbaritem,
+  button,
+  menu,
+  menuitem,
+  tab
+):not(#urlbar-container, #personal-bookmarks) {
+  transition: all 0.15s ease !important;
+
+  &:is(tab) {
+    transition: scale 0.15s ease !important;
+  }
+
+  &:is(:active, :not(tab)[open]) {
+    scale: 0.95 !important;
+  }
+}
