@@ -45,11 +45,13 @@ in
         };
         home.packages = [
           pkgs.code-cursor
+          pkgs.lmstudio
           pkgs.cursor-cli
           pkgs.inputs.llm-agents.claude-code
           pkgs.inputs.codebase-mcp.default
           pkgs.inputs.llm-agents.spec-kit
-
+          pkgs.inputs.llm-agents.cursor-agent
+          pkgs.inputs.llm-agents.kilocode-cli
         ];
       }
 
