@@ -30,7 +30,7 @@
     nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
     # nixpkgs-patchrowdsec-module-rework.url = "github:TornaxO7/nixpkgs/crowdsec";
     nixpkgs-patch-netbird = {
-      url = "path:./netbird.diff";
+      url = "https://github.com/NixOS/nixpkgs/pull/487367.diff";
       flake = false;
     };
 

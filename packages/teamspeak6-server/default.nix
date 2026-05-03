@@ -8,15 +8,18 @@
 }:
 let
   majorVersion = "6.0.0";
-  betaTag = "beta8";
+  betaTag = "beta9";
 in
 stdenv.mkDerivation rec {
   pname = "teamspeak6-server";
   version = "${majorVersion}-${betaTag}";
+  sourceRoot = ".";
   # https://github.com/teamspeak/teamspeak6-server/releases/download/v6.0.0%2Fbeta7/teamspeak-server_linux_amd64-v6.0.0-beta7.tar.bz2
   src = fetchurl {
-    url = "https://github.com/teamspeak/teamspeak6-server/releases/download/v${majorVersion}%2F${betaTag}/teamspeak-server_linux_amd64-v${version}.tar.bz2";
-    sha256 = "sha256-U9jazezXFGcW95iu20Ktc64E1ihXSE4CiQx3jkgDERc=";
+    # https://github.com/teamspeak/teamspeak6-server/releases/download/v6.0.0-beta9/teamspeak6-server-linux-amd64.tar.xz
+
+    url = "https://github.com/teamspeak/teamspeak6-server/releases/download/v${majorVersion}-${betaTag}/teamspeak6-server-linux-amd64.tar.xz";
+    sha256 = "sha256-vC6G7KhI6cBZiSEp7oeG0BVzjREVxN2PaXsGBNULN3I=";
   };
 
   buildInputs = [
